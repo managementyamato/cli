@@ -243,8 +243,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['import_spreadsheet'])
                         $status = '対応中';
                     }
 
-                    // トラブル内容が空の場合はスキップ
-                    if (empty(trim($content))) {
+                    // トラブル内容とPJ番号が両方とも有効な場合のみインポート
+                    $content = trim($content);
+                    $pjNumber = trim($pjNumber);
+
+                    if (empty($content) || empty($pjNumber) || strlen($content) < 3) {
+                        continue;
+                    }
+
+                    if (!$foundPj) {
+                        $skipped++;
                         continue;
                     }
 

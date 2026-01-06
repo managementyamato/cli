@@ -634,12 +634,25 @@
                 </select>
             </div>
 
+            <!-- 一括削除ボタン -->
+            <div style="margin-bottom: 1rem; display: flex; gap: 0.5rem; align-items: center;">
+                <button class="btn btn-secondary btn-sm" id="bulk-delete-btn" style="display: none;">
+                    <span id="selected-count">0</span>件を削除
+                </button>
+                <button class="btn btn-secondary btn-sm" id="clear-selection-btn" style="display: none;">
+                    選択解除
+                </button>
+            </div>
+
             <!-- Desktop Table -->
             <div class="card desktop-only">
                 <div class="table-wrapper">
                     <table class="table">
                         <thead>
                             <tr>
+                                <th style="width: 40px;">
+                                    <input type="checkbox" id="select-all-checkbox" style="cursor: pointer;">
+                                </th>
                                 <th>ID</th>
                                 <th>PJ番号</th>
                                 <th>機器</th>
@@ -725,6 +738,29 @@
                         <span id="csv-troubles-status" style="margin-left: 0.5rem; font-size: 0.75rem;"></span>
                     </div>
                 </div>
+            </div>
+
+            <div class="card">
+                <h2 class="card-title">スプレッドシートからインポート</h2>
+                <p style="font-size: 0.875rem; color: var(--gray-500); margin-bottom: 1rem;">
+                    Googleスプレッドシートを「ウェブに公開」してからURLを入力してください。<br>
+                    <strong>必要な列:</strong> PJ番号, 現場名 or プロジェクト番号, トラブル内容, 対応内容, 記入者, 対応者, 状態, 日付
+                </p>
+                <div style="display: flex; gap: 0.5rem; margin-bottom: 0.5rem;">
+                    <input type="text" class="form-input" id="spreadsheet-url" placeholder="https://docs.google.com/spreadsheets/d/..." style="flex: 1;">
+                    <button class="btn btn-primary" id="import-from-sheet-btn">インポート</button>
+                </div>
+                <div id="sheet-import-status" style="font-size: 0.875rem; margin-top: 0.5rem;"></div>
+                <details style="margin-top: 1rem;">
+                    <summary style="cursor: pointer; color: var(--primary); font-size: 0.875rem;">📘 スプレッドシート公開方法</summary>
+                    <ol style="font-size: 0.75rem; color: var(--gray-600); margin-top: 0.5rem; padding-left: 1.5rem;">
+                        <li>Googleスプレッドシートを開く</li>
+                        <li>「ファイル」→「共有」→「ウェブに公開」をクリック</li>
+                        <li>「公開」ボタンを押す</li>
+                        <li>スプレッドシートのURLをコピー</li>
+                        <li>上記の入力欄に貼り付けて「インポート」ボタンをクリック</li>
+                    </ol>
+                </details>
             </div>
 
             <div class="card">
@@ -1192,6 +1228,9 @@
             const tableBody = document.getElementById('trouble-table-body');
             tableBody.innerHTML = troubles.map(t => `
                 <tr>
+                    <td>
+                        <input type="checkbox" class="trouble-checkbox" data-id="${t.id}" style="cursor: pointer;">
+                    </td>
                     <td>#${t.id}</td>
                     <td><strong>${t.pjNumber}</strong><br><small>${t.pjName}</small></td>
                     <td>${t.deviceType}</td>
@@ -1219,8 +1258,9 @@
             const cardsContainer = document.getElementById('trouble-cards');
             cardsContainer.innerHTML = troubles.map(t => `
                 <div class="trouble-card">
-                    <div class="trouble-card-header" onclick="showDetail(${t.id})">
-                        <div>
+                    <div class="trouble-card-header">
+                        <input type="checkbox" class="trouble-checkbox" data-id="${t.id}" style="cursor: pointer; margin-right: 0.5rem;" onclick="event.stopPropagation(); updateBulkDeleteButton();">
+                        <div onclick="showDetail(${t.id})" style="flex: 1; cursor: pointer;">
                             <div class="trouble-card-pj">${t.pjNumber}</div>
                             <div style="font-size: 0.75rem; color: var(--gray-500);">${t.pjName}</div>
                         </div>
@@ -1241,6 +1281,41 @@
                     </div>
                 </div>
             `).join('');
+
+            // チェックボックスのイベントリスナー追加
+            document.querySelectorAll('.trouble-checkbox').forEach(cb => {
+                cb.addEventListener('change', updateBulkDeleteButton);
+            });
+
+            // 初期状態を更新
+            updateBulkDeleteButton();
+        }
+
+        // 一括削除ボタンの表示更新
+        function updateBulkDeleteButton() {
+            const checkboxes = document.querySelectorAll('.trouble-checkbox');
+            const checkedBoxes = document.querySelectorAll('.trouble-checkbox:checked');
+            const count = checkedBoxes.length;
+
+            const bulkDeleteBtn = document.getElementById('bulk-delete-btn');
+            const clearSelectionBtn = document.getElementById('clear-selection-btn');
+            const selectedCountSpan = document.getElementById('selected-count');
+            const selectAllCheckbox = document.getElementById('select-all-checkbox');
+
+            if (count > 0) {
+                bulkDeleteBtn.style.display = 'block';
+                clearSelectionBtn.style.display = 'block';
+                selectedCountSpan.textContent = count;
+            } else {
+                bulkDeleteBtn.style.display = 'none';
+                clearSelectionBtn.style.display = 'none';
+            }
+
+            // 全選択チェックボックスの状態更新
+            if (selectAllCheckbox) {
+                selectAllCheckbox.checked = checkboxes.length > 0 && count === checkboxes.length;
+                selectAllCheckbox.indeterminate = count > 0 && count < checkboxes.length;
+            }
         }
 
         // 統計表示
@@ -1851,6 +1926,194 @@
             initReporterSelect();
             showToast('担当者を削除しました');
         }
+
+        // ==================== 一括削除機能 ====================
+
+        // 全選択チェックボックス
+        document.getElementById('select-all-checkbox').addEventListener('change', (e) => {
+            const isChecked = e.target.checked;
+            document.querySelectorAll('.trouble-checkbox').forEach(cb => {
+                cb.checked = isChecked;
+            });
+            updateBulkDeleteButton();
+        });
+
+        // 一括削除ボタン
+        document.getElementById('bulk-delete-btn').addEventListener('click', () => {
+            const checkedBoxes = document.querySelectorAll('.trouble-checkbox:checked');
+            const ids = Array.from(checkedBoxes).map(cb => parseInt(cb.dataset.id));
+
+            if (ids.length === 0) return;
+
+            if (!confirm(`選択した ${ids.length} 件のトラブルを削除しますか？\n\nこの操作は取り消せません。`)) {
+                return;
+            }
+
+            const data = getData();
+            data.troubles = data.troubles.filter(t => !ids.includes(t.id));
+            saveData(data);
+            renderTroubleList();
+            showToast(`${ids.length}件のトラブルを削除しました`);
+        });
+
+        // 選択解除ボタン
+        document.getElementById('clear-selection-btn').addEventListener('click', () => {
+            document.querySelectorAll('.trouble-checkbox').forEach(cb => {
+                cb.checked = false;
+            });
+            updateBulkDeleteButton();
+        });
+
+        // ==================== スプレッドシートインポート ====================
+
+        document.getElementById('import-from-sheet-btn').addEventListener('click', async () => {
+            const url = document.getElementById('spreadsheet-url').value.trim();
+            const status = document.getElementById('sheet-import-status');
+
+            if (!url) {
+                status.innerHTML = '<span style="color: var(--danger);">URLを入力してください</span>';
+                return;
+            }
+
+            // スプレッドシートIDを抽出
+            const match = url.match(/\/spreadsheets\/d\/([a-zA-Z0-9-_]+)/);
+            if (!match) {
+                status.innerHTML = '<span style="color: var(--danger);">正しいGoogleスプレッドシートのURLを入力してください</span>';
+                return;
+            }
+
+            const spreadsheetId = match[1];
+            const csvUrl = `https://docs.google.com/spreadsheets/d/${spreadsheetId}/export?format=csv`;
+
+            status.innerHTML = '<span style="color: var(--gray-500);">読み込み中...</span>';
+
+            try {
+                const response = await fetch(csvUrl);
+                if (!response.ok) {
+                    throw new Error('スプレッドシートにアクセスできません。「ウェブに公開」されているか確認してください。');
+                }
+
+                const text = await response.text();
+                const { headers, rows } = parseCSV(text);
+
+                console.log('Spreadsheet Headers:', headers);
+                console.log('Spreadsheet Rows (first 3):', rows.slice(0, 3));
+
+                const data = getData();
+                let addedPj = 0;
+                let addedTrouble = 0;
+                let addedAssignee = 0;
+                let skipped = 0;
+
+                rows.forEach(row => {
+                    // PJ番号の取得と正規化
+                    const pjNumberRaw = row['pj番号'] || row['pj_number'] || row['プロジェクト番号'] || '';
+                    let pjNumber = pjNumberRaw.toLowerCase().replace(/[^a-z0-9]/g, '');
+
+                    // 現場名の取得
+                    const pjName = row['現場名'] || row['案件名'] || row['pj_name'] || row['プロジェクト名'] || '';
+
+                    // PJ番号がない場合、現場名から既存PJを検索
+                    if (!pjNumber && pjName) {
+                        const foundPj = data.projects.find(p =>
+                            p.name.includes(pjName) || pjName.includes(p.name)
+                        );
+                        if (foundPj) {
+                            pjNumber = foundPj.id;
+                        }
+                    }
+
+                    // PJマスタに追加（新規の場合）
+                    if (pjNumber && pjName && !data.projects.find(p => p.id === pjNumber)) {
+                        data.projects.push({ id: pjNumber, name: pjName });
+                        addedPj++;
+                    }
+
+                    // トラブルデータの取得
+                    const content = row['トラブル内容'] || row['内容'] || row['content'] || '';
+                    const solution = row['対応内容'] || row['解決方法'] || row['solution'] || '';
+                    const reporter = row['記入者'] || row['報告者'] || row['reporter'] || '';
+                    const assignee = row['対応者'] || row['担当者'] || row['assignee'] || '';
+                    const statusRaw = row['状態'] || row['ステータス'] || row['status'] || '';
+                    const dateRaw = row['日付'] || row['登録日'] || row['created_at'] || '';
+
+                    // ステータス変換
+                    let status = '未対応';
+                    if (statusRaw.includes('解決') || statusRaw.includes('完了') || statusRaw === '1.解決') {
+                        status = '完了';
+                    } else if (statusRaw.includes('対応待ち') || statusRaw.includes('対応中') || statusRaw === '3.現場対応待ち') {
+                        status = '対応中';
+                    }
+
+                    // 日付解析
+                    let createdAt = new Date().toISOString();
+                    if (dateRaw) {
+                        const parsed = new Date(dateRaw);
+                        if (!isNaN(parsed.getTime())) {
+                            createdAt = parsed.toISOString();
+                        }
+                    }
+
+                    // トラブルデータを追加（内容がある場合のみ）
+                    if (content && pjNumber) {
+                        const foundPj = data.projects.find(p => p.id === pjNumber);
+                        const finalPjName = foundPj ? foundPj.name : pjName;
+
+                        const newTrouble = {
+                            id: data.troubles.length > 0 ? Math.max(...data.troubles.map(t => t.id)) + 1 : 1,
+                            pjNumber: pjNumber,
+                            pjName: finalPjName,
+                            deviceType: row['機器種別'] || row['device_type'] || 'その他',
+                            content: content,
+                            solution: solution,
+                            reporter: reporter,
+                            assignee: assignee,
+                            status: status,
+                            createdAt: createdAt,
+                            updatedAt: createdAt,
+                            photos: [],
+                            history: [
+                                { date: createdAt, action: 'スプレッドシートからインポート' }
+                            ]
+                        };
+
+                        data.troubles.push(newTrouble);
+                        addedTrouble++;
+
+                        // 担当者を自動登録
+                        if (reporter && !data.assignees.find(a => a.name === reporter)) {
+                            const newId = data.assignees.length > 0 ? Math.max(...data.assignees.map(a => a.id)) + 1 : 1;
+                            data.assignees.push({ id: newId, name: reporter });
+                            addedAssignee++;
+                        }
+                        if (assignee && !data.assignees.find(a => a.name === assignee)) {
+                            const newId = data.assignees.length > 0 ? Math.max(...data.assignees.map(a => a.id)) + 1 : 1;
+                            data.assignees.push({ id: newId, name: assignee });
+                            addedAssignee++;
+                        }
+                    } else if (content && !pjNumber) {
+                        skipped++;
+                    }
+                });
+
+                saveData(data);
+                renderMasterPage();
+                initAssigneeSelect();
+                initReporterSelect();
+
+                let msg = `<span style="color: var(--success);">✓ インポート完了</span><br>`;
+                msg += `PJ: ${addedPj}件、トラブル: ${addedTrouble}件、担当者: ${addedAssignee}件`;
+                if (skipped > 0) {
+                    msg += `<br><span style="color: var(--warning);">${skipped}件はPJ番号不明のためスキップしました</span>`;
+                }
+                status.innerHTML = msg;
+
+                showToast(`スプシから ${addedTrouble} 件のトラブルをインポートしました`);
+            } catch (error) {
+                status.innerHTML = `<span style="color: var(--danger);">✗ エラー: ${error.message}</span>`;
+                console.error('Import error:', error);
+            }
+        });
 
         // 初期化
         initProjectSelect();

@@ -18,7 +18,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['bulk_delete'])) {
 // 単一削除処理
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_id'])) {
     $deleteId = (int)$_POST['delete_id'];
-    $data['troubles'] = array_values(array_filter($data['troubles'], fn($t) => $t['id'] !== $deleteId));
+    $data['troubles'] = array_values(array_filter($data['troubles'], function($t) use ($deleteId) {
+        return $t['id'] !== $deleteId;
+    }));
     saveData($data);
     header('Location: list.php?deleted=1');
     exit;
@@ -40,11 +42,15 @@ if ($search) {
 }
 
 if ($statusFilter) {
-    $troubles = array_filter($troubles, fn($t) => $t['status'] === $statusFilter);
+    $troubles = array_filter($troubles, function($t) use ($statusFilter) {
+        return $t['status'] === $statusFilter;
+    });
 }
 
 if ($deviceFilter) {
-    $troubles = array_filter($troubles, fn($t) => $t['deviceType'] === $deviceFilter);
+    $troubles = array_filter($troubles, function($t) use ($deviceFilter) {
+        return $t['deviceType'] === $deviceFilter;
+    });
 }
 
 require_once 'header.php';
@@ -138,12 +144,18 @@ require_once 'header.php';
                             <td><?= htmlspecialchars($t['assignee'] ?? '-') ?></td>
                             <td>
                                 <?php
-                                $statusClass = match($t['status']) {
-                                    '未対応' => 'status-pending',
-                                    '対応中' => 'status-in-progress',
-                                    '完了' => 'status-completed',
-                                    default => ''
-                                };
+                                $statusClass = '';
+                                switch ($t['status']) {
+                                    case '未対応':
+                                        $statusClass = 'status-pending';
+                                        break;
+                                    case '対応中':
+                                        $statusClass = 'status-in-progress';
+                                        break;
+                                    case '完了':
+                                        $statusClass = 'status-completed';
+                                        break;
+                                }
                                 ?>
                                 <span class="status-badge <?= $statusClass ?>"><?= htmlspecialchars($t['status']) ?></span>
                             </td>
@@ -176,12 +188,18 @@ require_once 'header.php';
                         <div style="font-size: 0.75rem; color: var(--gray-500);"><?= htmlspecialchars($t['pjName'] ?? '') ?></div>
                     </div>
                     <?php
-                    $statusClass = match($t['status']) {
-                        '未対応' => 'status-pending',
-                        '対応中' => 'status-in-progress',
-                        '完了' => 'status-completed',
-                        default => ''
-                    };
+                    $statusClass = '';
+                    switch ($t['status']) {
+                        case '未対応':
+                            $statusClass = 'status-pending';
+                            break;
+                        case '対応中':
+                            $statusClass = 'status-in-progress';
+                            break;
+                        case '完了':
+                            $statusClass = 'status-completed';
+                            break;
+                    }
                     ?>
                     <span class="status-badge <?= $statusClass ?>"><?= htmlspecialchars($t['status']) ?></span>
                 </div>

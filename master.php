@@ -144,8 +144,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['sync_now'])) {
 
                 // PJマスタインポート
                 $pjNumber = strtolower(preg_replace('/[^a-zA-Z0-9]/', '', $row['pj番号'] ?? ''));
-                $pjName = $row['案件名'] ?? $row['現場名'] ?? '';
-                $assignee = $row['ya担当'] ?? $row['担当者'] ?? '';
+                $pjName = $row['案件名'] ?? $row['現場名'] ?? $row['契約名'] ?? $row['契約者名'] ?? $row['スペース'] ?? $row['スペース名'] ?? '';
+                $assignee = $row['ya担当'] ?? $row['担当者'] ?? $row['スペース担当者名'] ?? '';
 
                 if ($pjNumber && $pjName && $pjName !== '-') {
                     $exists = false;

@@ -11,8 +11,7 @@ function getInitialData() {
         'assignees' => array(),
         'troubles' => array(),
         'settings' => array(
-            'spreadsheet_url' => '',
-            'auto_clear_before_import' => false
+            'spreadsheet_url' => ''
         )
     );
 }
@@ -26,8 +25,7 @@ function getData() {
             // 設定が存在しない場合は初期化
             if (!isset($data['settings'])) {
                 $data['settings'] = array(
-                    'spreadsheet_url' => '',
-                    'auto_clear_before_import' => false
+                    'spreadsheet_url' => ''
                 );
             }
             return $data;

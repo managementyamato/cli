@@ -119,16 +119,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['sync_now'])) {
         } else {
             $lines = explode("\n", $csvContent);
 
-            // デバッグ: 最初の5行の生データを確認
             $debugInfo = array();
-            $debugInfo[] = '【スプレッドシート最初の5行】';
-            for ($i = 0; $i < min(5, count($lines)); $i++) {
-                $debugInfo[] = "行" . ($i + 1) . ": " . mb_substr($lines[$i], 0, 200);
+
+            // 1-23行目をスキップ（24行目がヘッダー）
+            for ($i = 0; $i < 23; $i++) {
+                array_shift($lines);
             }
 
-            // 1行目をスキップ（タイトル行の可能性）
-            $firstLine = array_shift($lines);
-            $headers = str_getcsv(array_shift($lines)); // 2行目をヘッダーとして使用
+            // 24行目をヘッダーとして使用
+            $headers = str_getcsv(array_shift($lines));
             $headers = array_map(function($h) { return trim($h); }, $headers);
 
             $addedPj = 0;
@@ -138,7 +137,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['sync_now'])) {
             $totalRows = 0;
 
             // デバッグ: ヘッダー情報を記録
-            $debugInfo[] = '<br>【2行目をヘッダーとして使用】';
+            $debugInfo[] = '【24行目をヘッダーとして使用】';
             $debugInfo[] = '列名: ' . implode(', ', $headers);
 
             foreach ($lines as $line) {

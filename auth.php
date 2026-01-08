@@ -24,3 +24,24 @@ if (!isset($GLOBALS['USERS'][$_SESSION['user_email']])) {
     header('Location: login.php');
     exit;
 }
+
+// ページごとの必要権限を定義
+$pagePermissions = array(
+    'index.php' => 'viewer',      // 分析: 閲覧者以上
+    'list.php' => 'viewer',       // 一覧: 閲覧者以上（編集は別途チェック）
+    'report.php' => 'editor',     // 報告: 編集者以上
+    'master.php' => 'editor',     // PJ管理: 編集者以上
+    'customers.php' => 'editor',  // 顧客マスタ: 編集者以上
+    'partners.php' => 'editor',   // パートナーマスタ: 編集者以上
+    'employees.php' => 'editor',  // 従業員マスタ: 編集者以上
+    'products.php' => 'editor',   // 商品マスタ: 編集者以上
+);
+
+// 現在のページに必要な権限をチェック
+if (isset($pagePermissions[$currentPage])) {
+    if (!hasPermission($pagePermissions[$currentPage])) {
+        // 権限不足の場合はトップページにリダイレクト
+        header('Location: index.php');
+        exit;
+    }
+}

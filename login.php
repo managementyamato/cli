@@ -19,12 +19,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $error = 'メールアドレスとパスワードを入力してください。';
     } else if (!isset($USERS[$email])) {
         $error = 'メールアドレスまたはパスワードが正しくありません。';
-    } else if (!password_verify($password, $USERS[$email])) {
+    } else if (!password_verify($password, $USERS[$email]['password'])) {
         $error = 'メールアドレスまたはパスワードが正しくありません。';
     } else {
         // ログイン成功
         $_SESSION['user_email'] = $email;
-        $_SESSION['user_name'] = explode('@', $email)[0];
+        $_SESSION['user_name'] = $USERS[$email]['name'];
+        $_SESSION['user_role'] = $USERS[$email]['role'];
         header('Location: index.php');
         exit;
     }
@@ -167,7 +168,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <strong>ユーザー設定が必要です</strong>
                 config.phpの$USERS配列にユーザーを追加してください。
                 <code>$USERS = array(<br>
-    'user@example.com' => password_hash('your_password', PASSWORD_DEFAULT),<br>
+    'admin@example.com' => array(<br>
+        'password' => password_hash('password', PASSWORD_DEFAULT),<br>
+        'name' => '管理者',<br>
+        'role' => 'admin'<br>
+    ),<br>
 );</code>
             </div>
         <?php else: ?>

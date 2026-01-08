@@ -2,8 +2,8 @@
 require_once 'config.php';
 $data = getData();
 
-// 一括削除処理
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['bulk_delete'])) {
+// 一括削除処理（編集権限が必要）
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['bulk_delete']) && canEdit()) {
     $deleteIds = $_POST['delete_ids'] ?? [];
     if (!empty($deleteIds)) {
         $data['troubles'] = array_values(array_filter($data['troubles'], function($t) use ($deleteIds) {
@@ -15,8 +15,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['bulk_delete'])) {
     }
 }
 
-// 単一削除処理
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_id'])) {
+// 単一削除処理（編集権限が必要）
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_id']) && canEdit()) {
     $deleteId = (int)$_POST['delete_id'];
     $data['troubles'] = array_values(array_filter($data['troubles'], function($t) use ($deleteId) {
         return $t['id'] !== $deleteId;
@@ -85,7 +85,8 @@ require_once 'header.php';
     </form>
 </div>
 
-<!-- 一括削除フォーム -->
+<!-- 一括削除フォーム（編集権限がある場合のみ表示） -->
+<?php if (canEdit()): ?>
 <form method="POST" id="bulk-delete-form">
     <input type="hidden" name="bulk_delete" value="1">
 
@@ -98,6 +99,7 @@ require_once 'header.php';
             選択解除
         </button>
     </div>
+<?php endif; ?>
 
     <!-- Desktop Table -->
     <div class="card desktop-only">
@@ -105,9 +107,11 @@ require_once 'header.php';
             <table class="table">
                 <thead>
                     <tr>
+                        <?php if (canEdit()): ?>
                         <th style="width: 40px;">
                             <input type="checkbox" id="select-all-checkbox" onchange="toggleAllCheckboxes(this)">
                         </th>
+                        <?php endif; ?>
                         <th>ID</th>
                         <th>PJ番号</th>
                         <th>機器</th>
@@ -115,15 +119,19 @@ require_once 'header.php';
                         <th>対応者</th>
                         <th>ステータス</th>
                         <th>登録日</th>
+                        <?php if (canEdit()): ?>
                         <th>操作</th>
+                        <?php endif; ?>
                     </tr>
                 </thead>
                 <tbody>
                     <?php foreach ($troubles as $t): ?>
                         <tr>
+                            <?php if (canEdit()): ?>
                             <td>
                                 <input type="checkbox" class="trouble-checkbox" name="delete_ids[]" value="<?= $t['id'] ?>" onchange="updateBulkDeleteButton()">
                             </td>
+                            <?php endif; ?>
                             <td>#<?= $t['id'] ?></td>
                             <td>
                                 <strong><?= htmlspecialchars($t['pjNumber']) ?></strong><br>
@@ -164,16 +172,18 @@ require_once 'header.php';
                                 <span class="status-badge <?= $statusClass ?>"><?= htmlspecialchars($t['status']) ?></span>
                             </td>
                             <td><?= date('n/j', strtotime($t['createdAt'])) ?></td>
+                            <?php if (canEdit()): ?>
                             <td>
                                 <div class="action-buttons">
                                     <a href="edit.php?id=<?= $t['id'] ?>" class="btn-icon" title="編集">✏️</a>
                                 </div>
                             </td>
+                            <?php endif; ?>
                         </tr>
                     <?php endforeach; ?>
                     <?php if (empty($troubles)): ?>
                         <tr>
-                            <td colspan="9" style="text-align: center; color: var(--gray-500);">データがありません</td>
+                            <td colspan="<?= canEdit() ? '9' : '7' ?>" style="text-align: center; color: var(--gray-500);">データがありません</td>
                         </tr>
                     <?php endif; ?>
                 </tbody>
@@ -186,7 +196,9 @@ require_once 'header.php';
         <?php foreach ($troubles as $t): ?>
             <div class="trouble-card">
                 <div class="trouble-card-header">
+                    <?php if (canEdit()): ?>
                     <input type="checkbox" class="trouble-checkbox" name="delete_ids[]" value="<?= $t['id'] ?>" onchange="updateBulkDeleteButton()" style="margin-right: 0.5rem;">
+                    <?php endif; ?>
                     <div style="flex: 1;">
                         <div class="trouble-card-pj"><?= htmlspecialchars($t['pjNumber']) ?></div>
                         <div style="font-size: 0.75rem; color: var(--gray-500);"><?= htmlspecialchars($t['pjName'] ?? '') ?></div>
@@ -226,7 +238,9 @@ require_once 'header.php';
                 <div class="trouble-card-meta">
                     <span>👤 <?= htmlspecialchars($t['assignee'] ?? '未割当') ?></span>
                     <span>📅 <?= date('n/j', strtotime($t['createdAt'])) ?></span>
+                    <?php if (canEdit()): ?>
                     <a href="edit.php?id=<?= $t['id'] ?>" class="btn-icon" title="編集" style="margin-left: auto;">✏️</a>
+                    <?php endif; ?>
                 </div>
             </div>
         <?php endforeach; ?>
@@ -234,7 +248,9 @@ require_once 'header.php';
             <div class="card" style="text-align: center; color: var(--gray-500);">データがありません</div>
         <?php endif; ?>
     </div>
+<?php if (canEdit()): ?>
 </form>
+<?php endif; ?>
 
 <script>
 function updateBulkDeleteButton() {

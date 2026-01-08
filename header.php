@@ -13,7 +13,13 @@
         <div class="header-content">
             <h1>現場トラブル管理</h1>
             <div class="user-info">
-                <span><?= htmlspecialchars($_SESSION['user_name'] ?? $_SESSION['user_email']) ?></span>
+                <span><?= htmlspecialchars($_SESSION['user_name'] ?? $_SESSION['user_email']) ?>
+                <?php
+                $roleLabels = array('admin' => '管理者', 'editor' => '編集者', 'viewer' => '閲覧者');
+                $roleLabel = $roleLabels[$_SESSION['user_role']] ?? '';
+                if ($roleLabel) echo '<span class="role-badge">' . htmlspecialchars($roleLabel) . '</span>';
+                ?>
+                </span>
                 <a href="logout.php" class="logout-btn">ログアウト</a>
             </div>
         </div>
@@ -23,12 +29,14 @@
             <nav class="sidebar-nav">
                 <a href="index.php" class="sidebar-link <?= basename($_SERVER['PHP_SELF']) == 'index.php' ? 'active' : '' ?>">分析</a>
                 <a href="list.php" class="sidebar-link <?= basename($_SERVER['PHP_SELF']) == 'list.php' ? 'active' : '' ?>">一覧</a>
+                <?php if (canEdit()): ?>
                 <a href="report.php" class="sidebar-link <?= basename($_SERVER['PHP_SELF']) == 'report.php' ? 'active' : '' ?>">報告</a>
                 <a href="master.php" class="sidebar-link <?= basename($_SERVER['PHP_SELF']) == 'master.php' ? 'active' : '' ?>">プロジェクト管理</a>
                 <a href="customers.php" class="sidebar-link <?= basename($_SERVER['PHP_SELF']) == 'customers.php' ? 'active' : '' ?>">顧客マスタ</a>
                 <a href="partners.php" class="sidebar-link <?= basename($_SERVER['PHP_SELF']) == 'partners.php' ? 'active' : '' ?>">パートナーマスタ</a>
                 <a href="employees.php" class="sidebar-link <?= basename($_SERVER['PHP_SELF']) == 'employees.php' ? 'active' : '' ?>">従業員マスタ</a>
                 <a href="products.php" class="sidebar-link <?= basename($_SERVER['PHP_SELF']) == 'products.php' ? 'active' : '' ?>">商品マスタ</a>
+                <?php endif; ?>
             </nav>
         </aside>
         <main class="main-content">

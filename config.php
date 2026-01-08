@@ -4,10 +4,48 @@
 // データファイルのパス
 define('DATA_FILE', __DIR__ . '/data.json');
 
-// ログインユーザー情報（メールアドレス => パスワードのハッシュ）
+// ログインユーザー情報
+// role: 'admin' (管理者 - すべて可能), 'editor' (編集者 - データ編集可能), 'viewer' (閲覧者 - 閲覧のみ)
 $USERS = array(
-    // 'user@example.com' => password_hash('your_password', PASSWORD_DEFAULT),
+    // 'admin@example.com' => array(
+    //     'password' => password_hash('admin_password', PASSWORD_DEFAULT),
+    //     'name' => '管理者',
+    //     'role' => 'admin'
+    // ),
+    // 'editor@example.com' => array(
+    //     'password' => password_hash('editor_password', PASSWORD_DEFAULT),
+    //     'name' => '編集者',
+    //     'role' => 'editor'
+    // ),
+    // 'viewer@example.com' => array(
+    //     'password' => password_hash('viewer_password', PASSWORD_DEFAULT),
+    //     'name' => '閲覧者',
+    //     'role' => 'viewer'
+    // ),
 );
+
+// 権限チェック関数
+function hasPermission($requiredRole) {
+    if (!isset($_SESSION['user_role'])) {
+        return false;
+    }
+
+    $roleHierarchy = array('viewer' => 1, 'editor' => 2, 'admin' => 3);
+    $userLevel = $roleHierarchy[$_SESSION['user_role']] ?? 0;
+    $requiredLevel = $roleHierarchy[$requiredRole] ?? 999;
+
+    return $userLevel >= $requiredLevel;
+}
+
+// 現在のユーザーが管理者かチェック
+function isAdmin() {
+    return isset($_SESSION['user_role']) && $_SESSION['user_role'] === 'admin';
+}
+
+// 現在のユーザーが編集可能かチェック
+function canEdit() {
+    return hasPermission('editor');
+}
 
 // 初期データ
 function getInitialData() {

@@ -93,10 +93,11 @@ body {
     min-width: 200px;
     overflow: hidden;
     z-index: 1000;
+    flex-direction: column;
 }
 
 .nav-dropdown:hover .dropdown-menu {
-    display: block;
+    display: flex;
 }
 
 .dropdown-item {

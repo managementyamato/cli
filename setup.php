@@ -1,8 +1,28 @@
 <?php
-require_once 'config.php';
+session_start();
+
+// データファイルのパス
+define('USERS_FILE', __DIR__ . '/users.json');
+
+// ユーザー情報を取得
+function getUsersFromFile() {
+    if (file_exists(USERS_FILE)) {
+        $json = file_get_contents(USERS_FILE);
+        $users = json_decode($json, true);
+        if ($users) {
+            return $users;
+        }
+    }
+    return array();
+}
+
+// ユーザー情報を保存
+function saveUsersToFile($users) {
+    file_put_contents(USERS_FILE, json_encode($users, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT));
+}
 
 // 既にユーザーが存在する場合はログインページへ
-$users = getUsers();
+$users = getUsersFromFile();
 if (!empty($users)) {
     header('Location: login.php');
     exit;
@@ -35,7 +55,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 'role' => 'admin'
             )
         );
-        saveUsers($users);
+        saveUsersToFile($users);
         $success = true;
     }
 }

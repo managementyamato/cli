@@ -3,26 +3,28 @@
 
 // データファイルのパス
 define('DATA_FILE', __DIR__ . '/data.json');
+define('USERS_FILE', __DIR__ . '/users.json');
 
-// ログインユーザー情報
-// role: 'admin' (管理者 - すべて可能), 'editor' (編集者 - データ編集可能), 'viewer' (閲覧者 - 閲覧のみ)
-$USERS = array(
-    // 'admin@example.com' => array(
-    //     'password' => password_hash('admin_password', PASSWORD_DEFAULT),
-    //     'name' => '管理者',
-    //     'role' => 'admin'
-    // ),
-    // 'editor@example.com' => array(
-    //     'password' => password_hash('editor_password', PASSWORD_DEFAULT),
-    //     'name' => '編集者',
-    //     'role' => 'editor'
-    // ),
-    // 'viewer@example.com' => array(
-    //     'password' => password_hash('viewer_password', PASSWORD_DEFAULT),
-    //     'name' => '閲覧者',
-    //     'role' => 'viewer'
-    // ),
-);
+// ログインユーザー情報を取得
+function getUsers() {
+    if (file_exists(USERS_FILE)) {
+        $json = file_get_contents(USERS_FILE);
+        $users = json_decode($json, true);
+        if ($users) {
+            return $users;
+        }
+    }
+    // デフォルトユーザー（初回用）
+    return array();
+}
+
+// ユーザー情報を保存
+function saveUsers($users) {
+    file_put_contents(USERS_FILE, json_encode($users, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT));
+}
+
+// グローバル変数として読み込み（後方互換性のため）
+$USERS = getUsers();
 
 // 権限チェック関数
 function hasPermission($requiredRole) {

@@ -37,6 +37,9 @@
                 <a href="employees.php" class="sidebar-link <?= basename($_SERVER['PHP_SELF']) == 'employees.php' ? 'active' : '' ?>">従業員マスタ</a>
                 <a href="products.php" class="sidebar-link <?= basename($_SERVER['PHP_SELF']) == 'products.php' ? 'active' : '' ?>">商品マスタ</a>
                 <?php endif; ?>
+                <?php if (isAdmin()): ?>
+                <a href="users.php" class="sidebar-link <?= basename($_SERVER['PHP_SELF']) == 'users.php' ? 'active' : '' ?>">ユーザー管理</a>
+                <?php endif; ?>
             </nav>
         </aside>
         <main class="main-content">

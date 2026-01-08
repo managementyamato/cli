@@ -4,9 +4,9 @@
 
 require_once 'config.php';
 
-// ログインページとコールバックページは認証不要
+// ログインページと検証エンドポイントは認証不要
 $currentPage = basename($_SERVER['PHP_SELF']);
-if ($currentPage === 'login.php' || $currentPage === 'callback.php') {
+if ($currentPage === 'login.php' || $currentPage === 'verify_token.php') {
     return;
 }
 
@@ -17,12 +17,5 @@ if (!isset($_SESSION['user_email'])) {
     exit;
 }
 
-// ホワイトリストチェック
-if (!in_array($_SESSION['user_email'], $GLOBALS['WHITELIST'])) {
-    // ホワイトリストに登録されていない場合
-    session_destroy();
-    header('Location: login.php?error=not_authorized');
-    exit;
-}
-
-// ログイン済みかつホワイトリストに登録されている場合は処理を続行
+// Firebase Authenticationで認証されたユーザーはすべてアクセス可能
+// （Firebaseコンソールで管理されたユーザーのみログイン可能）

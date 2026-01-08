@@ -4,15 +4,11 @@
 // データファイルのパス
 define('DATA_FILE', __DIR__ . '/data.json');
 
-// Google OAuth 2.0 設定
-define('GOOGLE_CLIENT_ID', ''); // Google Cloud Consoleで取得したクライアントIDを入力
-define('GOOGLE_CLIENT_SECRET', ''); // Google Cloud Consoleで取得したクライアントシークレットを入力
-define('GOOGLE_REDIRECT_URI', 'http://yoursite.com/callback.php'); // 本番環境のURLに変更
-
-// ホワイトリスト（アクセスを許可するGoogleアカウント）
-$WHITELIST = array(
-    // 'your-email@gmail.com', // ここに許可するメールアドレスを追加
-);
+// Firebase 設定
+// Firebase Console (https://console.firebase.google.com/) のプロジェクト設定から取得
+define('FIREBASE_API_KEY', ''); // Firebase API Key
+define('FIREBASE_AUTH_DOMAIN', ''); // Firebase Auth Domain (例: your-project.firebaseapp.com)
+define('FIREBASE_PROJECT_ID', ''); // Firebase Project ID
 
 // 初期データ
 function getInitialData() {

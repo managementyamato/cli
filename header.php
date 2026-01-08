@@ -1,3 +1,4 @@
+<?php require_once 'auth.php'; ?>
 <!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -11,6 +12,10 @@
     <header class="header">
         <div class="header-content">
             <h1>現場トラブル管理</h1>
+            <div class="user-info">
+                <span><?= htmlspecialchars($_SESSION['user_name'] ?? $_SESSION['user_email']) ?></span>
+                <a href="logout.php" class="logout-btn">ログアウト</a>
+            </div>
         </div>
     </header>
     <div class="layout">

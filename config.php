@@ -4,6 +4,20 @@
 // データファイルのパス
 define('DATA_FILE', __DIR__ . '/data.json');
 
+// Google OAuth 2.0 設定
+// Google Cloud Console で取得したクライアントIDとシークレットを設定してください
+// https://console.cloud.google.com/apis/credentials
+define('GOOGLE_CLIENT_ID', ''); // ここにGoogle Client IDを設定
+define('GOOGLE_CLIENT_SECRET', ''); // ここにGoogle Client Secretを設定
+define('GOOGLE_REDIRECT_URI', 'http://yoursite.com/callback.php'); // 本番環境のURLに変更してください
+
+// ホワイトリスト（アクセスを許可するGoogleアカウントのメールアドレス）
+// 例: array('user@example.com', 'admin@company.com')
+$WHITELIST = array(
+    // ここに許可するメールアドレスを追加してください
+    // 例: 'your-email@gmail.com',
+);
+
 // 初期データ
 function getInitialData() {
     return array(

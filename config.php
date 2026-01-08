@@ -4,12 +4,14 @@
 // データファイルのパス
 define('DATA_FILE', __DIR__ . '/data.json');
 
-// 認証設定（ユーザー名とパスワード）
-// 複数のユーザーを登録可能
-$USERS = array(
-    'admin' => 'password123',  // ユーザー名 => パスワード（変更してください）
-    // 追加のユーザーを登録する場合は下記のように追加
-    // 'user2' => 'password456',
+// Google OAuth 2.0 設定
+define('GOOGLE_CLIENT_ID', ''); // Google Cloud Consoleで取得したクライアントIDを入力
+define('GOOGLE_CLIENT_SECRET', ''); // Google Cloud Consoleで取得したクライアントシークレットを入力
+define('GOOGLE_REDIRECT_URI', 'http://yoursite.com/callback.php'); // 本番環境のURLに変更
+
+// ホワイトリスト（アクセスを許可するGoogleアカウント）
+$WHITELIST = array(
+    // 'your-email@gmail.com', // ここに許可するメールアドレスを追加
 );
 
 // 初期データ

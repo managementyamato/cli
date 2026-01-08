@@ -161,7 +161,7 @@ require_once 'header.php';
     <div class="card">
         <div class="card-header" style="display: flex; justify-content: space-between; align-items: center;">
             <h2 style="margin: 0;">ユーザー管理</h2>
-            <button class="btn btn-primary" onclick="showAddModal()" style="font-size: 0.875rem; padding: 0.5rem 1rem;">新規登録</button>
+            <button type="button" class="btn btn-primary" onclick="showAddModal()" style="font-size: 0.875rem; padding: 0.5rem 1rem;">新規登録</button>
         </div>
         <div class="card-body">
             <div class="table-wrapper">
@@ -189,9 +189,9 @@ require_once 'header.php';
                                 </td>
                                 <td>
                                     <div class="action-buttons">
-                                        <button class="btn-icon" onclick='showEditModal(<?= json_encode($email) ?>, <?= json_encode($user) ?>)' title="編集">✏️</button>
+                                        <button type="button" class="btn-icon" onclick='showEditModal(<?= json_encode($email) ?>, <?= json_encode($user) ?>)' title="編集">✏️</button>
                                         <?php if ($email !== $_SESSION['user_email']): ?>
-                                            <button class="btn-icon" onclick='confirmDelete(<?= json_encode($email) ?>, <?= json_encode($user['name']) ?>)' title="削除">🗑️</button>
+                                            <button type="button" class="btn-icon" onclick='confirmDelete(<?= json_encode($email) ?>, <?= json_encode($user['name']) ?>)' title="削除">🗑️</button>
                                         <?php endif; ?>
                                     </div>
                                 </td>

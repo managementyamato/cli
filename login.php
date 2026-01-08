@@ -165,15 +165,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         <?php if (empty($USERS)): ?>
             <div class="setup-notice">
-                <strong>ユーザー設定が必要です</strong>
-                config.phpの$USERS配列にユーザーを追加してください。
-                <code>$USERS = array(<br>
-    'admin@example.com' => array(<br>
-        'password' => password_hash('password', PASSWORD_DEFAULT),<br>
-        'name' => '管理者',<br>
-        'role' => 'admin'<br>
-    ),<br>
-);</code>
+                <strong>初期セットアップが必要です</strong>
+                システムを使用するには、管理者アカウントを作成する必要があります。
+                <div style="margin-top: 1rem;">
+                    <a href="setup.php" style="display: inline-block; padding: 0.75rem 1.5rem; background: #2563eb; color: white; text-decoration: none; border-radius: 8px; font-weight: 500;">
+                        初期セットアップを開始
+                    </a>
+                </div>
             </div>
         <?php else: ?>
             <form method="POST" action="">

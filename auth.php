@@ -4,9 +4,9 @@
 
 require_once 'config.php';
 
-// ログインページは認証不要
+// ログインページとセットアップページは認証不要
 $currentPage = basename($_SERVER['PHP_SELF']);
-if ($currentPage === 'login.php') {
+if ($currentPage === 'login.php' || $currentPage === 'setup.php') {
     return;
 }
 

@@ -4,11 +4,10 @@
 // データファイルのパス
 define('DATA_FILE', __DIR__ . '/data.json');
 
-// Firebase 設定
-// Firebase Console (https://console.firebase.google.com/) のプロジェクト設定から取得
-define('FIREBASE_API_KEY', ''); // Firebase API Key
-define('FIREBASE_AUTH_DOMAIN', ''); // Firebase Auth Domain (例: your-project.firebaseapp.com)
-define('FIREBASE_PROJECT_ID', ''); // Firebase Project ID
+// ログインユーザー情報（メールアドレス => パスワードのハッシュ）
+$USERS = array(
+    // 'user@example.com' => password_hash('your_password', PASSWORD_DEFAULT),
+);
 
 // 初期データ
 function getInitialData() {

@@ -4,9 +4,9 @@
 
 require_once 'config.php';
 
-// ログインページと検証エンドポイントは認証不要
+// ログインページは認証不要
 $currentPage = basename($_SERVER['PHP_SELF']);
-if ($currentPage === 'login.php' || $currentPage === 'verify_token.php') {
+if ($currentPage === 'login.php') {
     return;
 }
 
@@ -17,5 +17,10 @@ if (!isset($_SESSION['user_email'])) {
     exit;
 }
 
-// Firebase Authenticationで認証されたユーザーはすべてアクセス可能
-// （Firebaseコンソールで管理されたユーザーのみログイン可能）
+// ユーザーリストに存在するかチェック
+if (!isset($GLOBALS['USERS'][$_SESSION['user_email']])) {
+    // ユーザーが削除された場合
+    session_destroy();
+    header('Location: login.php');
+    exit;
+}

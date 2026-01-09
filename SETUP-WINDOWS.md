@@ -2,28 +2,50 @@
 
 このガイドに従って、YA管理一覧システムの開発環境を構築してください。
 
+## 📋 最短セットアップ（3ステップ）
+
+1. **PHP** と **Git** をインストール
+2. コマンドプロンプトで以下を実行:
+   ```bash
+   git clone https://github.com/managementyamato/cli.git
+   cd cli
+   git checkout claude/audit-dependencies-mk0uc1heu3tc90mg-wFx3f
+   php -S localhost:8000
+   ```
+3. ブラウザで **http://localhost:8000** を開く
+
+**注意:** Apache、MySQL、XAMPPのコントロールパネルは不要です！
+
+---
+
 ## 必要なソフトウェアのインストール
 
 ### 1. PHP のインストール
 
-**方法A: XAMPP（推奨 - 初心者向け）**
+**方法A: PHP単体インストール（推奨 - シンプル）**
 
-1. [XAMPP公式サイト](https://www.apachefriends.org/jp/index.html) にアクセス
-2. 「Windows向けXAMPP」をダウンロード（PHP 8.2以上を推奨）
-3. ダウンロードしたファイルを実行してインストール
-4. インストール時は「Apache」と「PHP」にチェック（MySQLは不要）
+1. [PHP公式サイト](https://windows.php.net/download/) にアクセス
+2. 「PHP 8.3」の「VS16 x64 Non Thread Safe」の「Zip」をダウンロード
+3. ダウンロードしたZIPを `C:\php` に解凍
+4. 環境変数PATHに `C:\php` を追加
+   - Windowsキー → 「環境変数」で検索
+   - 「システム環境変数の編集」を開く
+   - 「環境変数」ボタン → 「Path」を選択 → 「編集」
+   - 「新規」→ `C:\php` を追加 → OK
+
+**方法B: XAMPP経由（PHPコマンドのみ使用）**
+
+1. [XAMPP公式サイト](https://www.apachefriends.org/jp/index.html) でダウンロード
+2. インストール（Apache/MySQLは起動不要）
+3. 環境変数PATHに `C:\xampp\php` を追加
+
+**注意:** このプロジェクトではApache/MySQLは使用しません。PHPの組み込みサーバーのみ使用します。
 
 **インストール後の確認:**
 ```bash
 # コマンドプロンプトで実行
 php -v
 ```
-
-**方法B: PHP単体インストール**
-
-1. [PHP公式サイト](https://windows.php.net/download/) から「VS16 x64 Non Thread Safe」をダウンロード
-2. `C:\php` に解凍
-3. 環境変数PATHに `C:\php` を追加
 
 ### 2. Git のインストール
 
@@ -112,17 +134,22 @@ npm run dev
 
 ### PHPコマンドが認識されない
 
-**XAMPPを使用している場合:**
-1. 環境変数PATHに以下を追加:
-   - `C:\xampp\php`
+環境変数PATHにPHPのパスが追加されているか確認してください:
+- PHP単体: `C:\php`
+- XAMPP経由: `C:\xampp\php`
 
-**追加方法:**
+**環境変数の確認方法:**
+```bash
+echo %PATH%
+```
+
+**環境変数の追加方法:**
 1. Windowsキー → 「環境変数」で検索
 2. 「システム環境変数の編集」を開く
 3. 「環境変数」ボタンをクリック
 4. 「Path」を選択 → 「編集」
-5. 「新規」→ `C:\xampp\php` を追加
-6. コマンドプロンプトを再起動
+5. 「新規」→ PHPのパスを追加
+6. コマンドプロンプトを**再起動**（重要）
 
 ### ポート8000が使用中のエラー
 
@@ -158,11 +185,17 @@ php -S localhost:8080
 
 ## よくある質問
 
-**Q: XAMPPのApacheが起動しない**
-A: このプロジェクトではApacheは不要です。PHPの組み込みサーバー（`php -S`）のみ使用します。
+**Q: XAMPPをインストールしたけどApacheやMySQLは起動する必要がある？**
+A: いいえ、不要です。このプロジェクトはPHPコマンドのみ使用します。XAMPPのコントロールパネルは起動しなくてOKです。
+
+**Q: データベースは必要ない？**
+A: 不要です。このシステムはJSONファイルでデータを保存します（data.json, users.json）。
 
 **Q: npm run dev が失敗する**
-A: Node.jsがインストールされているか確認してください。不要であれば `php -S localhost:8000` を使用してください。
+A: Node.jsがインストールされているか確認してください。不要であれば `php -S localhost:8000` のみで十分動作します。
+
+**Q: ファイルを編集しても反映されない**
+A: `php -S localhost:8000` の場合、ブラウザを手動でリロード（F5）してください。自動リロードが欲しい場合は `npm run dev` を使用してください。
 
 **Q: 本番環境へのデプロイ方法は？**
 A: 本番環境（https://cil.yamato-basic.com）にSSH接続し、`git pull` でコードを更新してください。

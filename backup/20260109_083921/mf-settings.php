@@ -301,11 +301,7 @@ require_once 'header.php';
                                     <?php
                                     $baseDir = dirname($_SERVER['PHP_SELF']);
                                     $baseDir = ($baseDir === '/' || $baseDir === '\\') ? '' : $baseDir;
-                                    // HTTPS検出（リバースプロキシ対応）
-                                    $isHttps = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on') ||
-                                               (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] === 'https') ||
-                                               (isset($_SERVER['HTTP_X_FORWARDED_SSL']) && $_SERVER['HTTP_X_FORWARDED_SSL'] === 'on');
-                                    $redirectUriDisplay = ($isHttps ? 'https' : 'http') . '://' . $_SERVER['HTTP_HOST'] . $baseDir . '/mf-callback.php';
+                                    $redirectUriDisplay = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? 'https' : 'http') . '://' . $_SERVER['HTTP_HOST'] . $baseDir . '/mf-callback.php';
                                     ?>
                                     <code style="background: #f3f4f6; padding: 0.25rem 0.5rem; border-radius: 4px; font-size: 0.75rem;">
                                         <?= htmlspecialchars($redirectUriDisplay) ?>

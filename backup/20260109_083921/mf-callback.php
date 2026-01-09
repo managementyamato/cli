@@ -46,13 +46,7 @@ if (isset($_GET['code'])) {
     // 認証コードをアクセストークンに交換
     $baseDir = dirname($_SERVER['PHP_SELF']);
     $baseDir = ($baseDir === '/' || $baseDir === '\\') ? '' : $baseDir;
-
-    // HTTPS検出（リバースプロキシ対応）
-    $isHttps = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on') ||
-               (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] === 'https') ||
-               (isset($_SERVER['HTTP_X_FORWARDED_SSL']) && $_SERVER['HTTP_X_FORWARDED_SSL'] === 'on');
-
-    $redirectUri = ($isHttps ? 'https' : 'http')
+    $redirectUri = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? 'https' : 'http')
                    . '://' . $_SERVER['HTTP_HOST']
                    . $baseDir . '/mf-callback.php';
 
@@ -111,13 +105,7 @@ if (isset($_GET['action']) && $_GET['action'] === 'start') {
     // リダイレクトURI
     $baseDir = dirname($_SERVER['PHP_SELF']);
     $baseDir = ($baseDir === '/' || $baseDir === '\\') ? '' : $baseDir;
-
-    // HTTPS検出（リバースプロキシ対応）
-    $isHttps = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on') ||
-               (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] === 'https') ||
-               (isset($_SERVER['HTTP_X_FORWARDED_SSL']) && $_SERVER['HTTP_X_FORWARDED_SSL'] === 'on');
-
-    $redirectUri = ($isHttps ? 'https' : 'http')
+    $redirectUri = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? 'https' : 'http')
                    . '://' . $_SERVER['HTTP_HOST']
                    . $baseDir . '/mf-callback.php';
 

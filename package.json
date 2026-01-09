@@ -1,7 +1,7 @@
 {
   "name": "trouble-management",
   "version": "1.0.0",
-  "description": "現場トラブル管理システム",
+  "description": "YA管理一覧システム",
   "scripts": {
     "dev": "concurrently \"npm run server\" \"npm run watch\"",
     "server": "php -S localhost:8000",

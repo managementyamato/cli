@@ -37,7 +37,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="robots" content="noindex, nofollow">
-    <title>ログイン - 現場トラブル管理システム</title>
+    <title>ログイン - YA管理一覧</title>
     <style>
         * {
             margin: 0;
@@ -47,7 +47,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Hiragino Sans', sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #5a6c7d 0%, #3d4551 100%);
             min-height: 100vh;
             display: flex;
             align-items: center;
@@ -56,34 +56,37 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         .login-container {
             background: white;
-            border-radius: 16px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            border-radius: 12px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.15);
             padding: 3rem;
             max-width: 400px;
             width: 90%;
         }
 
         .logo {
-            font-size: 2rem;
-            font-weight: bold;
-            color: #2563eb;
+            font-size: 1.75rem;
+            font-weight: 600;
+            color: #5a6c7d;
             margin-bottom: 0.5rem;
             text-align: center;
+            letter-spacing: 0.5px;
         }
 
         .subtitle {
-            color: #6b7280;
+            color: #6b7684;
             margin-bottom: 2rem;
             text-align: center;
+            font-weight: 400;
         }
 
         .error-message {
-            background: #fee2e2;
-            color: #991b1b;
+            background: #fef0ef;
+            color: #a84d42;
             padding: 1rem;
             border-radius: 8px;
             margin-bottom: 1.5rem;
             font-size: 0.875rem;
+            border-left: 3px solid #c87b6f;
         }
 
         .form-group {
@@ -93,31 +96,32 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         .form-group label {
             display: block;
             margin-bottom: 0.5rem;
-            color: #374151;
+            color: #3d4551;
             font-weight: 500;
         }
 
         .form-group input {
             width: 100%;
             padding: 0.75rem;
-            border: 2px solid #e5e7eb;
-            border-radius: 8px;
+            border: 1px solid #d4d7db;
+            border-radius: 6px;
             font-size: 1rem;
-            transition: border-color 0.2s;
+            transition: all 0.2s;
         }
 
         .form-group input:focus {
             outline: none;
-            border-color: #2563eb;
+            border-color: #5a6c7d;
+            box-shadow: 0 0 0 3px rgba(90, 108, 125, 0.1);
         }
 
         .login-btn {
             width: 100%;
-            padding: 0.75rem;
-            background: #2563eb;
+            padding: 0.875rem;
+            background: #5a6c7d;
             color: white;
             border: none;
-            border-radius: 8px;
+            border-radius: 6px;
             font-size: 1rem;
             font-weight: 500;
             cursor: pointer;
@@ -125,16 +129,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
 
         .login-btn:hover {
-            background: #1d4ed8;
+            background: #475563;
         }
 
         .setup-notice {
             margin-top: 2rem;
             padding: 1rem;
-            background: #fef3c7;
+            background: #fff8e6;
             border-radius: 8px;
             font-size: 0.875rem;
-            color: #92400e;
+            color: #8b6914;
+            border-left: 3px solid #c5956f;
         }
 
         .setup-notice strong {
@@ -156,7 +161,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 </head>
 <body>
     <div class="login-container">
-        <div class="logo">現場トラブル管理</div>
+        <div class="logo">YA管理一覧</div>
         <div class="subtitle">ログイン</div>
 
         <?php if ($error): ?>

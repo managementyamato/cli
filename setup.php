@@ -51,7 +51,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="robots" content="noindex, nofollow">
-    <title>初期セットアップ - 現場トラブル管理システム</title>
+    <title>初期セットアップ - YA管理一覧</title>
     <style>
         * {
             margin: 0;
@@ -218,7 +218,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 </head>
 <body>
     <div class="setup-container">
-        <div class="logo">現場トラブル管理</div>
+        <div class="logo">YA管理一覧</div>
         <div class="subtitle">初期セットアップ</div>
 
         <?php if ($success): ?>

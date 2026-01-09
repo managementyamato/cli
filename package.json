@@ -1,0 +1,12 @@
+{
+  "name": "trouble-management",
+  "version": "1.0.0",
+  "description": "現場トラブル管理システム",
+  "scripts": {
+    "dev": "php -S localhost:8000",
+    "dev:network": "php -S 0.0.0.0:8000",
+    "preview": "npm run dev"
+  },
+  "author": "",
+  "license": "ISC"
+}

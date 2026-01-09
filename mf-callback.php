@@ -53,16 +53,20 @@ if (isset($_GET['code'])) {
     $postData = array(
         'grant_type' => 'authorization_code',
         'code' => $code,
-        'redirect_uri' => $redirectUri,
-        'client_id' => $config['client_id'],
-        'client_secret' => $config['client_secret']
+        'redirect_uri' => $redirectUri
     );
+
+    // Basic認証用のヘッダーを生成
+    $authHeader = 'Authorization: Basic ' . base64_encode($config['client_id'] . ':' . $config['client_secret']);
 
     $ch = curl_init(MF_TOKEN_URL);
     curl_setopt($ch, CURLOPT_POST, true);
     curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($postData));
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-    curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/x-www-form-urlencoded'));
+    curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+        'Content-Type: application/x-www-form-urlencoded',
+        $authHeader
+    ));
 
     $response = curl_exec($ch);
     $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);

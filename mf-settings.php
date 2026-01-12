@@ -25,7 +25,6 @@ if (isset($_GET['error'])) {
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['save_credentials'])) {
     $clientId = trim($_POST['client_id'] ?? '');
     $clientSecret = trim($_POST['client_secret'] ?? '');
-    $officeId = trim($_POST['office_id'] ?? '');
 
     if (empty($clientId) || empty($clientSecret)) {
         $error = 'Client IDとClient Secretを入力してください';
@@ -40,7 +39,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['save_credentials'])) 
         // 認証情報を保存
         $config['client_id'] = $clientId;
         $config['client_secret'] = $clientSecret;
-        $config['office_id'] = $officeId;
         $config['updated_at'] = date('Y-m-d H:i:s');
 
         file_put_contents($configFile, json_encode($config, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT));
@@ -51,7 +49,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['save_credentials'])) 
 // 旧形式：アクセストークン直接入力（非推奨）
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['save_settings'])) {
     $accessToken = trim($_POST['access_token'] ?? '');
-    $officeId = trim($_POST['office_id'] ?? '');
 
     if (empty($accessToken)) {
         $error = 'アクセストークンを入力してください';
@@ -61,7 +58,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['save_settings'])) {
         $testResult = $client->testConnection();
 
         if ($testResult['success']) {
-            MFApiClient::saveConfig($accessToken, $officeId);
+            MFApiClient::saveConfig($accessToken);
             $message = '設定を保存し、接続テストに成功しました';
         } else {
             $error = '接続テストに失敗しました: ' . $testResult['message'];
@@ -313,21 +310,6 @@ require_once 'header.php';
                                 </li>
                                 <li>「作成」をクリックしてClient IDとClient Secretを取得</li>
                             </ol>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="office_id">事業所ID（オプション）</label>
-                        <input
-                            type="text"
-                            class="form-input"
-                            id="office_id"
-                            name="office_id"
-                            value="<?= htmlspecialchars($currentConfig['office_id'] ?? '') ?>"
-                            placeholder="複数事業所がある場合に指定"
-                        >
-                        <div class="help-text">
-                            複数の事業所がある場合、特定の事業所のデータのみ取得できます
                         </div>
                     </div>
 

@@ -10,9 +10,9 @@ if (!isAdmin()) {
     exit;
 }
 
-// OAuth2エンドポイント
-define('MF_AUTH_URL', 'https://invoice.moneyforward.com/oauth/authorize');
-define('MF_TOKEN_URL', 'https://invoice.moneyforward.com/oauth/token');
+// OAuth2エンドポイント（MoneyForward Business API）
+define('MF_AUTH_URL', 'https://api.biz.moneyforward.com/authorize');
+define('MF_TOKEN_URL', 'https://api.biz.moneyforward.com/token');
 
 /**
  * OAuth2設定を読み込み
@@ -125,8 +125,8 @@ if (isset($_GET['action']) && $_GET['action'] === 'start') {
     $authParams = array(
         'client_id' => $config['client_id'],
         'redirect_uri' => $redirectUri,
-        'response_type' => 'code'
-        // MF Invoice APIではscopeパラメータは不要
+        'response_type' => 'code',
+        'scope' => 'mfc/invoice/data.write'
     );
 
     $authUrl = MF_AUTH_URL . '?' . http_build_query($authParams);

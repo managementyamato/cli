@@ -106,10 +106,10 @@ require_once 'header.php';
 <?php if (canEdit()): ?>
 <div style="margin-bottom: 1rem; display: flex; gap: 0.5rem; flex-wrap: wrap;">
     <a href="import-troubles.php" class="btn btn-secondary btn-sm">
-        📤 CSVインポート
+        CSVインポート
     </a>
     <a href="download-template.php" class="btn btn-secondary btn-sm">
-        📥 テンプレートDL
+        テンプレートDL
     </a>
 </div>
 <?php endif; ?>

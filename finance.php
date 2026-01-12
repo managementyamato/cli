@@ -306,9 +306,9 @@ if (isset($data['finance']) && !empty($data['finance'])) {
                                 </td>
                                 <td>
                                     <div class="action-buttons">
-                                        <button type="button" class="btn-icon" onclick='showFinanceModal(<?= json_encode($project) ?>, <?= json_encode($finance) ?>)' title="財務データ編集">📊</button>
+                                        <button type="button" class="btn-icon" onclick='showFinanceModal(<?= json_encode($project) ?>, <?= json_encode($finance) ?>)' title="財務データ編集">編集</button>
                                         <?php if ($finance): ?>
-                                            <button type="button" class="btn-icon" onclick='confirmDeleteFinance(<?= json_encode($project['id']) ?>, <?= json_encode($project['name']) ?>)' title="削除">🗑️</button>
+                                            <button type="button" class="btn-icon" onclick='confirmDeleteFinance(<?= json_encode($project['id']) ?>, <?= json_encode($project['name']) ?>)' title="削除">削除</button>
                                         <?php endif; ?>
                                     </div>
                                 </td>

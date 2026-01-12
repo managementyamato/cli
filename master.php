@@ -220,7 +220,7 @@ require_once 'header.php';
                             <td>
                                 <form method="POST" style="display: inline;" onsubmit="return confirm('削除しますか？');">
                                     <input type="hidden" name="delete_pj" value="<?= htmlspecialchars($pj['id']) ?>">
-                                    <button type="submit" class="btn-icon" title="削除">🗑️</button>
+                                    <button type="submit" class="btn-icon" title="削除">削除</button>
                                 </form>
                             </td>
                         </tr>

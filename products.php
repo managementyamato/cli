@@ -340,7 +340,7 @@ require_once 'header.php';
 </style>
 
 <div class="master-container">
-    <h1>📦 カテゴリマスタ管理</h1>
+    <h1>カテゴリマスタ管理</h1>
 
     <?php if ($message): ?>
         <div class="alert alert-<?= $messageType ?>" style="padding: 1rem; margin-bottom: 1rem; border-radius: 4px; background: <?= $messageType === 'success' ? '#c6f6d5' : '#fed7d7' ?>; color: <?= $messageType === 'success' ? '#22543d' : '#742a2a' ?>;">
@@ -364,9 +364,9 @@ require_once 'header.php';
                         <span class="category-name"><?= htmlspecialchars($category['categoryName']) ?></span>
                         <div class="category-actions">
                             <button class="btn btn-sm btn-success" onclick='openAddProductModal(<?= $category['id'] ?>, "<?= htmlspecialchars($category['categoryName']) ?>")'>+</button>
-                            <button class="btn btn-sm btn-edit" onclick='openEditCategoryModal(<?= json_encode($category) ?>)'>✏️</button>
+                            <button class="btn btn-sm btn-edit" onclick='openEditCategoryModal(<?= json_encode($category) ?>)'>編集</button>
                             <form method="POST" style="display: inline;" onsubmit="return confirm('このカテゴリと配下の商品を全て削除してもよろしいですか？');">
-                                <button type="submit" name="delete_category" value="<?= $category['id'] ?>" class="btn btn-sm btn-danger">🗑️</button>
+                                <button type="submit" name="delete_category" value="<?= $category['id'] ?>" class="btn btn-sm btn-danger">削除</button>
                             </form>
                         </div>
                     </div>
@@ -376,11 +376,11 @@ require_once 'header.php';
                             <?php foreach ($category['products'] as $index => $product): ?>
                                 <div class="product-item">
                                     <span style="flex: 1;">• <?= htmlspecialchars($product['name']) ?></span>
-                                    <button class="btn btn-sm btn-edit" onclick='openEditProductModal(<?= $category['id'] ?>, <?= $index ?>, "<?= htmlspecialchars($product['name']) ?>")'>✏️</button>
+                                    <button class="btn btn-sm btn-edit" onclick='openEditProductModal(<?= $category['id'] ?>, <?= $index ?>, "<?= htmlspecialchars($product['name']) ?>")'>編集</button>
                                     <form method="POST" style="display: inline;" onsubmit="return confirm('この商品を削除してもよろしいですか？');">
                                         <input type="hidden" name="category_id" value="<?= $category['id'] ?>">
                                         <input type="hidden" name="product_index" value="<?= $index ?>">
-                                        <button type="submit" name="delete_product" class="btn btn-sm btn-danger">🗑️</button>
+                                        <button type="submit" name="delete_product" class="btn btn-sm btn-danger">削除</button>
                                     </form>
                                 </div>
                             <?php endforeach; ?>

@@ -193,7 +193,7 @@ require_once 'header.php';
     <?php endif; ?>
 
     <div style="background: var(--gray-50); padding: 1rem; border-radius: 8px; margin-bottom: 1.5rem;">
-        <h3 style="margin-top: 0; font-size: 1rem; color: var(--gray-700);">📋 インポート手順</h3>
+        <h3 style="margin-top: 0; font-size: 1rem; color: var(--gray-700);">インポート手順</h3>
         <ol style="margin: 0.5rem 0 0 1.5rem; padding: 0; color: var(--gray-600); font-size: 0.875rem;">
             <li>CSVテンプレートをダウンロード</li>
             <li>Excelやスプレッドシートでデータを入力</li>
@@ -202,7 +202,7 @@ require_once 'header.php';
         </ol>
         <div style="margin-top: 1rem;">
             <a href="download-template.php" class="btn btn-secondary">
-                📥 CSVテンプレートをダウンロード
+                CSVテンプレートをダウンロード
             </a>
         </div>
     </div>
@@ -217,7 +217,7 @@ require_once 'header.php';
         </div>
 
         <div style="background: var(--gray-50); padding: 1rem; border-radius: 8px; margin-bottom: 1rem;">
-            <h4 style="margin-top: 0; font-size: 0.875rem; color: var(--gray-700);">⚠️ 注意事項</h4>
+            <h4 style="margin-top: 0; font-size: 0.875rem; color: var(--gray-700);">注意事項</h4>
             <ul style="margin: 0.5rem 0 0 1.5rem; padding: 0; color: var(--gray-600); font-size: 0.875rem;">
                 <li>必須項目: PJ番号、現場名、機器種別、トラブル内容</li>
                 <li>機器種別: モニたろう、モニすけ、モニまる、モニんじゃ、ゲンバルジャー、その他</li>
@@ -228,7 +228,7 @@ require_once 'header.php';
         </div>
 
         <button type="submit" class="btn btn-primary btn-block">
-            📤 CSVをインポート
+            CSVをインポート
         </button>
     </form>
 

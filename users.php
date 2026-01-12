@@ -189,9 +189,9 @@ require_once 'header.php';
                                 </td>
                                 <td>
                                     <div class="action-buttons">
-                                        <button type="button" class="btn-icon" onclick='showEditModal(<?= json_encode($email) ?>, <?= json_encode($user) ?>)' title="編集">✏️</button>
+                                        <button type="button" class="btn-icon" onclick='showEditModal(<?= json_encode($email) ?>, <?= json_encode($user) ?>)' title="編集">編集</button>
                                         <?php if ($email !== $_SESSION['user_email']): ?>
-                                            <button type="button" class="btn-icon" onclick='confirmDelete(<?= json_encode($email) ?>, <?= json_encode($user['name']) ?>)' title="削除">🗑️</button>
+                                            <button type="button" class="btn-icon" onclick='confirmDelete(<?= json_encode($email) ?>, <?= json_encode($user['name']) ?>)' title="削除">削除</button>
                                         <?php endif; ?>
                                     </div>
                                 </td>

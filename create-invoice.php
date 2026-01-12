@@ -277,7 +277,7 @@ require_once 'header.php';
                         <td><input type="number" class="form-input item-quantity" name="item_quantity[]" value="1" step="0.01" required></td>
                         <td><input type="number" class="form-input item-price" name="item_price[]" value="0" step="0.01" required></td>
                         <td class="item-amount">¥0</td>
-                        <td><button type="button" class="btn-icon" onclick="removeItem(this)" title="削除">🗑️</button></td>
+                        <td><button type="button" class="btn-icon" onclick="removeItem(this)" title="削除">削除</button></td>
                     </tr>
                 </tbody>
                 <tfoot>
@@ -329,7 +329,7 @@ function addItem() {
         <td><input type="number" class="form-input item-quantity" name="item_quantity[]" value="1" step="0.01" required></td>
         <td><input type="number" class="form-input item-price" name="item_price[]" value="0" step="0.01" required></td>
         <td class="item-amount">¥0</td>
-        <td><button type="button" class="btn-icon" onclick="removeItem(this)" title="削除">🗑️</button></td>
+        <td><button type="button" class="btn-icon" onclick="removeItem(this)" title="削除">削除</button></td>
     `;
     tbody.appendChild(newRow);
 

@@ -93,7 +93,19 @@ if (isset($_GET['code'])) {
         exit;
     } else {
         $errorData = json_decode($response, true);
+
+        // デバッグ情報
+        error_log("MF Token Error - HTTP Code: $httpCode");
+        error_log("MF Token Error - Response: $response");
+
         $errorMsg = isset($errorData['error_description']) ? $errorData['error_description'] : 'トークン取得に失敗しました';
+        $errorMsg .= " (HTTPコード: $httpCode)";
+
+        // デバッグ用: エラーの詳細を表示
+        if ($errorData) {
+            $errorMsg .= " - " . json_encode($errorData, JSON_UNESCAPED_UNICODE);
+        }
+
         header('Location: mf-settings.php?error=' . urlencode($errorMsg));
         exit;
     }

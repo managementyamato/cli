@@ -102,6 +102,18 @@ require_once 'header.php';
     </form>
 </div>
 
+<!-- データ管理ボタン（編集権限がある場合のみ表示） -->
+<?php if (canEdit()): ?>
+<div style="margin-bottom: 1rem; display: flex; gap: 0.5rem; flex-wrap: wrap;">
+    <a href="import-troubles.php" class="btn btn-secondary btn-sm">
+        📤 CSVインポート
+    </a>
+    <a href="download-template.php" class="btn btn-secondary btn-sm">
+        📥 テンプレートDL
+    </a>
+</div>
+<?php endif; ?>
+
 <!-- 一括削除フォーム（編集権限がある場合のみ表示） -->
 <?php if (canEdit()): ?>
 <form method="POST" id="bulk-delete-form">

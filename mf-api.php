@@ -203,10 +203,18 @@ class MFApiClient {
     /**
      * 請求書一覧を取得
      */
-    public function getInvoices($from = null, $to = null, $page = 1) {
+    public function getInvoices($from = null, $to = null, $page = 1, $rangeKey = 'billing_date') {
         $params = array('page' => $page);
-        if ($from) $params['from'] = $from;
-        if ($to) $params['to'] = $to;
+        if ($from) {
+            $params['from'] = $from;
+            $params['range_key'] = $rangeKey;
+        }
+        if ($to) {
+            $params['to'] = $to;
+            if (!isset($params['range_key'])) {
+                $params['range_key'] = $rangeKey;
+            }
+        }
 
         $query = http_build_query($params);
         return $this->request('GET', '/billings?' . $query);
@@ -215,10 +223,18 @@ class MFApiClient {
     /**
      * 見積書一覧を取得
      */
-    public function getQuotes($from = null, $to = null, $page = 1) {
+    public function getQuotes($from = null, $to = null, $page = 1, $rangeKey = 'quote_date') {
         $params = array('page' => $page);
-        if ($from) $params['from'] = $from;
-        if ($to) $params['to'] = $to;
+        if ($from) {
+            $params['from'] = $from;
+            $params['range_key'] = $rangeKey;
+        }
+        if ($to) {
+            $params['to'] = $to;
+            if (!isset($params['range_key'])) {
+                $params['range_key'] = $rangeKey;
+            }
+        }
 
         $query = http_build_query($params);
         return $this->request('GET', '/quotes?' . $query);

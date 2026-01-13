@@ -38,27 +38,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['save_oauth_settings']
     }
 }
 
-// 従来のアクセストークン直接入力方式の設定保存
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['save_token_settings'])) {
-    $accessToken = trim($_POST['access_token'] ?? '');
-    $officeId = trim($_POST['office_id'] ?? '');
-
-    if (empty($accessToken)) {
-        $error = 'アクセストークンを入力してください';
-    } else {
-        // 接続テスト
-        $client = new MFApiClient($accessToken);
-        $testResult = $client->testConnection();
-
-        if ($testResult['success']) {
-            MFApiClient::saveConfig($accessToken, $officeId);
-            $message = '設定を保存し、接続テストに成功しました';
-        } else {
-            $error = '接続テストに失敗しました: ' . $testResult['message'];
-        }
-    }
-}
-
 // 手動同期
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['sync_now'])) {
     if (!MFApiClient::isConfigured()) {
@@ -300,56 +279,6 @@ require_once 'header.php';
                     <button type="submit" name="save_oauth_settings" class="btn btn-primary">
                         OAuth認証を開始
                     </button>
-                </div>
-            </form>
-
-            <div style="border-top: 2px dashed var(--gray-300); margin: 2rem 0; padding-top: 2rem;">
-                <p style="text-align: center; color: var(--gray-500); font-size: 0.875rem; margin-bottom: 1rem;">または</p>
-            </div>
-
-            <!-- アクセストークン直接入力方式 -->
-            <form method="POST" action="">
-                <div class="form-section">
-                    <h3>アクセストークン直接入力</h3>
-                    <p style="color: var(--gray-600); font-size: 0.875rem; margin-bottom: 1rem;">
-                        既にアクセストークンをお持ちの場合はこちらを使用できます。
-                    </p>
-
-                    <div class="form-group">
-                        <label for="access_token">アクセストークン *</label>
-                        <input
-                            type="text"
-                            class="form-input"
-                            id="access_token"
-                            name="access_token"
-                            value="<?= htmlspecialchars($currentConfig['access_token'] ?? '') ?>"
-                            placeholder="MFクラウド請求書で発行したアクセストークンを入力"
-                            required
-                        >
-                    </div>
-
-                    <div class="form-group">
-                        <label for="office_id">事業所ID（オプション）</label>
-                        <input
-                            type="text"
-                            class="form-input"
-                            id="office_id"
-                            name="office_id"
-                            value="<?= htmlspecialchars($currentConfig['office_id'] ?? '') ?>"
-                            placeholder="複数事業所がある場合に指定"
-                        >
-                    </div>
-
-                    <div style="display: flex; gap: 1rem;">
-                        <button type="submit" name="save_token_settings" class="btn btn-secondary">
-                            設定を保存（接続テスト実行）
-                        </button>
-                        <?php if ($isConfigured): ?>
-                            <button type="submit" name="sync_now" class="btn btn-secondary">
-                                今すぐ同期
-                            </button>
-                        <?php endif; ?>
-                    </div>
                 </div>
             </form>
 

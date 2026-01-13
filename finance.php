@@ -22,11 +22,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['sync_from_mf'])) {
     try {
         $client = new MFApiClient();
 
-        // 過去3ヶ月分のデータを取得
+        // 過去3ヶ月分のデータを全ページ取得
         $from = date('Y-m-d', strtotime('-3 months'));
         $to = date('Y-m-d');
 
-        $invoices = $client->getInvoices($from, $to);
+        $invoices = $client->getAllInvoices($from, $to);
 
         // 請求書データをmf_invoices配列に保存
         if (!isset($data['mf_invoices'])) {

@@ -116,7 +116,7 @@ class MFApiClient {
     }
 
     /**
-     * 請求書一覧を取得
+     * 請求書一覧を取得（単一ページ）
      */
     public function getInvoices($from = null, $to = null, $page = 1) {
         $params = array('page' => $page);
@@ -125,6 +125,47 @@ class MFApiClient {
 
         $query = http_build_query($params);
         return $this->request('GET', '/billings?' . $query);
+    }
+
+    /**
+     * 請求書一覧を全ページ取得
+     */
+    public function getAllInvoices($from = null, $to = null) {
+        $allInvoices = array();
+        $page = 1;
+        $hasMore = true;
+
+        while ($hasMore) {
+            $response = $this->getInvoices($from, $to, $page);
+
+            // 請求書データを追加
+            if (isset($response['billings']) && is_array($response['billings'])) {
+                $allInvoices = array_merge($allInvoices, $response['billings']);
+            }
+
+            // 次のページがあるか確認
+            if (isset($response['meta'])) {
+                $meta = $response['meta'];
+                $currentPage = $meta['current_page'] ?? $page;
+                $totalPages = $meta['total_pages'] ?? 1;
+
+                if ($currentPage >= $totalPages) {
+                    $hasMore = false;
+                } else {
+                    $page++;
+                }
+            } else {
+                // metaがない場合は1ページのみと判断
+                $hasMore = false;
+            }
+
+            // 無限ループ防止（最大100ページ）
+            if ($page > 100) {
+                break;
+            }
+        }
+
+        return $allInvoices;
     }
 
     /**

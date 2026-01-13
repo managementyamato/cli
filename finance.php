@@ -11,7 +11,7 @@ if (!canEdit()) {
 // データ読み込み
 $data = getData();
 
-// MFから同期
+// MFから同期（請求書データを保存）
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['sync_from_mf'])) {
     if (!MFApiClient::isConfigured()) {
         header('Location: finance.php?error=mf_not_configured');
@@ -26,38 +26,34 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['sync_from_mf'])) {
         $to = date('Y-m-d');
 
         $invoices = $client->getInvoices($from, $to);
-        $financeData = $client->extractFinanceData($invoices);
 
-        // プロジェクトと照合して財務データを更新
-        $syncedCount = 0;
-        foreach ($financeData as $mfData) {
-            // プロジェクト名で照合
-            $projectName = $mfData['project_name'];
-            foreach ($data['projects'] as $project) {
-                if (stripos($project['name'], $projectName) !== false || stripos($projectName, $project['name']) !== false) {
-                    // 既存の財務データがあれば保持
-                    $existingFinance = $data['finance'][$project['id']] ?? array();
-
-                    $data['finance'][$project['id']] = array(
-                        'revenue' => $mfData['revenue'],
-                        'cost' => $existingFinance['cost'] ?? 0,
-                        'labor_cost' => $existingFinance['labor_cost'] ?? 0,
-                        'material_cost' => $existingFinance['material_cost'] ?? 0,
-                        'other_cost' => $existingFinance['other_cost'] ?? 0,
-                        'gross_profit' => $mfData['revenue'] - ($existingFinance['cost'] ?? 0),
-                        'net_profit' => $mfData['revenue'] - (($existingFinance['cost'] ?? 0) + ($existingFinance['labor_cost'] ?? 0) + ($existingFinance['material_cost'] ?? 0) + ($existingFinance['other_cost'] ?? 0)),
-                        'notes' => ($existingFinance['notes'] ?? '') . "\n[MF同期] " . $mfData['date'] . ' - ' . $mfData['partner'],
-                        'updated_at' => date('Y-m-d H:i:s'),
-                        'mf_synced' => true
-                    );
-                    $syncedCount++;
-                    break;
-                }
-            }
+        // 請求書データをmf_invoices配列に保存
+        if (!isset($data['mf_invoices'])) {
+            $data['mf_invoices'] = array();
         }
 
+        // 既存のデータをクリアして新しいデータで更新
+        $data['mf_invoices'] = array();
+
+        foreach ($invoices as $invoice) {
+            $data['mf_invoices'][] = array(
+                'id' => $invoice['id'] ?? '',
+                'billing_number' => $invoice['billing_number'] ?? '',
+                'title' => $invoice['title'] ?? '',
+                'total_price' => $invoice['total_amount'] ?? 0,
+                'billing_date' => $invoice['billing_date'] ?? '',
+                'partner_name' => $invoice['partner_name'] ?? '',
+                'status' => $invoice['status'] ?? '',
+                'memo' => $invoice['memo'] ?? '',
+                'created_at' => date('Y-m-d H:i:s')
+            );
+        }
+
+        // 同期時刻を記録
+        $data['mf_sync_timestamp'] = date('Y-m-d H:i:s');
+
         saveData($data);
-        header('Location: finance.php?synced=' . $syncedCount);
+        header('Location: finance.php?synced=' . count($invoices));
         exit;
     } catch (Exception $e) {
         header('Location: finance.php?error=' . urlencode($e->getMessage()));
@@ -250,6 +246,14 @@ if (isset($data['finance']) && !empty($data['finance'])) {
                         MFから同期
                     </button>
                 </form>
+                <?php if (isset($data['mf_invoices']) && !empty($data['mf_invoices'])): ?>
+                    <a href="mf-mapping.php" class="btn btn-success" style="font-size: 0.875rem; padding: 0.5rem 1rem; text-decoration: none;">
+                        手動マッピング (<?= count($data['mf_invoices']) ?>件)
+                    </a>
+                <?php endif; ?>
+                <a href="mf-debug.php" class="btn btn-secondary" style="font-size: 0.875rem; padding: 0.5rem 1rem; text-decoration: none;">
+                    デバッグ
+                </a>
             <?php endif; ?>
             <?php if (isAdmin()): ?>
                 <a href="mf-settings.php" class="btn btn-secondary" style="font-size: 0.875rem; padding: 0.5rem 1rem; text-decoration: none;">

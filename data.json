@@ -3335,5 +3335,1050 @@
             "name": "足本"
         }
     ],
-    "troubles": []
+    "troubles": [],
+    "settings": {
+        "spreadsheet_url": ""
+    },
+    "customers": [],
+    "partners": [],
+    "employees": [],
+    "productCategories": [],
+    "mf_sync_history": [
+        {
+            "synced_at": "2026-01-13 02:18:00",
+            "records_count": 0,
+            "from": "2025-10-13",
+            "to": "2026-01-13"
+        }
+    ],
+    "mf_invoices": {
+        "ecAaUBjEjZ6P3b52xeHfaA": {
+            "id": "ecAaUBjEjZ6P3b52xeHfaA",
+            "billing_number": "13316",
+            "title": "都北産業株式会社様 大淀川河川掘削　屋外用液晶モニター  32インチ横型　レンタル",
+            "total_price": 36960,
+            "billing_date": "2025\/12\/31",
+            "partner_name": "株式会社ナヴィック",
+            "status": "未設定",
+            "synced_at": "2026-01-13 02:24:31"
+        },
+        "uKMoZEQD_R9harUGnbe3Lg": {
+            "id": "uKMoZEQD_R9harUGnbe3Lg",
+            "billing_number": "13315",
+            "title": "清水建設様 野村ダム施設改良工事 屋外用液晶サイネージ65ｲﾝﾁ横型+ゲンバルジャー",
+            "total_price": 14850,
+            "billing_date": "2025\/12\/31",
+            "partner_name": "株式会社エスシー・マシーナリ",
+            "status": "未設定",
+            "synced_at": "2026-01-13 02:24:31"
+        },
+        "e9KL2csqpqloHc-1y0_95A": {
+            "id": "e9KL2csqpqloHc-1y0_95A",
+            "billing_number": "13314",
+            "title": "北仲通北地区　100インチLEDビジョン\/P3",
+            "total_price": 101640,
+            "billing_date": "2025\/12\/28",
+            "partner_name": "大興物産株式会社",
+            "status": "未設定",
+            "synced_at": "2026-01-13 02:24:31"
+        },
+        "2bPz0za73gRUPQD2504NvQ": {
+            "id": "2bPz0za73gRUPQD2504NvQ",
+            "billing_number": "13312",
+            "title": "ピーエスコンストラクション様　豊前市立豊前中学校整備工事 「モニたろう」90インチ(1920X1280)　基本セット　レンタル",
+            "total_price": 154580,
+            "billing_date": "2025\/12\/31",
+            "partner_name": "セフテック株式会社",
+            "status": "未設定",
+            "synced_at": "2026-01-13 02:24:31"
+        },
+        "AzhLD2biVG1YlYiOyKGaTg": {
+            "id": "AzhLD2biVG1YlYiOyKGaTg",
+            "billing_number": "13311",
+            "title": "西松建設\/岡山里庄出張所",
+            "total_price": 269500,
+            "billing_date": "2025\/12\/31",
+            "partner_name": "株式会社フレックス",
+            "status": "未設定",
+            "synced_at": "2026-01-13 02:24:31"
+        },
+        "QbekC_4slD-TPuUaSbaOIQ": {
+            "id": "QbekC_4slD-TPuUaSbaOIQ",
+            "billing_number": "13310",
+            "title": "東急建設㈱／R5新大宮上尾道路宮前地区橋梁基礎その2工事",
+            "total_price": 29150,
+            "billing_date": "2025\/12\/31",
+            "partner_name": "日本仮設株式会社",
+            "status": "未設定",
+            "synced_at": "2026-01-13 02:24:31"
+        },
+        "eSZZvSZiBAvVh1kHL9ktbg": {
+            "id": "eSZZvSZiBAvVh1kHL9ktbg",
+            "billing_number": "13309",
+            "title": "KOBASHI  HOLDINGSビル新築工事事務所",
+            "total_price": 46150,
+            "billing_date": "2025\/12\/31",
+            "partner_name": "株式会社マコト",
+            "status": "未設定",
+            "synced_at": "2026-01-13 02:24:31"
+        },
+        "7Cq1y3dCSDeYFBJzwZKyRg": {
+            "id": "7Cq1y3dCSDeYFBJzwZKyRg",
+            "billing_number": "13308",
+            "title": "12\/10桜上水トラブル対応費用。",
+            "total_price": 41800,
+            "billing_date": "2025\/12\/20",
+            "partner_name": "大興物産株式会社",
+            "status": "未設定",
+            "synced_at": "2026-01-13 02:24:31"
+        },
+        "AEomXufmH526B4M-AVpObw": {
+            "id": "AEomXufmH526B4M-AVpObw",
+            "billing_number": "13307",
+            "title": "12\/16現地訪問キャンセル費。",
+            "total_price": 38500,
+            "billing_date": "2025\/12\/20",
+            "partner_name": "大興物産株式会社",
+            "status": "未設定",
+            "synced_at": "2026-01-13 02:24:31"
+        },
+        "k1RlA2GqfXPhoCRc-wL-YQ": {
+            "id": "k1RlA2GqfXPhoCRc-wL-YQ",
+            "billing_number": "13306",
+            "title": "女川2号WS躯体構築5期工事（接続ピット）スピーカー増設。",
+            "total_price": 134860,
+            "billing_date": "2025\/12\/20",
+            "partner_name": "大興物産株式会社",
+            "status": "未設定",
+            "synced_at": "2026-01-13 02:24:31"
+        },
+        "1v3MuBv4V7IriIoDlZgBSw": {
+            "id": "1v3MuBv4V7IriIoDlZgBSw",
+            "billing_number": "13305",
+            "title": "戸田建設（株）長吉長原高架橋",
+            "total_price": 313500,
+            "billing_date": "2025\/12\/20",
+            "partner_name": "株式会社レンタルのニッケン",
+            "status": "未設定",
+            "synced_at": "2026-01-13 02:24:31"
+        },
+        "79Kf-byWDjQKNuW-ushlqA": {
+            "id": "79Kf-byWDjQKNuW-ushlqA",
+            "billing_number": "13304",
+            "title": "姫野組様　防災センター　電子黒板「モニまる」65インチ　Androidタイプ レンタル",
+            "total_price": 86730,
+            "billing_date": "2025\/12\/31",
+            "partner_name": "株式会社仙台銘板",
+            "status": "未設定",
+            "synced_at": "2026-01-13 02:24:31"
+        },
+        "xKVAtXVQ_z8jmTq3LHHMyg": {
+            "id": "xKVAtXVQ_z8jmTq3LHHMyg",
+            "billing_number": "13303",
+            "title": "株式会社関電工九州支店　電子黒板「モニまる」86インチ　Androidモデル　レンタル",
+            "total_price": 78100,
+            "billing_date": "2025\/12\/31",
+            "partner_name": "株式会社アクティオ",
+            "status": "未設定",
+            "synced_at": "2026-01-13 02:24:31"
+        },
+        "Pk1rMj2kxhTtTfT6cmE2mg": {
+            "id": "Pk1rMj2kxhTtTfT6cmE2mg",
+            "billing_number": "13302",
+            "title": "北斗通信工業様PICLES修理",
+            "total_price": 16500,
+            "billing_date": "2025\/12\/31",
+            "partner_name": "北斗通信工業株式会社",
+            "status": "未設定",
+            "synced_at": "2026-01-13 02:24:31"
+        },
+        "DwrDad_vEyOQ5shd5tPFXA": {
+            "id": "DwrDad_vEyOQ5shd5tPFXA",
+            "billing_number": "13301",
+            "title": "JFEプラントテクノロジー様P-14　100インチ",
+            "total_price": 312510,
+            "billing_date": "2025\/12\/31",
+            "partner_name": "東海リース株式会社",
+            "status": "未設定",
+            "synced_at": "2026-01-13 02:24:31"
+        },
+        "7x4KEZMSF2IzvnMnqr2EPQ": {
+            "id": "7x4KEZMSF2IzvnMnqr2EPQ",
+            "billing_number": "13300",
+            "title": "清水建設SUBARU大泉工場90インチ",
+            "total_price": 295961,
+            "billing_date": "2025\/12\/20",
+            "partner_name": "株式会社レンタルのニッケン",
+            "status": "未設定",
+            "synced_at": "2026-01-13 02:24:31"
+        },
+        "1IvG8TUFI9OpO3-kW_Tz5g": {
+            "id": "1IvG8TUFI9OpO3-kW_Tz5g",
+            "billing_number": "13299",
+            "title": "安藤ハザマ\/芝公園4丁目計画に伴う既存地下解体工事300インチ",
+            "total_price": 19140000,
+            "billing_date": "2025\/12\/20",
+            "partner_name": "株式会社レンタルのニッケン",
+            "status": "未設定",
+            "synced_at": "2026-01-13 02:24:31"
+        },
+        "h0a5qYG-I1R5bXEnkzZ5Sw": {
+            "id": "h0a5qYG-I1R5bXEnkzZ5Sw",
+            "billing_number": "13298",
+            "title": "安藤ハザマ\/SCT入間物流センター90インチ",
+            "total_price": 265463,
+            "billing_date": "2025\/12\/20",
+            "partner_name": "株式会社レンタルのニッケン",
+            "status": "未設定",
+            "synced_at": "2026-01-13 02:24:31"
+        },
+        "8Qtl_G-apGkq9MYrm6b7IQ": {
+            "id": "8Qtl_G-apGkq9MYrm6b7IQ",
+            "billing_number": "13297",
+            "title": "安藤ハザマ\/藤倉化成佐野事業所90インチ",
+            "total_price": 257397,
+            "billing_date": "2025\/12\/20",
+            "partner_name": "株式会社レンタルのニッケン",
+            "status": "未設定",
+            "synced_at": "2026-01-13 02:24:31"
+        },
+        "a8clk2waVPv6_WG7M0q50A": {
+            "id": "a8clk2waVPv6_WG7M0q50A",
+            "billing_number": "13296",
+            "title": "安藤ハザマ\/DPL武蔵小杉",
+            "total_price": 1821600,
+            "billing_date": "2025\/12\/20",
+            "partner_name": "株式会社レンタルのニッケン",
+            "status": "未設定",
+            "synced_at": "2026-01-13 02:24:31"
+        },
+        "KmO1byLYoHLrpkDT6Noajw": {
+            "id": "KmO1byLYoHLrpkDT6Noajw",
+            "billing_number": "13295",
+            "title": "安藤ハザマ\/DPL武蔵小杉",
+            "total_price": 932800,
+            "billing_date": "2025\/12\/20",
+            "partner_name": "株式会社レンタルのニッケン",
+            "status": "未設定",
+            "synced_at": "2026-01-13 02:24:31"
+        },
+        "sfFLWQJlwF7C-J_BsaZIiQ": {
+            "id": "sfFLWQJlwF7C-J_BsaZIiQ",
+            "billing_number": "13294",
+            "title": "安藤ハザマ\/千歳烏山駅作業所LED",
+            "total_price": 18143,
+            "billing_date": "2025\/12\/20",
+            "partner_name": "株式会社レンタルのニッケン",
+            "status": "未設定",
+            "synced_at": "2026-01-13 02:24:31"
+        },
+        "YVhwonU1xnBaKUxwVLw8Og": {
+            "id": "YVhwonU1xnBaKUxwVLw8Og",
+            "billing_number": "13293",
+            "title": "株式会社ナカノフドー建設　淀川区十八条2丁目物流施設",
+            "total_price": 234291,
+            "billing_date": "2025\/12\/20",
+            "partner_name": "株式会社レンタルのニッケン",
+            "status": "未設定",
+            "synced_at": "2026-01-13 02:24:31"
+        },
+        "xAuREOIM2zijU1HbNKGHRg": {
+            "id": "xAuREOIM2zijU1HbNKGHRg",
+            "billing_number": "13292",
+            "title": "（株）大林組\/創価学会",
+            "total_price": 3344000,
+            "billing_date": "2025\/12\/20",
+            "partner_name": "株式会社レンタルのニッケン",
+            "status": "未設定",
+            "synced_at": "2026-01-13 02:24:31"
+        },
+        "oewT2EHT8YBZHzT0m6m4YA": {
+            "id": "oewT2EHT8YBZHzT0m6m4YA",
+            "billing_number": "13291",
+            "title": "鹿島建設／芝浦工業大学大宮キャンパス　撤去費",
+            "total_price": 220000,
+            "billing_date": "2025\/12\/20",
+            "partner_name": "株式会社レンタルのニッケン",
+            "status": "未設定",
+            "synced_at": "2026-01-13 02:24:31"
+        },
+        "2UDPKAc1kcO70dcMEI21CA": {
+            "id": "2UDPKAc1kcO70dcMEI21CA",
+            "billing_number": "13290",
+            "title": "伊丹病院　ワイヤレスマイク",
+            "total_price": 13200,
+            "billing_date": "2025\/12\/20",
+            "partner_name": "株式会社レンタルのニッケン",
+            "status": "未設定",
+            "synced_at": "2026-01-13 02:24:31"
+        },
+        "pOyDdb3LP9X935FuAmGtEA": {
+            "id": "pOyDdb3LP9X935FuAmGtEA",
+            "billing_number": "13289",
+            "title": "株式会社エスシー・マシーナリ　大阪万博PW南棟",
+            "total_price": 272903,
+            "billing_date": "2025\/12\/20",
+            "partner_name": "株式会社レンタルのニッケン",
+            "status": "未設定",
+            "synced_at": "2026-01-13 02:24:31"
+        },
+        "5sypZpY27udIpTqc-se0KQ": {
+            "id": "5sypZpY27udIpTqc-se0KQ",
+            "billing_number": "13288",
+            "title": "新名神杉谷川橋　90インチLEDビジョン。",
+            "total_price": 61776,
+            "billing_date": "2025\/12\/20",
+            "partner_name": "大興物産株式会社　西日本支店　建設資材部",
+            "status": "未設定",
+            "synced_at": "2026-01-13 02:24:31"
+        },
+        "ZooPZkonP23iIg4MXgTRAw": {
+            "id": "ZooPZkonP23iIg4MXgTRAw",
+            "billing_number": "13287",
+            "title": "北仲通北地区　100インチLEDビジョン\/P3。＊11\/28納品",
+            "total_price": 231924,
+            "billing_date": "2025\/12\/20",
+            "partner_name": "大興物産株式会社",
+            "status": "未設定",
+            "synced_at": "2026-01-13 02:24:31"
+        },
+        "sL-Ie37HRWullxmbnWGCTQ": {
+            "id": "sL-Ie37HRWullxmbnWGCTQ",
+            "billing_number": "13286",
+            "title": "11\/28　鹿島建設様200インチ撤去費用",
+            "total_price": 239800,
+            "billing_date": "2025\/12\/20",
+            "partner_name": "大興物産株式会社",
+            "status": "未設定",
+            "synced_at": "2026-01-13 02:24:31"
+        },
+        "n_QfhmX9i3WlLrAhn8iDRQ": {
+            "id": "n_QfhmX9i3WlLrAhn8iDRQ",
+            "billing_number": "13285",
+            "title": "女川原発WS建屋（建築分）　交換パネル。",
+            "total_price": 165000,
+            "billing_date": "2025\/11\/15",
+            "partner_name": "大興物産株式会社",
+            "status": "未設定",
+            "synced_at": "2026-01-13 02:24:31"
+        },
+        "GjZlbq1tauU711fulR_d8Q": {
+            "id": "GjZlbq1tauU711fulR_d8Q",
+            "billing_number": "13284",
+            "title": "11\/10　大成建設様90インチ撤去、返送費用",
+            "total_price": 217800,
+            "billing_date": "2025\/11\/20",
+            "partner_name": "大興物産株式会社",
+            "status": "未設定",
+            "synced_at": "2026-01-13 02:24:31"
+        },
+        "4qhHNtl4ft7fiBbaa0Yi8Q": {
+            "id": "4qhHNtl4ft7fiBbaa0Yi8Q",
+            "billing_number": "13283",
+            "title": "2025年11月17日清水建設様ゲンバルジャー打合せ",
+            "total_price": 33000,
+            "billing_date": "2025\/11\/30",
+            "partner_name": "有限会社丸喜リース",
+            "status": "未設定",
+            "synced_at": "2026-01-13 02:24:31"
+        },
+        "mUOMlXbUZuuLYNpVc77VOA": {
+            "id": "mUOMlXbUZuuLYNpVc77VOA",
+            "billing_number": "13282",
+            "title": "岡山吉備興業丸の内ビル　90インチLEDビジョン。＊11\/13（木）納品",
+            "total_price": 69300,
+            "billing_date": "2025\/12\/31",
+            "partner_name": "情報技術開発株式会社",
+            "status": "未設定",
+            "synced_at": "2026-01-13 02:24:31"
+        },
+        "PoZxkA6rvPmgnOCX_Fitmg": {
+            "id": "PoZxkA6rvPmgnOCX_Fitmg",
+            "billing_number": "13280",
+            "title": "ピーエス・コンストラクション株式会社様　日本競輪選手養成所(JIK)次世代型総合トレーニングセンター新築工事　「モニたろう」125インチ(2560X1920)　レンタル",
+            "total_price": 160600,
+            "billing_date": "2025\/12\/31",
+            "partner_name": "太陽建機レンタル株式会社",
+            "status": "未設定",
+            "synced_at": "2026-01-13 02:24:31"
+        },
+        "9WMa8Ob2ZaXfPIId50q5QQ": {
+            "id": "9WMa8Ob2ZaXfPIId50q5QQ",
+            "billing_number": "13279",
+            "title": "JFEエンジニアリング株式会社-北陸自動車道（特定更新等）新手取川橋（上部工）90インチLEDビジョン",
+            "total_price": 117150,
+            "billing_date": "2025\/12\/20",
+            "partner_name": "JFEエンジニアリング株式会社",
+            "status": "未設定",
+            "synced_at": "2026-01-13 02:24:31"
+        },
+        "vxkZZJ7pXXEZ3CMrDIhE5A": {
+            "id": "vxkZZJ7pXXEZ3CMrDIhE5A",
+            "billing_number": "13278",
+            "title": "北海道リゾート向けPICLESクラウド配信システム",
+            "total_price": 215050,
+            "billing_date": "2025\/12\/31",
+            "partner_name": "株式会社ユキヤマ",
+            "status": "未設定",
+            "synced_at": "2026-01-13 02:24:31"
+        },
+        "oKzg47gSvpS8SdpeGkFahg": {
+            "id": "oKzg47gSvpS8SdpeGkFahg",
+            "billing_number": "13277",
+            "title": "株式会社安藤・間 信金中央金庫名古屋支店建替工事",
+            "total_price": 60500,
+            "billing_date": "2025\/12\/20",
+            "partner_name": "株式会社レンタルのニッケン",
+            "status": "未設定",
+            "synced_at": "2026-01-13 02:24:31"
+        },
+        "U_1FplFSK2kZA7Ye9ADWRQ": {
+            "id": "U_1FplFSK2kZA7Ye9ADWRQ",
+            "billing_number": "13276",
+            "title": "松江土建様　　市道大井線中海大橋補修その２工事　ゲンバルジャー。＊11\/4納品",
+            "total_price": 14850,
+            "billing_date": "2025\/12\/20",
+            "partner_name": "有限会社セフティ標識",
+            "status": "未設定",
+            "synced_at": "2026-01-13 02:24:31"
+        },
+        "Fw6o0IJpkJ9EeEiq_6SVFQ": {
+            "id": "Fw6o0IJpkJ9EeEiq_6SVFQ",
+            "billing_number": "13275",
+            "title": "宮古岩泉風力発電建設工事　110インチLEDビジョン。（P4）＊11\/6設置",
+            "total_price": 90090,
+            "billing_date": "2025\/12\/20",
+            "partner_name": "大興物産株式会社",
+            "status": "未設定",
+            "synced_at": "2026-01-13 02:24:31"
+        },
+        "vl5RVhHfUgxwDVqk_MM0HQ": {
+            "id": "vl5RVhHfUgxwDVqk_MM0HQ",
+            "billing_number": "13274",
+            "title": "鹿島建設株式会社 県民会館·NPOプラザ複合施設新築工事",
+            "total_price": 37400,
+            "billing_date": "2025\/12\/20",
+            "partner_name": "株式会社レンタルのニッケン",
+            "status": "未設定",
+            "synced_at": "2026-01-13 02:24:31"
+        },
+        "spg-ZaSqjv7GwDfPVlUPPA": {
+            "id": "spg-ZaSqjv7GwDfPVlUPPA",
+            "billing_number": "13273",
+            "title": "鹿島建設兵庫医大90インチLEDビジョン。＊12\/26撤去",
+            "total_price": 297613,
+            "billing_date": "2025\/12\/31",
+            "partner_name": "株式会社グリーンクロス",
+            "status": "未設定",
+            "synced_at": "2026-01-13 02:24:31"
+        },
+        "-NIsI0p3E0uaNzxQOftvoQ": {
+            "id": "-NIsI0p3E0uaNzxQOftvoQ",
+            "billing_number": "13272",
+            "title": "【指定請求書】鹿島道路　富山環境整備LEDビジョン90インチ",
+            "total_price": 85140,
+            "billing_date": "2025\/12\/20",
+            "partner_name": "株式会社カンエツ",
+            "status": "未設定",
+            "synced_at": "2026-01-13 02:24:31"
+        },
+        "9fZ2p-WjyEjR4X07kG4Zlw": {
+            "id": "9fZ2p-WjyEjR4X07kG4Zlw",
+            "billing_number": "13271",
+            "title": "株式会社安藤 ・ 間（仮称）渋谷区松濤1丁目計画 解体工事",
+            "total_price": 60500,
+            "billing_date": "2025\/12\/20",
+            "partner_name": "株式会社レンタルのニッケン",
+            "status": "未設定",
+            "synced_at": "2026-01-13 02:24:31"
+        },
+        "SuVTEuaeDoqSlvOFXgWk9g": {
+            "id": "SuVTEuaeDoqSlvOFXgWk9g",
+            "billing_number": "13270",
+            "title": "清水JV　枚方トンネル　43インチ屋内用液晶ディスプレイ【販売】",
+            "total_price": 14850,
+            "billing_date": "2025\/12\/31",
+            "partner_name": "株式会社仙台銘板",
+            "status": "未設定",
+            "synced_at": "2026-01-13 02:24:31"
+        },
+        "qOgHnd0ZByR5THSJmjQN_w": {
+            "id": "qOgHnd0ZByR5THSJmjQN_w",
+            "billing_number": "13269",
+            "title": "SMC　アイシン共同館　アップルTVレンタル",
+            "total_price": 2200,
+            "billing_date": "2025\/12\/20",
+            "partner_name": "株式会社レンタルのニッケン",
+            "status": "未設定",
+            "synced_at": "2026-01-13 02:24:31"
+        },
+        "cIjkkXr57xGBT1bHErIRYg": {
+            "id": "cIjkkXr57xGBT1bHErIRYg",
+            "billing_number": "13268",
+            "title": "電子黒板「モニまる」65インチ　Androidタイプ レンタル",
+            "total_price": 17600,
+            "billing_date": "2025\/12\/31",
+            "partner_name": "株式会社本田商事",
+            "status": "未設定",
+            "synced_at": "2026-01-13 02:24:31"
+        },
+        "XA3LatB7fg9rL82UZcl9LA": {
+            "id": "XA3LatB7fg9rL82UZcl9LA",
+            "billing_number": "13267",
+            "title": "株式会社関電工九州支店　電子黒板「モニまる」86インチ　Androidモデル　レンタル",
+            "total_price": 23100,
+            "billing_date": "2025\/12\/31",
+            "partner_name": "株式会社アクティオ",
+            "status": "未設定",
+            "synced_at": "2026-01-13 02:24:31"
+        },
+        "qw3W8uytGE7V7vKMZSG_eQ": {
+            "id": "qw3W8uytGE7V7vKMZSG_eQ",
+            "billing_number": "13266",
+            "title": "五洋・みらいJV様　屋外型LEDビジョン90インチ+ゲンバルジャー",
+            "total_price": 117150,
+            "billing_date": "2025\/12\/20",
+            "partner_name": "株式会社カンエツ",
+            "status": "未設定",
+            "synced_at": "2026-01-13 02:24:31"
+        },
+        "5EdhYKpGkHlttTN8jR0Iyw": {
+            "id": "5EdhYKpGkHlttTN8jR0Iyw",
+            "billing_number": "13265",
+            "title": "コベルコE&M様市原硫化リチウム大型製造装置建設工事",
+            "total_price": 99000,
+            "billing_date": "2025\/12\/31",
+            "partner_name": "東海リース株式会社",
+            "status": "未設定",
+            "synced_at": "2026-01-13 02:24:31"
+        },
+        "u4pE5Zaafc_d88PXUxppbw": {
+            "id": "u4pE5Zaafc_d88PXUxppbw",
+            "billing_number": "13264",
+            "title": "（株）エスシー・マシ\/石垣　坂出第4工場　＊9\/26～",
+            "total_price": 69300,
+            "billing_date": "2025\/12\/20",
+            "partner_name": "株式会社レンタルのニッケン",
+            "status": "未設定",
+            "synced_at": "2026-01-13 02:24:31"
+        },
+        "Q-xN9Qh1Gvd8jTyYYEwZCg": {
+            "id": "Q-xN9Qh1Gvd8jTyYYEwZCg",
+            "billing_number": "13263",
+            "title": "大成建設株式会社　日東電工新実験棟建設工事　LED90インチ",
+            "total_price": 96800,
+            "billing_date": "2025\/12\/31",
+            "partner_name": "日建リース工業株式会社",
+            "status": "未設定",
+            "synced_at": "2026-01-13 02:24:31"
+        },
+        "X_YJobFfy8BsIzs-cVLldQ": {
+            "id": "X_YJobFfy8BsIzs-cVLldQ",
+            "billing_number": "13261",
+            "title": "吉原建設株式会社様　ブランシエラ南洲門前通り新築工事　「モニまる」65インチ　レンタル",
+            "total_price": 17600,
+            "billing_date": "2025\/12\/20",
+            "partner_name": "株式会社レンタルのニッケン",
+            "status": "未設定",
+            "synced_at": "2026-01-13 02:24:31"
+        },
+        "dhZhA1bb1oYQr81K10gEKA": {
+            "id": "dhZhA1bb1oYQr81K10gEKA",
+            "billing_number": "13260",
+            "title": "吉原建設株式会社様　ブランシエラ南洲門前通り新築工事　「モニたろう」110インチ(2240X1600)　レンタル",
+            "total_price": 134200,
+            "billing_date": "2025\/12\/20",
+            "partner_name": "株式会社レンタルのニッケン",
+            "status": "未設定",
+            "synced_at": "2026-01-13 02:24:31"
+        },
+        "aHc-sBXg25haOQL1aR6_Og": {
+            "id": "aHc-sBXg25haOQL1aR6_Og",
+            "billing_number": "13259",
+            "title": "川崎重工株式会社 霧島市クリーンセンター設備・運営事業建設工事 LEDビジョンレンタル",
+            "total_price": 99000,
+            "billing_date": "2025\/12\/20",
+            "partner_name": "株式会社レンタルのニッケン",
+            "status": "未設定",
+            "synced_at": "2026-01-13 02:24:31"
+        },
+        "7I5pWV5whcz5pBpiNhgzoQ": {
+            "id": "7I5pWV5whcz5pBpiNhgzoQ",
+            "billing_number": "13258",
+            "title": "㈱安藤・間様\/川下トンネル　90インチ「モニたろう」レンタル",
+            "total_price": 57200,
+            "billing_date": "2025\/12\/20",
+            "partner_name": "株式会社レンタルのニッケン",
+            "status": "未設定",
+            "synced_at": "2026-01-13 02:24:31"
+        },
+        "-5IXKagCoBedAxJyWQa4Yw": {
+            "id": "-5IXKagCoBedAxJyWQa4Yw",
+            "billing_number": "13257",
+            "title": "鹿島建設新名神枚方",
+            "total_price": 37950,
+            "billing_date": "2025\/12\/31",
+            "partner_name": "大興物産株式会社",
+            "status": "未設定",
+            "synced_at": "2026-01-13 02:24:31"
+        },
+        "R2PjHjxtD3U9P9VkuaXl6Q": {
+            "id": "R2PjHjxtD3U9P9VkuaXl6Q",
+            "billing_number": "13256",
+            "title": "心斎橋フジビルスピーカー増設",
+            "total_price": 4950,
+            "billing_date": "2025\/12\/31",
+            "partner_name": "情報技術開発株式会社",
+            "status": "未設定",
+            "synced_at": "2026-01-13 02:24:31"
+        },
+        "dpli9rxpb8Z3cHH3AgKpMw": {
+            "id": "dpli9rxpb8Z3cHH3AgKpMw",
+            "billing_number": "13255",
+            "title": "姫野組様 吉野川左岸下流堤防維持工事 120インチLEDビジョン8x5＋ｹﾞﾝﾊﾞﾙｼﾞｬｰ　レンタル",
+            "total_price": 163966,
+            "billing_date": "2025\/12\/31",
+            "partner_name": "株式会社仙台銘板",
+            "status": "未設定",
+            "synced_at": "2026-01-13 02:24:31"
+        },
+        "xbrMgdm-8NCZUNoYKCx2Hw": {
+            "id": "xbrMgdm-8NCZUNoYKCx2Hw",
+            "billing_number": "13254",
+            "title": "姫野組様 192号維持工事　140インチLEDビジョン9x6+ゲンバルジャー　レンタル",
+            "total_price": 208978,
+            "billing_date": "2025\/12\/31",
+            "partner_name": "株式会社仙台銘板",
+            "status": "未設定",
+            "synced_at": "2026-01-13 02:24:31"
+        },
+        "4QTRsHhvyULYhJRFiJUYUw": {
+            "id": "4QTRsHhvyULYhJRFiJUYUw",
+            "billing_number": "13253",
+            "title": "【指定請求書】鴻池組様　知多市役所新庁舎新築工事 朝礼看板用LEDビジョン「モニたろう」100インチ(2240×1280)レンタル",
+            "total_price": 122485,
+            "billing_date": "2025\/12\/31",
+            "partner_name": "太陽建機レンタル株式会社",
+            "status": "未設定",
+            "synced_at": "2026-01-13 02:24:31"
+        },
+        "0O35aCIhs217YWxFGAo_HA": {
+            "id": "0O35aCIhs217YWxFGAo_HA",
+            "billing_number": "13252",
+            "title": "【指定請求書】鴻池組様　日本福祉大学東海キャンパス 朝礼看板用LEDビジョン「モニたろう」100インチ(2240×1280) レンタル",
+            "total_price": 122485,
+            "billing_date": "2025\/12\/31",
+            "partner_name": "太陽建機レンタル株式会社",
+            "status": "未設定",
+            "synced_at": "2026-01-13 02:24:31"
+        },
+        "SOPo_w4WFsrK140dWqFNyw": {
+            "id": "SOPo_w4WFsrK140dWqFNyw",
+            "billing_number": "13251",
+            "title": "【指定請求書】株式会社渡辺工匠様 北九州高等学校第3棟大規模改造工事 液晶モニタ 55インチ+ゲンバルジャー レンタル",
+            "total_price": 68530,
+            "billing_date": "2025\/12\/31",
+            "partner_name": "株式会社アクティオ",
+            "status": "未設定",
+            "synced_at": "2026-01-13 02:24:31"
+        },
+        "fA2YUUSRf_WxepMDpayVFA": {
+            "id": "fA2YUUSRf_WxepMDpayVFA",
+            "billing_number": "13250",
+            "title": "西松建設\/玉川学園構内  100インチLEDビジョン",
+            "total_price": 81400,
+            "billing_date": "2025\/12\/31",
+            "partner_name": "株式会社フレックス",
+            "status": "未設定",
+            "synced_at": "2026-01-13 02:24:31"
+        },
+        "B2GXQdbGg798Tt_XQKwbTg": {
+            "id": "B2GXQdbGg798Tt_XQKwbTg",
+            "billing_number": "13249",
+            "title": "55インチ液晶ディスプレイ 西松建設\/勝川山田工事事務所",
+            "total_price": 42900,
+            "billing_date": "2025\/12\/31",
+            "partner_name": "株式会社フレックス",
+            "status": "未設定",
+            "synced_at": "2026-01-13 02:24:31"
+        },
+        "1ZzurhVp8qf69YMtx9q2Fw": {
+            "id": "1ZzurhVp8qf69YMtx9q2Fw",
+            "billing_number": "13248",
+            "title": "LED100インチ相当 西松建設\/勝川山田工事事務所",
+            "total_price": 162800,
+            "billing_date": "2025\/12\/31",
+            "partner_name": "株式会社フレックス",
+            "status": "未設定",
+            "synced_at": "2026-01-13 02:24:31"
+        },
+        "TCKM1aEnMLbjaZzDJlZVBg": {
+            "id": "TCKM1aEnMLbjaZzDJlZVBg",
+            "billing_number": "13247",
+            "title": "西松建設／藤枝志太出張所　屋外用LED90インチ",
+            "total_price": 69300,
+            "billing_date": "2025\/12\/31",
+            "partner_name": "株式会社フレックス",
+            "status": "未設定",
+            "synced_at": "2026-01-13 02:24:31"
+        },
+        "OSG9Kb8gat6N4KCIfgwveg": {
+            "id": "OSG9Kb8gat6N4KCIfgwveg",
+            "billing_number": "13246",
+            "title": "日鉄エンジニアリングJFE福山構内　110インチLEDビジョン",
+            "total_price": 118470,
+            "billing_date": "2025\/12\/31",
+            "partner_name": "株式会社日本オフィスオートメーション",
+            "status": "未設定",
+            "synced_at": "2026-01-13 02:24:31"
+        },
+        "xXNwtj6_GoG0898UFxBHFg": {
+            "id": "xXNwtj6_GoG0898UFxBHFg",
+            "billing_number": "13245",
+            "title": "JFEプラントエンジ四日市様　120インチLEDビジョン。",
+            "total_price": 165550,
+            "billing_date": "2025\/12\/31",
+            "partner_name": "株式会社日本オフィスオートメーション",
+            "status": "未設定",
+            "synced_at": "2026-01-13 02:24:31"
+        },
+        "qc_TZh76Sv0Lm9WigvOm3g": {
+            "id": "qc_TZh76Sv0Lm9WigvOm3g",
+            "billing_number": "13244",
+            "title": "JFEプラントエンジ倉敷様　120インチLEDビジョン。",
+            "total_price": 165550,
+            "billing_date": "2025\/12\/31",
+            "partner_name": "株式会社日本オフィスオートメーション",
+            "status": "未設定",
+            "synced_at": "2026-01-13 02:24:31"
+        },
+        "EANJFP2ElWJ_eAO1eGR6OQ": {
+            "id": "EANJFP2ElWJ_eAO1eGR6OQ",
+            "billing_number": "13243",
+            "title": "65インチ屋内用ディスプレイ：2台【レンタル】",
+            "total_price": 40700,
+            "billing_date": "2025\/12\/31",
+            "partner_name": "株式会社仙台銘板",
+            "status": "未設定",
+            "synced_at": "2026-01-13 02:24:31"
+        },
+        "u_LvXJ34IVSd4vcueGTivg": {
+            "id": "u_LvXJ34IVSd4vcueGTivg",
+            "billing_number": "13242",
+            "title": "ゲンバルジャー一式。",
+            "total_price": 11000,
+            "billing_date": "2025\/12\/31",
+            "partner_name": "グッドプランニング株式会社",
+            "status": "未設定",
+            "synced_at": "2026-01-13 02:24:31"
+        },
+        "XSfZ1D0ry9j_rIW465npZg": {
+            "id": "XSfZ1D0ry9j_rIW465npZg",
+            "billing_number": "13241",
+            "title": "エムイーシーテクノ様　130インチLEDビジョン。＊Apple TVなし",
+            "total_price": 201850,
+            "billing_date": "2025\/12\/31",
+            "partner_name": "株式会社アクティオ",
+            "status": "未設定",
+            "synced_at": "2026-01-13 02:24:31"
+        },
+        "kpj7klsyncN_YMZ3I4r2AQ": {
+            "id": "kpj7klsyncN_YMZ3I4r2AQ",
+            "billing_number": "13240",
+            "title": "鹿島建設\/JFE福山三製鋼CR更新工事　ゲンバルジャー。",
+            "total_price": 20350,
+            "billing_date": "2025\/12\/31",
+            "partner_name": "株式会社マコト",
+            "status": "未設定",
+            "synced_at": "2026-01-13 02:24:31"
+        },
+        "42-NI_nrxaPVay9KDCIscA": {
+            "id": "42-NI_nrxaPVay9KDCIscA",
+            "billing_number": "13239",
+            "title": "三菱電機福山製作所工事事務所。【レンタル：15か月】",
+            "total_price": 23650,
+            "billing_date": "2025\/12\/31",
+            "partner_name": "株式会社マコト",
+            "status": "未設定",
+            "synced_at": "2026-01-13 02:24:31"
+        },
+        "ZcH5sGZuUuHf27X3VWISpg": {
+            "id": "ZcH5sGZuUuHf27X3VWISpg",
+            "billing_number": "13238",
+            "title": "ダイセーエブリー新築工事事務所。",
+            "total_price": 56650,
+            "billing_date": "2025\/12\/31",
+            "partner_name": "株式会社マコト",
+            "status": "未設定",
+            "synced_at": "2026-01-13 02:24:31"
+        },
+        "EKd_qmGYLHqTfWGobjERLQ": {
+            "id": "EKd_qmGYLHqTfWGobjERLQ",
+            "billing_number": "13237",
+            "title": "NTN和歌山製作所3ブロック実装工事　90インチLEDビジョン",
+            "total_price": 72600,
+            "billing_date": "2025\/12\/31",
+            "partner_name": "情報技術開発株式会社",
+            "status": "未設定",
+            "synced_at": "2026-01-13 02:24:31"
+        },
+        "Of48RYd1FR4fRXYdfa3IJg": {
+            "id": "Of48RYd1FR4fRXYdfa3IJg",
+            "billing_number": "13236",
+            "title": "株式会社ナカノフドー建設　紀北支援学校中校舎棟建築工事　屋内用電子黒板　モニまる65インチ",
+            "total_price": 14850,
+            "billing_date": "2025\/12\/20",
+            "partner_name": "株式会社レンタルのニッケン",
+            "status": "未設定",
+            "synced_at": "2026-01-13 02:24:31"
+        },
+        "2YavJg5CfrkkUa-I8NIhbA": {
+            "id": "2YavJg5CfrkkUa-I8NIhbA",
+            "billing_number": "13235",
+            "title": "株式会社ナカノフドー建設　紀北支援学校中校舎棟建設工事　LED90インチ+ゲンバルジャー",
+            "total_price": 83050,
+            "billing_date": "2025\/12\/20",
+            "partner_name": "株式会社レンタルのニッケン",
+            "status": "未設定",
+            "synced_at": "2026-01-13 02:24:31"
+        },
+        "-Rupa6btWcD8S39VdIxH2g": {
+            "id": "-Rupa6btWcD8S39VdIxH2g",
+            "billing_number": "13233",
+            "title": "安藤間\/冷凍青果物製造工場坂東センター新築工事",
+            "total_price": 47300,
+            "billing_date": "2025\/12\/20",
+            "partner_name": "株式会社レンタルのニッケン",
+            "status": "未設定",
+            "synced_at": "2026-01-13 02:24:31"
+        },
+        "Arg_Zz7UrugUscKR39KzpA": {
+            "id": "Arg_Zz7UrugUscKR39KzpA",
+            "billing_number": "13232",
+            "title": "安藤・間冷凍青果物製造工場坂東センター新築工事",
+            "total_price": 63800,
+            "billing_date": "2025\/12\/20",
+            "partner_name": "株式会社レンタルのニッケン",
+            "status": "未設定",
+            "synced_at": "2026-01-13 02:24:31"
+        },
+        "lA32cvXwpF7PHb6Pdx2G-w": {
+            "id": "lA32cvXwpF7PHb6Pdx2G-w",
+            "billing_number": "13231",
+            "title": "鹿島建設(株)\/読書戸場トンネル",
+            "total_price": 3300,
+            "billing_date": "2025\/12\/20",
+            "partner_name": "株式会社レンタルのニッケン",
+            "status": "未設定",
+            "synced_at": "2026-01-13 02:24:31"
+        },
+        "9qzgPAS_Nrn_tVTchUESjQ": {
+            "id": "9qzgPAS_Nrn_tVTchUESjQ",
+            "billing_number": "13230",
+            "title": "三幸工務店笠岡バイパス　65インチ屋外用ディスプレイ。＊9\/4～",
+            "total_price": 100100,
+            "billing_date": "2025\/12\/31",
+            "partner_name": "セフテック株式会社",
+            "status": "未設定",
+            "synced_at": "2026-01-13 02:24:31"
+        },
+        "v__UFi3Tmh2cRf77GKCbyQ": {
+            "id": "v__UFi3Tmh2cRf77GKCbyQ",
+            "billing_number": "13229",
+            "title": "PICLES　12月度ご利用分",
+            "total_price": 79200,
+            "billing_date": "2025\/12\/31",
+            "partner_name": "大阪シティバス株式会社",
+            "status": "未設定",
+            "synced_at": "2026-01-13 02:24:31"
+        },
+        "4Ln3oTc_YESfblulLDgZAw": {
+            "id": "4Ln3oTc_YESfblulLDgZAw",
+            "billing_number": "13228",
+            "title": "日本製鉄紀尾井ビルディング　32インチ屋外用ディスプレイ。＊9\/1納品",
+            "total_price": 25641,
+            "billing_date": "2025\/12\/20",
+            "partner_name": "大興物産株式会社",
+            "status": "未設定",
+            "synced_at": "2026-01-13 02:24:31"
+        },
+        "kOM2g0x7IXrhXT63dKoo6w": {
+            "id": "kOM2g0x7IXrhXT63dKoo6w",
+            "billing_number": "13227",
+            "title": "大林組京急品川第三工区　125吋（レンタル）",
+            "total_price": 205150,
+            "billing_date": "2025\/12\/31",
+            "partner_name": "株式会社アクティオ",
+            "status": "未設定",
+            "synced_at": "2026-01-13 02:24:31"
+        },
+        "pU6ZCVXUjITby_sdp6-s-A": {
+            "id": "pU6ZCVXUjITby_sdp6-s-A",
+            "billing_number": "13226",
+            "title": "清水建設様TENTOK富士PM８工場",
+            "total_price": 113300,
+            "billing_date": "2025\/12\/31",
+            "partner_name": "太陽建機レンタル株式会社",
+            "status": "未設定",
+            "synced_at": "2026-01-13 02:24:31"
+        },
+        "g_GBcOwmw3_6U75Ip2Jg4g": {
+            "id": "g_GBcOwmw3_6U75Ip2Jg4g",
+            "billing_number": "13225",
+            "title": "神慈秀明会京都支部神殿 作業所　90インチLEDビジョン",
+            "total_price": 69300,
+            "billing_date": "2025\/12\/31",
+            "partner_name": "情報技術開発株式会社",
+            "status": "未設定",
+            "synced_at": "2026-01-13 02:24:31"
+        },
+        "CQbYGprHZrgvrZPXzEI8vA": {
+            "id": "CQbYGprHZrgvrZPXzEI8vA",
+            "billing_number": "13224",
+            "title": "PICLES利用料12月度分",
+            "total_price": 57200,
+            "billing_date": "2025\/12\/31",
+            "partner_name": "北斗通信工業株式会社",
+            "status": "未設定",
+            "synced_at": "2026-01-13 02:24:31"
+        },
+        "GHAIWloOazaTsX6q9hEviQ": {
+            "id": "GHAIWloOazaTsX6q9hEviQ",
+            "billing_number": "13223",
+            "title": "PICLES月額使用料　（12月度）",
+            "total_price": 28600,
+            "billing_date": "2025\/12\/31",
+            "partner_name": "有限会社ディーアンドエス",
+            "status": "未設定",
+            "synced_at": "2026-01-13 02:24:31"
+        },
+        "hS3o--KVYYA_i9rXNw01jA": {
+            "id": "hS3o--KVYYA_i9rXNw01jA",
+            "billing_number": "13222",
+            "title": "PICLES利用料　12月度分",
+            "total_price": 11000,
+            "billing_date": "2025\/12\/31",
+            "partner_name": "井原水産株式会社",
+            "status": "未設定",
+            "synced_at": "2026-01-13 02:24:31"
+        },
+        "Ug8mn8mtazuHO5loUip5Ug": {
+            "id": "Ug8mn8mtazuHO5loUip5Ug",
+            "billing_number": "13221",
+            "title": "PICLES利用料　12月度分",
+            "total_price": 22000,
+            "billing_date": "2025\/12\/31",
+            "partner_name": "宮川興業株式会社",
+            "status": "未設定",
+            "synced_at": "2026-01-13 02:24:31"
+        },
+        "ND410wtRc1xhHshxXz0ugA": {
+            "id": "ND410wtRc1xhHshxXz0ugA",
+            "billing_number": "13220",
+            "title": "PICLES利用料（12月分）",
+            "total_price": 31900,
+            "billing_date": "2025\/12\/31",
+            "partner_name": "京セラみらいエンビジョン株式会社",
+            "status": "未設定",
+            "synced_at": "2026-01-13 02:24:31"
+        },
+        "Oppyw-T_xl615Wa2goUWpA": {
+            "id": "Oppyw-T_xl615Wa2goUWpA",
+            "billing_number": "13219",
+            "title": "PICLES利用料（12月分）",
+            "total_price": 13200,
+            "billing_date": "2025\/12\/31",
+            "partner_name": "株式会社ユキヤマ",
+            "status": "未設定",
+            "synced_at": "2026-01-13 02:24:31"
+        },
+        "OZjDNmcKNRAjQuPdlte8dA": {
+            "id": "OZjDNmcKNRAjQuPdlte8dA",
+            "billing_number": "13218",
+            "title": "PICLES利用料（12月分）",
+            "total_price": 19800,
+            "billing_date": "2025\/12\/31",
+            "partner_name": "アイテップ株式会社",
+            "status": "未設定",
+            "synced_at": "2026-01-13 02:24:31"
+        },
+        "jrg8uj6TfdKMVDrg2XVB-A": {
+            "id": "jrg8uj6TfdKMVDrg2XVB-A",
+            "billing_number": "13217",
+            "title": "PICLES　12月度利用料",
+            "total_price": 11000,
+            "billing_date": "2025\/12\/31",
+            "partner_name": "株式会社コモ",
+            "status": "未設定",
+            "synced_at": "2026-01-13 02:24:31"
+        },
+        "tj5VN0QSUDFsFGiFvnCyDw": {
+            "id": "tj5VN0QSUDFsFGiFvnCyDw",
+            "billing_number": "13216",
+            "title": "PICLES　12月度利用分",
+            "total_price": 33000,
+            "billing_date": "2025\/12\/31",
+            "partner_name": "株式会社ユニリタ",
+            "status": "未設定",
+            "synced_at": "2026-01-13 02:24:31"
+        },
+        "dkT_PICNdEH_ZZHDTpEAqQ": {
+            "id": "dkT_PICNdEH_ZZHDTpEAqQ",
+            "billing_number": "13215",
+            "title": "PICLES　12月度利用料",
+            "total_price": 9350,
+            "billing_date": "2025\/12\/31",
+            "partner_name": "エコラボ合同会社",
+            "status": "未設定",
+            "synced_at": "2026-01-13 02:24:31"
+        },
+        "EZ7p-tdiVbSpmQ1mikDcmQ": {
+            "id": "EZ7p-tdiVbSpmQ1mikDcmQ",
+            "billing_number": "13214",
+            "title": "PICLES　12月度ご利用請求",
+            "total_price": 5775,
+            "billing_date": "2025\/12\/31",
+            "partner_name": "株式会社ワンスター",
+            "status": "未設定",
+            "synced_at": "2026-01-13 02:24:31"
+        },
+        "IsCoaCrhJVVkIBtQJWAnBA": {
+            "id": "IsCoaCrhJVVkIBtQJWAnBA",
+            "billing_number": "13213",
+            "title": "ゲンバルジャー利用料（12月度）",
+            "total_price": 9900,
+            "billing_date": "2025\/12\/31",
+            "partner_name": "テン工業株式会社",
+            "status": "未設定",
+            "synced_at": "2026-01-13 02:24:31"
+        }
+    },
+    "finance": {
+        "p131": {
+            "revenue": 37950,
+            "cost": 0,
+            "labor_cost": 0,
+            "material_cost": 0,
+            "other_cost": 0,
+            "gross_profit": 37950,
+            "net_profit": 37950,
+            "notes": "\n[MF同期] 2025\/12\/31 - 鹿島建設新名神枚方",
+            "updated_at": "2026-01-13 02:24:31",
+            "mf_synced": true,
+            "mf_billing_id": "-5IXKagCoBedAxJyWQa4Yw"
+        },
+        "p340": {
+            "revenue": 69300,
+            "cost": 0,
+            "labor_cost": 0,
+            "material_cost": 0,
+            "other_cost": 0,
+            "gross_profit": 69300,
+            "net_profit": 69300,
+            "notes": "\n[MF同期] 2025\/12\/31 - 西松建設／藤枝志太出張所　屋外用LED90インチ",
+            "updated_at": "2026-01-13 02:24:31",
+            "mf_synced": true,
+            "mf_billing_id": "TCKM1aEnMLbjaZzDJlZVBg"
+        }
+    }
 }

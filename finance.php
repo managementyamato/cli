@@ -310,6 +310,9 @@ if (isset($data['finance']) && !empty($data['finance'])) {
                         MFから同期
                     </button>
                 </form>
+                <a href="mf-mapping.php" class="btn btn-secondary" style="font-size: 0.875rem; padding: 0.5rem 1rem; text-decoration: none;">
+                    手動マッピング
+                </a>
             <?php endif; ?>
             <?php if (isAdmin()): ?>
                 <a href="mf-settings.php" class="btn btn-secondary" style="font-size: 0.875rem; padding: 0.5rem 1rem; text-decoration: none;">

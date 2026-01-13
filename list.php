@@ -105,6 +105,13 @@ require_once 'header.php';
     <?php endif; ?>
 <?php endif; ?>
 
+<div class="page-header">
+    <h1>トラブル一覧</h1>
+    <?php if (canEdit()): ?>
+    <a href="report.php" class="btn btn-primary">新規報告</a>
+    <?php endif; ?>
+</div>
+
 <div class="filter-bar">
     <form method="GET" style="display: flex; flex-wrap: wrap; gap: 1rem; width: 100%;">
         <input type="text" class="form-input" name="search" placeholder="🔍 PJ番号・内容で検索" value="<?= htmlspecialchars($search) ?>" style="flex: 1; min-width: 200px;">

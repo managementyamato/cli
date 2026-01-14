@@ -69,6 +69,15 @@ php -S localhost:8000
 - **デバッグ機能（API応答の詳細確認）**
 - リバースプロキシ対応のHTTPS検出
 
+### ✅ MFクラウド勤怠連携（✅ 実装完了）
+- **API KEY認証方式**（外部システム連携用識別子を使用）
+- 従業員マスターとの自動同期
+- 出退勤時刻の自動取得
+- **遅刻・早退・欠勤の自動判定**
+- 勤務時間の集計
+- 期間指定での勤怠データ取得
+- 従業員名での自動マッチング
+
 ### ✅ 開発環境
 - PHPビルトインサーバー対応
 - Browser-sync自動リロード
@@ -89,7 +98,6 @@ php -S localhost:8000
 - [ ] MoneyForward OAuth2認証の動作確認（本番環境）
 - [ ] MoneyForward請求書作成機能の実装
 - [ ] プロジェクトとMF請求書の自動紐付け機能
-- [ ] クラウド勤怠連携
 - [ ] テストの実装
 - [ ] エラーハンドリングの強化
 - [ ] データバックアップ機能
@@ -235,6 +243,30 @@ git checkout claude/audit-dependencies-mk0uc1heu3tc90mg-wFx3f
 git pull origin claude/audit-dependencies-mk0uc1heu3tc90mg-wFx3f
 ```
 
+## MFクラウド勤怠連携設定
+
+### 初回セットアップ（簡単！3ステップ）
+
+1. [MoneyForward Cloud 勤怠](https://attendance.moneyforward.com) にログイン
+
+2. 「設定」→「外部システム連携用識別子」からAPI KEYを取得
+
+3. システムの「MF勤怠連携設定」画面でAPI KEYとOffice IDを入力
+
+**設定方法の詳細**:
+- API KEY: MFクラウド勤怠の「外部システム連携用識別子」ページに表示されている文字列
+- Office ID: ブラウザのURLから確認（例: `https://attendance.moneyforward.com/offices/12345/...` の `12345` 部分）
+
+**重要**: `mf-attendance-config.json` は自動生成されます。`.gitignore` で除外されているため、Gitにコミットされません。
+
+### 勤怠連携の機能
+
+- **従業員マスターとの同期**: MFクラウド勤怠から従業員情報を自動取得
+- **出退勤時刻の取得**: 期間指定で勤怠データを取得
+- **遅刻・早退・欠勤の自動判定**: 標準勤務時間（9:00-18:00）と比較して自動判定
+- **勤務時間の集計**: 日別・従業員別の勤務時間を自動計算
+- **勤怠レポート**: 月別の統計情報を表示
+
 ## MoneyForward連携設定
 
 ### 初回セットアップ
@@ -285,16 +317,23 @@ cli/
 ├── mf-api.php             # MF API クライアント（file_get_contents実装）
 ├── mf-monthly.php         # MF請求書月別集計
 ├── mf-debug.php           # MFデバッグ情報表示
+├── mf-attendance-api.php  # MF勤怠APIクライアント（API KEY認証）
+├── mf-attendance-settings.php  # MF勤怠連携設定UI
+├── attendance.php         # 勤怠管理画面
+├── employees.php          # 従業員マスタ
 ├── users.php              # ユーザー管理
 ├── config.php             # 設定ファイル
 ├── auth.php               # 認証処理
 ├── style.css              # スタイル
 ├── data.json              # データ（.gitignore）
 ├── users.json             # ユーザー（.gitignore）
-├── mf-config.json         # MF設定（.gitignore、各環境で作成）
-├── mf-config.json.example # MF設定テンプレート
+├── mf-config.json         # MF請求書設定（.gitignore、各環境で作成）
+├── mf-config.json.example # MF請求書設定テンプレート
+├── mf-attendance-config.json  # MF勤怠設定（.gitignore、各環境で作成）
+├── mf-attendance-config.json.example  # MF勤怠設定テンプレート
 ├── mf-api-debug.json      # APIデバッグログ（.gitignore）
 ├── mf-sync-debug.json     # 同期デバッグログ（.gitignore）
+├── mf-attendance-debug.json  # 勤怠デバッグログ（.gitignore）
 ├── package.json           # npm設定
 ├── README.md              # このファイル
 └── SETUP-WINDOWS.md       # Windowsセットアップガイド
@@ -306,6 +345,10 @@ ISC
 
 ## 開発履歴
 
+- 2026/01/14: MFクラウド勤怠連携をAPI KEY認証方式に変更（外部システム連携用識別子を使用）
+- 2026/01/14: MFクラウド勤怠連携機能を実装（出退勤データ取得、遅刻・早退・欠勤判定）
+- 2026/01/14: 従業員マスターにMF勤怠ID連携機能を追加
+- 2026/01/14: 勤怠管理画面を実装（期間指定、統計表示、勤務時間集計）
 - 2026/01/14: MF APIクライアントをcURLからfile_get_contents()に完全移行（ポータブル環境対応）
 - 2026/01/14: タグからPJ番号・担当者名を自動抽出する機能を実装
 - 2026/01/14: 金額詳細（小計、消費税、合計）の取得と計算機能を実装

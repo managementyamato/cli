@@ -1,9 +1,9 @@
 {
     "client_id": "194812003555014",
     "client_secret": "Q7TPqzNbT2UwNShkgu9wQJBPFEMah_yLWMhEPZfdrWYEI56kesr_r0TczwvCowthwYoOt_Vc58ZJflC3GG0kiA",
-    "updated_at": "2026-01-13 22:00:25",
-    "access_token": "TpJqvN2azso2-fo8LaUxfl9yzSsevQwEWsJr6Lrhe1A",
-    "refresh_token": "IzrGKViE-ZgzZF9_DJK55ZAfMqiHaPsE-n-6qHINOZs",
+    "access_token": "TT34JSOE74MWxyLx0IwNCvJ4YEBE8vwG4tBkU5YHKWg",
+    "refresh_token": "eYth53DsThTvayJ0llqYh1wkYBfpVPyEhAlO78MSWqI",
+    "updated_at": "2026-01-14 07:01:14",
     "expires_in": 3600,
-    "token_obtained_at": 1768338025
+    "token_obtained_at": 1768370474
 }

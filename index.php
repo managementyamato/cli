@@ -25,36 +25,36 @@ require_once 'header.php';
 <div class="stats-grid">
     <div class="stat-card">
         <a href="list.php" style="text-decoration: none; color: inherit;">
-            <div class="stat-value" style="color: var(--primary);"><?= $total ?></div>
+            <div class="stat-value"><?= $total ?></div>
             <div class="stat-label">総件数</div>
         </a>
     </div>
     <div class="stat-card">
         <a href="list.php?status=未対応" style="text-decoration: none; color: inherit;">
-            <div class="stat-value" style="color: <?= $pending === 0 ? 'var(--success)' : 'var(--danger)' ?>;"><?= $pending ?></div>
+            <div class="stat-value"><?= $pending ?></div>
             <div class="stat-label">未対応</div>
         </a>
     </div>
     <div class="stat-card">
         <a href="list.php?status=対応中" style="text-decoration: none; color: inherit;">
-            <div class="stat-value" style="color: <?= $inProgress === 0 ? 'var(--success)' : 'var(--warning)' ?>;"><?= $inProgress ?></div>
+            <div class="stat-value"><?= $inProgress ?></div>
             <div class="stat-label">対応中</div>
         </a>
     </div>
     <div class="stat-card">
         <a href="list.php?status=保留" style="text-decoration: none; color: inherit;">
-            <div class="stat-value" style="color: var(--gray-500);"><?= $onHold ?></div>
+            <div class="stat-value"><?= $onHold ?></div>
             <div class="stat-label">保留</div>
         </a>
     </div>
     <div class="stat-card">
         <a href="list.php?status=完了" style="text-decoration: none; color: inherit;">
-            <div class="stat-value" style="color: var(--success);"><?= $completed ?></div>
+            <div class="stat-value"><?= $completed ?></div>
             <div class="stat-label">完了</div>
         </a>
     </div>
-    <div class="stat-card" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white;">
-        <div class="stat-label" style="color: white; margin-bottom: 0.5rem;">完了率</div>
+    <div class="stat-card" style="border-color: var(--purple);">
+        <div class="stat-label" style="margin-bottom: 0.5rem;">完了率</div>
         <div class="stat-value" style="font-size: 2.5rem;"><?= $completionRate ?>%</div>
     </div>
 </div>

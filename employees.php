@@ -1,5 +1,7 @@
 <?php
 require_once 'config.php';
+require_once 'mf-attendance-api.php';
+
 $data = getData();
 
 $message = '';
@@ -82,6 +84,63 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_employee'])) {
     saveData($data);
     $message = '従業員を削除しました';
     $messageType = 'success';
+}
+
+// MF勤怠から従業員を同期
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['sync_mf_attendance'])) {
+    try {
+        $mfClient = new MFAttendanceApiClient();
+
+        if (!$mfClient->isAuthenticated()) {
+            $message = 'MFクラウド勤怠と連携していません。先に認証を行ってください。';
+            $messageType = 'danger';
+        } else {
+            $mfEmployees = $mfClient->getEmployees();
+            $syncedCount = 0;
+
+            if (isset($mfEmployees['employees'])) {
+                $mfEmployees = $mfEmployees['employees'];
+            }
+
+            foreach ($mfEmployees as $mfEmp) {
+                // 既存の従業員をチェック（MF勤怠IDで検索）
+                $exists = false;
+                foreach ($data['employees'] as $key => $emp) {
+                    if (isset($emp['mf_attendance_id']) && $emp['mf_attendance_id'] === (string)$mfEmp['id']) {
+                        $exists = true;
+                        // 既存従業員の情報を更新
+                        $data['employees'][$key]['mf_attendance_name'] = $mfEmp['name'];
+                        $data['employees'][$key]['mf_attendance_email'] = $mfEmp['email'] ?? '';
+                        break;
+                    }
+                }
+
+                // 新規従業員を追加（従業員コードを自動生成）
+                if (!$exists) {
+                    $employeeCode = generateEmployeeCode($data['employees']);
+                    $newEmployee = array(
+                        'code' => $employeeCode,
+                        'name' => $mfEmp['name'],
+                        'area' => '',
+                        'email' => $mfEmp['email'] ?? '',
+                        'memo' => 'MFクラウド勤怠から同期',
+                        'mf_attendance_id' => (string)$mfEmp['id'],
+                        'mf_attendance_name' => $mfEmp['name'],
+                        'mf_attendance_email' => $mfEmp['email'] ?? ''
+                    );
+                    $data['employees'][] = $newEmployee;
+                    $syncedCount++;
+                }
+            }
+
+            saveData($data);
+            $message = "MFクラウド勤怠から {$syncedCount} 名の従業員を同期しました";
+            $messageType = 'success';
+        }
+    } catch (Exception $e) {
+        $message = 'エラー: ' . $e->getMessage();
+        $messageType = 'danger';
+    }
 }
 
 require_once 'header.php';
@@ -262,7 +321,19 @@ require_once 'header.php';
     <div class="card">
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
             <h2 class="card-title" style="margin: 0;">従業員一覧 （総件数: <?= count($data['employees']) ?>件）</h2>
-            <button class="btn btn-primary" onclick="openAddModal()">従業員新規登録</button>
+            <div style="display: flex; gap: 0.5rem;">
+                <?php
+                $mfClient = new MFAttendanceApiClient();
+                if ($mfClient->isAuthenticated()):
+                ?>
+                <form method="POST" style="display: inline;">
+                    <button type="submit" name="sync_mf_attendance" class="btn btn-secondary">MF勤怠から同期</button>
+                </form>
+                <?php else: ?>
+                <a href="mf-attendance-settings.php" class="btn btn-secondary" style="text-decoration: none; display: inline-block;">MF勤怠連携設定</a>
+                <?php endif; ?>
+                <button class="btn btn-primary" onclick="openAddModal()">従業員新規登録</button>
+            </div>
         </div>
 
         <table class="employee-table">
@@ -274,13 +345,14 @@ require_once 'header.php';
                     <th>氏名</th>
                     <th>担当エリア</th>
                     <th>メールアドレス</th>
+                    <th>MF連携</th>
                     <th>備考</th>
                 </tr>
             </thead>
             <tbody>
                 <?php if (empty($data['employees'])): ?>
                     <tr>
-                        <td colspan="7" style="text-align: center; color: #718096;">登録されている従業員はありません</td>
+                        <td colspan="8" style="text-align: center; color: #718096;">登録されている従業員はありません</td>
                     </tr>
                 <?php else: ?>
                     <?php foreach ($data['employees'] as $index => $employee): ?>
@@ -296,6 +368,13 @@ require_once 'header.php';
                             <td><?= htmlspecialchars($employee['name']) ?></td>
                             <td><?= htmlspecialchars($employee['area']) ?></td>
                             <td><?= htmlspecialchars($employee['email']) ?></td>
+                            <td>
+                                <?php if (!empty($employee['mf_attendance_id'])): ?>
+                                    <span style="background: #c6f6d5; color: #22543d; padding: 0.25rem 0.5rem; border-radius: 4px; font-size: 0.75rem;">連携済み</span>
+                                <?php else: ?>
+                                    <span style="color: #a0aec0;">-</span>
+                                <?php endif; ?>
+                            </td>
                             <td><?= htmlspecialchars($employee['memo']) ?></td>
                         </tr>
                     <?php endforeach; ?>

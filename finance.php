@@ -11,8 +11,18 @@ if (!canEdit()) {
 // データ読み込み
 $data = getData();
 
+// 自動同期チェック（1時間ごと）
+$shouldAutoSync = false;
+$lastSyncTime = isset($data['mf_sync_timestamp']) ? strtotime($data['mf_sync_timestamp']) : 0;
+$currentTime = time();
+$oneHourInSeconds = 3600;
+
+if (MFApiClient::isConfigured() && ($currentTime - $lastSyncTime) >= $oneHourInSeconds) {
+    $shouldAutoSync = true;
+}
+
 // MFから同期（請求書データを保存）
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['sync_from_mf'])) {
+if (($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['sync_from_mf'])) || $shouldAutoSync) {
     if (!MFApiClient::isConfigured()) {
         header('Location: finance.php?error=mf_not_configured');
         exit;
@@ -61,10 +71,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['sync_from_mf'])) {
             $data['mf_invoices'] = array();
         }
 
-        // 既存のデータをクリアして新しいデータで更新
-        $data['mf_invoices'] = array();
+        // 既存のIDマップを作成（重複チェック用）
+        $existingIds = array();
+        foreach ($data['mf_invoices'] as $existingInvoice) {
+            $existingIds[$existingInvoice['id']] = true;
+        }
+
+        $newCount = 0;
+        $skipCount = 0;
 
         foreach ($invoices as $invoice) {
+            $invoiceId = $invoice['id'] ?? '';
+
+            // 重複チェック：既存のIDと一致する場合はスキップ
+            if (isset($existingIds[$invoiceId])) {
+                $skipCount++;
+                continue;
+            }
+
             // タグからPJ番号と担当者名を抽出
             $tags = $invoice['tag_names'] ?? array();
             $projectId = '';
@@ -108,7 +132,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['sync_from_mf'])) {
             }
 
             $data['mf_invoices'][] = array(
-                'id' => $invoice['id'] ?? '',
+                'id' => $invoiceId,
                 'billing_number' => $invoice['billing_number'] ?? '',
                 'title' => $invoice['title'] ?? '',
                 'partner_name' => $invoice['partner_name'] ?? '',
@@ -129,61 +153,25 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['sync_from_mf'])) {
                 'created_at' => date('Y-m-d H:i:s'),
                 'synced_at' => date('Y-m-d H:i:s')
             );
+            $newCount++;
         }
 
         // 同期時刻を記録
         $data['mf_sync_timestamp'] = date('Y-m-d H:i:s');
 
         saveData($data);
-        header('Location: finance.php?synced=' . count($invoices));
-        exit;
+
+        // 自動同期の場合はリダイレクトしない
+        if (!$shouldAutoSync) {
+            header('Location: finance.php?synced=' . count($invoices) . '&new=' . $newCount . '&skip=' . $skipCount);
+            exit;
+        }
     } catch (Exception $e) {
         header('Location: finance.php?error=' . urlencode($e->getMessage()));
         exit;
     }
 }
 
-// 財務データ追加・更新
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['save_finance'])) {
-    $projectId = $_POST['project_id'] ?? '';
-    $revenue = floatval($_POST['revenue'] ?? 0);
-    $cost = floatval($_POST['cost'] ?? 0);
-    $laborCost = floatval($_POST['labor_cost'] ?? 0);
-    $materialCost = floatval($_POST['material_cost'] ?? 0);
-    $otherCost = floatval($_POST['other_cost'] ?? 0);
-    $notes = trim($_POST['notes'] ?? '');
-
-    if (!isset($data['finance'])) {
-        $data['finance'] = array();
-    }
-
-    $data['finance'][$projectId] = array(
-        'revenue' => $revenue,
-        'cost' => $cost,
-        'labor_cost' => $laborCost,
-        'material_cost' => $materialCost,
-        'other_cost' => $otherCost,
-        'gross_profit' => $revenue - $cost,
-        'net_profit' => $revenue - ($cost + $laborCost + $materialCost + $otherCost),
-        'notes' => $notes,
-        'updated_at' => date('Y-m-d H:i:s')
-    );
-
-    saveData($data);
-    header('Location: finance.php?saved=1');
-    exit;
-}
-
-// 財務データ削除
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_finance'])) {
-    $projectId = $_POST['project_id'] ?? '';
-    if (isset($data['finance'][$projectId])) {
-        unset($data['finance'][$projectId]);
-        saveData($data);
-        header('Location: finance.php?deleted=1');
-        exit;
-    }
-}
 
 require_once 'header.php';
 ?>
@@ -191,9 +179,10 @@ require_once 'header.php';
 <style>
 .stats-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    grid-template-columns: repeat(2, 1fr);
     gap: 1rem;
     margin-bottom: 2rem;
+    max-width: 600px;
 }
 
 .stat-card {
@@ -222,52 +211,13 @@ require_once 'header.php';
     color: #ef4444;
 }
 
-.profit-cell {
-    font-weight: 600;
-}
-
-.profit-positive {
-    color: #10b981;
-}
-
-.profit-negative {
-    color: #ef4444;
-}
-
-.finance-form-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 1rem;
-}
-
-.finance-form-grid .form-group {
-    margin-bottom: 0;
-}
-
-.modal-body {
-    max-height: 70vh;
-    overflow-y: auto;
-}
 </style>
-
-<?php if (isset($_GET['saved'])): ?>
-    <div class="alert alert-success">財務データを保存しました</div>
-<?php endif; ?>
-
-<?php if (isset($_GET['deleted'])): ?>
-    <div class="alert alert-success">財務データを削除しました</div>
-<?php endif; ?>
 
 <?php if (isset($_GET['synced'])): ?>
     <div class="alert alert-success">
         MFから<?= intval($_GET['synced']) ?>件の請求書を取得しました
-        <?php if (isset($_GET['auto_mapped']) && intval($_GET['auto_mapped']) > 0): ?>
-            <br>タグから自動マッピング: <?= intval($_GET['auto_mapped']) ?>件成功
-            <?php if (isset($_GET['unmapped']) && intval($_GET['unmapped']) > 0): ?>
-                、<?= intval($_GET['unmapped']) ?>件は手動マッピングが必要です
-            <?php endif; ?>
-        <?php elseif (isset($_GET['auto_mapped'])): ?>
-            <br>自動マッピング可能な請求書はありませんでした。手動マッピングをご利用ください。
+        <?php if (isset($_GET['new'])): ?>
+            （新規: <?= intval($_GET['new']) ?>件、スキップ: <?= intval($_GET['skip'] ?? 0) ?>件）
         <?php endif; ?>
     </div>
 <?php endif; ?>
@@ -281,56 +231,40 @@ require_once 'header.php';
 <?php endif; ?>
 
 <?php
-// 集計データ計算
-$totalRevenue = 0;
-$totalCost = 0;
-$totalGrossProfit = 0;
-$totalNetProfit = 0;
-$projectCount = 0;
+// 12月分の請求書データを集計
+$decemberTotal = 0;
+$decemberTotalTax = 0;
+$decemberInvoices = array();
 
-if (isset($data['finance']) && !empty($data['finance'])) {
-    foreach ($data['finance'] as $finance) {
-        $totalRevenue += $finance['revenue'];
-        $totalCost += $finance['cost'] + $finance['labor_cost'] + $finance['material_cost'] + $finance['other_cost'];
-        $totalGrossProfit += $finance['gross_profit'];
-        $totalNetProfit += $finance['net_profit'];
-        $projectCount++;
+if (isset($data['mf_invoices']) && !empty($data['mf_invoices'])) {
+    foreach ($data['mf_invoices'] as $invoice) {
+        // 売上日が12月のものを抽出
+        $salesDate = $invoice['sales_date'] ?? '';
+        if (preg_match('/^\d{4}-12-/', $salesDate)) {
+            $decemberInvoices[] = $invoice;
+            $decemberTotal += floatval($invoice['total_amount'] ?? 0);
+            $decemberTotalTax += floatval($invoice['tax'] ?? 0);
+        }
     }
 }
+
+$decemberSubtotal = $decemberTotal - $decemberTotalTax;
 ?>
 
 <div class="stats-grid">
     <div class="stat-card">
-        <div class="stat-label">登録案件数</div>
-        <div class="stat-value"><?= number_format($projectCount) ?></div>
+        <div class="stat-label">12月 総売上</div>
+        <div class="stat-value">¥<?= number_format($decemberTotal) ?></div>
     </div>
     <div class="stat-card">
-        <div class="stat-label">総売上</div>
-        <div class="stat-value">¥<?= number_format($totalRevenue) ?></div>
-    </div>
-    <div class="stat-card">
-        <div class="stat-label">総原価</div>
-        <div class="stat-value">¥<?= number_format($totalCost) ?></div>
-    </div>
-    <div class="stat-card">
-        <div class="stat-label">粗利益</div>
-        <div class="stat-value <?= $totalGrossProfit >= 0 ? 'positive' : 'negative' ?>">¥<?= number_format($totalGrossProfit) ?></div>
-    </div>
-    <div class="stat-card">
-        <div class="stat-label">純利益</div>
-        <div class="stat-value <?= $totalNetProfit >= 0 ? 'positive' : 'negative' ?>">¥<?= number_format($totalNetProfit) ?></div>
-    </div>
-    <div class="stat-card">
-        <div class="stat-label">利益率</div>
-        <div class="stat-value <?= $totalNetProfit >= 0 ? 'positive' : 'negative' ?>">
-            <?= $totalRevenue > 0 ? number_format(($totalNetProfit / $totalRevenue) * 100, 1) : 0 ?>%
-        </div>
+        <div class="stat-label">12月 税抜き</div>
+        <div class="stat-value">¥<?= number_format($decemberSubtotal) ?></div>
     </div>
 </div>
 
 <div class="card">
     <div class="card-header" style="display: flex; justify-content: space-between; align-items: center;">
-        <h2 style="margin: 0;">財務管理</h2>
+        <h2 style="margin: 0;">12月分 請求書一覧</h2>
         <div style="display: flex; gap: 0.5rem;">
             <?php if (MFApiClient::isConfigured()): ?>
                 <form method="POST" action="" style="margin: 0;">
@@ -343,71 +277,46 @@ if (isset($data['finance']) && !empty($data['finance'])) {
                         月別集計 (<?= count($data['mf_invoices']) ?>件)
                     </a>
                 <?php endif; ?>
-                <a href="mf-debug.php" class="btn btn-secondary" style="font-size: 0.875rem; padding: 0.5rem 1rem; text-decoration: none;">
-                    デバッグ
-                </a>
-            <?php endif; ?>
-            <?php if (isAdmin()): ?>
-                <a href="mf-settings.php" class="btn btn-secondary" style="font-size: 0.875rem; padding: 0.5rem 1rem; text-decoration: none;">
-                    <?= MFApiClient::isConfigured() ? 'MF設定' : 'MF連携設定' ?>
-                </a>
             <?php endif; ?>
         </div>
     </div>
     <div class="card-body">
-        <?php if (empty($data['projects'])): ?>
+        <?php if (empty($decemberInvoices)): ?>
             <p style="color: var(--gray-600); text-align: center; padding: 2rem;">
-                プロジェクトが登録されていません。先にプロジェクト管理から案件を登録してください。
+                12月分の請求書がありません。MFから同期してください。
             </p>
         <?php else: ?>
             <div class="table-wrapper">
                 <table class="table">
                     <thead>
                         <tr>
-                            <th>PJ番号</th>
-                            <th>案件名</th>
                             <th>顧客名</th>
-                            <th>売上</th>
-                            <th>原価合計</th>
-                            <th>粗利益</th>
-                            <th>純利益</th>
-                            <th>利益率</th>
-                            <th>操作</th>
+                            <th>請求書番号</th>
+                            <th>案件名</th>
+                            <th>担当者</th>
+                            <th>売上日</th>
+                            <th>合計金額</th>
+                            <th>税抜き</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <?php foreach ($data['projects'] as $project): ?>
-                            <?php
-                            $finance = isset($data['finance'][$project['id']]) ? $data['finance'][$project['id']] : null;
-                            $revenue = $finance ? $finance['revenue'] : 0;
-                            $totalProjectCost = $finance ? ($finance['cost'] + $finance['labor_cost'] + $finance['material_cost'] + $finance['other_cost']) : 0;
-                            $grossProfit = $finance ? $finance['gross_profit'] : 0;
-                            $netProfit = $finance ? $finance['net_profit'] : 0;
-                            $profitRate = $revenue > 0 ? ($netProfit / $revenue) * 100 : 0;
-                            ?>
+                        <?php foreach ($decemberInvoices as $invoice): ?>
                             <tr>
-                                <td><?= htmlspecialchars($project['id']) ?></td>
-                                <td><?= htmlspecialchars($project['name']) ?></td>
-                                <td><?= htmlspecialchars($project['customer_name'] ?? '-') ?></td>
-                                <td>¥<?= number_format($revenue) ?></td>
-                                <td>¥<?= number_format($totalProjectCost) ?></td>
-                                <td class="profit-cell <?= $grossProfit >= 0 ? 'profit-positive' : 'profit-negative' ?>">
-                                    ¥<?= number_format($grossProfit) ?>
-                                </td>
-                                <td class="profit-cell <?= $netProfit >= 0 ? 'profit-positive' : 'profit-negative' ?>">
-                                    ¥<?= number_format($netProfit) ?>
-                                </td>
-                                <td class="<?= $profitRate >= 0 ? 'profit-positive' : 'profit-negative' ?>">
-                                    <?= number_format($profitRate, 1) ?>%
-                                </td>
+                                <td><?= htmlspecialchars($invoice['partner_name']) ?></td>
+                                <td><?= htmlspecialchars($invoice['billing_number']) ?></td>
+                                <td><?= htmlspecialchars($invoice['title']) ?></td>
                                 <td>
-                                    <div class="action-buttons">
-                                        <button type="button" class="btn-icon" onclick='showFinanceModal(<?= json_encode($project) ?>, <?= json_encode($finance) ?>)' title="財務データ編集">📊</button>
-                                        <?php if ($finance): ?>
-                                            <button type="button" class="btn-icon" onclick='confirmDeleteFinance(<?= json_encode($project['id']) ?>, <?= json_encode($project['name']) ?>)' title="削除">🗑️</button>
-                                        <?php endif; ?>
-                                    </div>
+                                    <?php if (!empty($invoice['assignee'])): ?>
+                                        <span class="badge" style="background: #dbeafe; color: #1e40af; padding: 0.25rem 0.5rem; border-radius: 4px; font-size: 0.75rem;">
+                                            <?= htmlspecialchars($invoice['assignee']) ?>
+                                        </span>
+                                    <?php else: ?>
+                                        <span style="color: var(--gray-400);">-</span>
+                                    <?php endif; ?>
                                 </td>
+                                <td><?= htmlspecialchars($invoice['sales_date']) ?></td>
+                                <td style="font-weight: 600;">¥<?= number_format($invoice['total_amount']) ?></td>
+                                <td>¥<?= number_format($invoice['subtotal']) ?></td>
                             </tr>
                         <?php endforeach; ?>
                     </tbody>
@@ -417,156 +326,5 @@ if (isset($data['finance']) && !empty($data['finance'])) {
     </div>
 </div>
 
-<!-- 財務データ編集モーダル -->
-<div id="financeModal" class="modal">
-    <div class="modal-content" style="max-width: 700px;">
-        <div class="modal-header">
-            <h3 id="financeModalTitle">財務データ編集</h3>
-            <span class="close" onclick="closeModal('financeModal')">&times;</span>
-        </div>
-        <form method="POST" action="">
-            <input type="hidden" name="save_finance" value="1">
-            <input type="hidden" id="finance_project_id" name="project_id">
-            <div class="modal-body">
-                <div class="form-group">
-                    <label>案件名</label>
-                    <input type="text" class="form-input" id="finance_project_name" readonly style="background: #f3f4f6;">
-                </div>
-
-                <h4 style="margin: 1.5rem 0 1rem 0; color: var(--gray-700); font-size: 0.95rem; border-bottom: 2px solid var(--gray-200); padding-bottom: 0.5rem;">売上・原価</h4>
-
-                <div class="finance-form-grid">
-                    <div class="form-group">
-                        <label for="finance_revenue">売上金額 *</label>
-                        <input type="number" class="form-input" id="finance_revenue" name="revenue" step="0.01" required>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="finance_cost">原価（直接費用） *</label>
-                        <input type="number" class="form-input" id="finance_cost" name="cost" step="0.01" required>
-                    </div>
-                </div>
-
-                <h4 style="margin: 1.5rem 0 1rem 0; color: var(--gray-700); font-size: 0.95rem; border-bottom: 2px solid var(--gray-200); padding-bottom: 0.5rem;">詳細費用</h4>
-
-                <div class="finance-form-grid">
-                    <div class="form-group">
-                        <label for="finance_labor_cost">人件費</label>
-                        <input type="number" class="form-input" id="finance_labor_cost" name="labor_cost" step="0.01" value="0">
-                    </div>
-
-                    <div class="form-group">
-                        <label for="finance_material_cost">材料費</label>
-                        <input type="number" class="form-input" id="finance_material_cost" name="material_cost" step="0.01" value="0">
-                    </div>
-
-                    <div class="form-group" style="grid-column: 1 / -1;">
-                        <label for="finance_other_cost">その他費用</label>
-                        <input type="number" class="form-input" id="finance_other_cost" name="other_cost" step="0.01" value="0">
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <label for="finance_notes">備考</label>
-                    <textarea class="form-input" id="finance_notes" name="notes" rows="3"></textarea>
-                </div>
-
-                <div style="background: #f9fafb; padding: 1rem; border-radius: 8px; margin-top: 1rem;">
-                    <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
-                        <span style="color: var(--gray-600);">粗利益:</span>
-                        <span id="preview_gross_profit" style="font-weight: 600;">¥0</span>
-                    </div>
-                    <div style="display: flex; justify-content: space-between; padding-top: 0.5rem; border-top: 1px solid var(--gray-300);">
-                        <span style="color: var(--gray-700); font-weight: 600;">純利益:</span>
-                        <span id="preview_net_profit" style="font-weight: 700; font-size: 1.1rem;">¥0</span>
-                    </div>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" onclick="closeModal('financeModal')">キャンセル</button>
-                <button type="submit" class="btn btn-primary">保存</button>
-            </div>
-        </form>
-    </div>
-</div>
-
-<!-- 削除フォーム -->
-<form id="deleteFinanceForm" method="POST" action="" style="display: none;">
-    <input type="hidden" name="delete_finance" value="1">
-    <input type="hidden" id="delete_finance_project_id" name="project_id">
-</form>
-
-<script>
-function showFinanceModal(project, finance) {
-    document.getElementById('finance_project_id').value = project.id;
-    document.getElementById('finance_project_name').value = project.name;
-    document.getElementById('financeModalTitle').textContent = '財務データ編集: ' + project.id;
-
-    if (finance) {
-        document.getElementById('finance_revenue').value = finance.revenue;
-        document.getElementById('finance_cost').value = finance.cost;
-        document.getElementById('finance_labor_cost').value = finance.labor_cost;
-        document.getElementById('finance_material_cost').value = finance.material_cost;
-        document.getElementById('finance_other_cost').value = finance.other_cost;
-        document.getElementById('finance_notes').value = finance.notes || '';
-    } else {
-        document.getElementById('finance_revenue').value = 0;
-        document.getElementById('finance_cost').value = 0;
-        document.getElementById('finance_labor_cost').value = 0;
-        document.getElementById('finance_material_cost').value = 0;
-        document.getElementById('finance_other_cost').value = 0;
-        document.getElementById('finance_notes').value = '';
-    }
-
-    updateProfitPreview();
-    document.getElementById('financeModal').style.display = 'block';
-}
-
-function updateProfitPreview() {
-    const revenue = parseFloat(document.getElementById('finance_revenue').value) || 0;
-    const cost = parseFloat(document.getElementById('finance_cost').value) || 0;
-    const laborCost = parseFloat(document.getElementById('finance_labor_cost').value) || 0;
-    const materialCost = parseFloat(document.getElementById('finance_material_cost').value) || 0;
-    const otherCost = parseFloat(document.getElementById('finance_other_cost').value) || 0;
-
-    const grossProfit = revenue - cost;
-    const netProfit = revenue - (cost + laborCost + materialCost + otherCost);
-
-    document.getElementById('preview_gross_profit').textContent = '¥' + grossProfit.toLocaleString('ja-JP');
-    document.getElementById('preview_net_profit').textContent = '¥' + netProfit.toLocaleString('ja-JP');
-
-    document.getElementById('preview_gross_profit').style.color = grossProfit >= 0 ? '#10b981' : '#ef4444';
-    document.getElementById('preview_net_profit').style.color = netProfit >= 0 ? '#10b981' : '#ef4444';
-}
-
-// 入力フィールドの変更を監視
-document.addEventListener('DOMContentLoaded', function() {
-    const inputs = ['finance_revenue', 'finance_cost', 'finance_labor_cost', 'finance_material_cost', 'finance_other_cost'];
-    inputs.forEach(id => {
-        const el = document.getElementById(id);
-        if (el) {
-            el.addEventListener('input', updateProfitPreview);
-        }
-    });
-});
-
-function confirmDeleteFinance(projectId, projectName) {
-    if (confirm('「' + projectName + '」の財務データを削除してもよろしいですか？')) {
-        document.getElementById('delete_finance_project_id').value = projectId;
-        document.getElementById('deleteFinanceForm').submit();
-    }
-}
-
-function closeModal(modalId) {
-    document.getElementById(modalId).style.display = 'none';
-}
-
-// モーダル外クリックで閉じる
-window.onclick = function(event) {
-    if (event.target.classList.contains('modal')) {
-        event.target.style.display = 'none';
-    }
-}
-</script>
 
 <?php require_once 'footer.php'; ?>

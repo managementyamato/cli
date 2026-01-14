@@ -17,7 +17,17 @@
       "Bash(ls:*)",
       "Bash(start-server.bat)",
       "Bash(php\\\\php.exe -S localhost:8000:*)",
-      "Bash(./php/php.exe:*)"
+      "Bash(./php/php.exe:*)",
+      "Bash(git restore:*)",
+      "Bash(git push:*)",
+      "Bash(start /B phpphp.exe -S localhost:8000)",
+      "Bash(phpphp.exe -S localhost:8000)",
+      "Bash(git config:*)",
+      "Bash(taskkill:*)",
+      "Bash(exit 0)",
+      "Bash(tasklist:*)",
+      "Bash(findstr:*)",
+      "Bash(timeout:*)"
     ]
   }
 }

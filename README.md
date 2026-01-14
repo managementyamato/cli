@@ -174,13 +174,15 @@ $isHttps = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on') ||
 
 #### 方法1: バッチファイルで起動（Windows - 最も簡単！）
 
+**PHP不要！プロジェクトに同梱されています**
+
 ```bash
-# 1. PHP と Git をインストール（初回のみ）
+# 1. Git をインストール（初回のみ）
 
 # 2. リポジトリをクローン
 git clone https://github.com/managementyamato/cli.git
 cd cli
-git checkout claude/review-handoff-audit-cWcIL
+git checkout claude/fetch-latest-data-YTTlW
 
 # 3. バッチファイルをダブルクリック
 # エクスプローラーで start-server.bat をダブルクリック
@@ -188,6 +190,11 @@ git checkout claude/review-handoff-audit-cWcIL
 ```
 
 **ブラウザ自動起動版**: `start-server-with-browser.bat` をダブルクリック
+
+**プロジェクト内蔵のPHPについて:**
+- プロジェクトには PHP 8.4.15 が `php/` フォルダに同梱されています
+- バッチファイル（`start-server.bat`）は自動的にプロジェクト内のPHPを使用します
+- 別途PHPをインストールする必要はありません
 
 #### 方法2: コマンドで起動
 
@@ -203,10 +210,16 @@ git checkout claude/fetch-latest-data-YTTlW
 php init-local.php
 
 # 4. 開発サーバー起動
+# プロジェクト内蔵のPHPを使う場合（推奨）
+.\php\php.exe -S localhost:8000
+
+# またはシステムのPHPを使う場合
 php -S localhost:8000
 
 # ブラウザで http://localhost:8000 を開く
 ```
+
+**推奨:** プロジェクト内の `php\php.exe` を使用することで、環境差異を最小限にできます。
 
 **初回セットアップについて:**
 `init-local.php` は以下のファイルを自動生成します：
@@ -354,6 +367,8 @@ cli/
 ├── finance.php            # 財務管理
 ├── init-local.php         # ローカル環境初期化スクリプト（CLI）
 ├── fetch-latest-data.php  # MF最新データ取得スクリプト（CLI）
+├── refresh-token.php      # MFトークンリフレッシュスクリプト（CLI）
+├── check-php-config.php   # PHP環境診断ツール
 ├── mf-settings.php        # MF連携設定UI
 ├── mf-callback.php        # MF OAuth2コールバック
 ├── mf-api.php             # MF API クライアント（file_get_contents実装）
@@ -363,6 +378,10 @@ cli/
 ├── mf-attendance-settings.php  # MF勤怠連携設定UI
 ├── attendance.php         # 勤怠管理画面
 ├── employees.php          # 従業員マスタ
+├── php/                   # PHP 8.4.15 同梱（Windows用）
+│   ├── php.exe           # PHP実行ファイル
+│   ├── php.ini           # PHP設定
+│   └── php8ts.dll        # PHPライブラリ
 ├── users.php              # ユーザー管理
 ├── config.php             # 設定ファイル
 ├── auth.php               # 認証処理
@@ -387,6 +406,10 @@ ISC
 
 ## 開発履歴
 
+- 2026/01/14: README.mdにプロジェクト内蔵PHP（php/フォルダ）の使用方法を追記
+- 2026/01/14: トークン期限チェックを削除、自動同期の説明を簡略化
+- 2026/01/14: MFトークンリフレッシュスクリプト（refresh-token.php）を追加
+- 2026/01/14: PHP環境診断スクリプト（check-php-config.php）を追加
 - 2026/01/14: ローカル環境セットアップスクリプト（init-local.php）を追加
 - 2026/01/14: finance.phpの自動同期を無効化（デフォルト）、エラー処理を改善
 - 2026/01/14: CLIベースの最新データ取得スクリプト（fetch-latest-data.php）を追加

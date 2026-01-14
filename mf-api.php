@@ -81,7 +81,12 @@ class MFApiClient {
                              "Accept: application/json\r\n",
                 'method'  => 'POST',
                 'content' => http_build_query($params),
-                'ignore_errors' => true
+                'ignore_errors' => true,
+                'timeout' => 30
+            ),
+            'ssl' => array(
+                'verify_peer' => false,
+                'verify_peer_name' => false
             )
         );
 
@@ -89,7 +94,8 @@ class MFApiClient {
         $response = file_get_contents($this->tokenEndpoint, false, $context);
 
         if ($response === false) {
-            throw new Exception('トークン取得エラー: HTTPリクエストが失敗しました');
+            $error = error_get_last();
+            throw new Exception('トークン取得エラー: HTTPリクエストが失敗しました - ' . ($error['message'] ?? '不明なエラー'));
         }
 
         // HTTPステータスコードを取得
@@ -138,7 +144,12 @@ class MFApiClient {
                 'header'  => "Content-Type: application/x-www-form-urlencoded\r\n",
                 'method'  => 'POST',
                 'content' => http_build_query($params),
-                'ignore_errors' => true
+                'ignore_errors' => true,
+                'timeout' => 30
+            ),
+            'ssl' => array(
+                'verify_peer' => false,
+                'verify_peer_name' => false
             )
         );
 
@@ -146,7 +157,8 @@ class MFApiClient {
         $response = file_get_contents($this->tokenEndpoint, false, $context);
 
         if ($response === false) {
-            throw new Exception('トークンのリフレッシュに失敗しました');
+            $error = error_get_last();
+            throw new Exception('トークンのリフレッシュに失敗しました - ' . ($error['message'] ?? '不明なエラー'));
         }
 
         $status_line = $http_response_header[0];
@@ -191,7 +203,12 @@ class MFApiClient {
             'http' => array(
                 'header'  => $headers,
                 'method'  => $method,
-                'ignore_errors' => true
+                'ignore_errors' => true,
+                'timeout' => 30
+            ),
+            'ssl' => array(
+                'verify_peer' => false,
+                'verify_peer_name' => false
             )
         );
 
@@ -203,7 +220,8 @@ class MFApiClient {
         $response = file_get_contents($url, false, $context);
 
         if ($response === false) {
-            throw new Exception('APIリクエスト失敗: HTTPリクエストが失敗しました');
+            $error = error_get_last();
+            throw new Exception('APIリクエスト失敗: HTTPリクエストが失敗しました - ' . ($error['message'] ?? '不明なエラー'));
         }
 
         $status_line = $http_response_header[0];

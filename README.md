@@ -197,13 +197,23 @@ git checkout claude/review-handoff-audit-cWcIL
 # 2. リポジトリをクローン
 git clone https://github.com/managementyamato/cli.git
 cd cli
-git checkout claude/review-handoff-audit-cWcIL
+git checkout claude/fetch-latest-data-YTTlW
 
-# 3. 開発サーバー起動
+# 3. 初期セットアップ（初回のみ）
+php init-local.php
+
+# 4. 開発サーバー起動
 php -S localhost:8000
 
 # ブラウザで http://localhost:8000 を開く
 ```
+
+**初回セットアップについて:**
+`init-local.php` は以下のファイルを自動生成します：
+- `data.json` - データストア（プロジェクト、請求書など）
+- `users.json` - ユーザー情報
+- `mf-config.json` - MoneyForward連携設定
+- `.htaccess` - セキュリティ設定
 
 ### ライブリロード付き開発環境（オプション）
 
@@ -341,6 +351,7 @@ cli/
 ├── report.php             # トラブル報告
 ├── master.php             # プロジェクト管理
 ├── finance.php            # 財務管理
+├── init-local.php         # ローカル環境初期化スクリプト（CLI）
 ├── fetch-latest-data.php  # MF最新データ取得スクリプト（CLI）
 ├── mf-settings.php        # MF連携設定UI
 ├── mf-callback.php        # MF OAuth2コールバック
@@ -375,6 +386,8 @@ ISC
 
 ## 開発履歴
 
+- 2026/01/14: ローカル環境セットアップスクリプト（init-local.php）を追加
+- 2026/01/14: finance.phpの自動同期を無効化（デフォルト）、エラー処理を改善
 - 2026/01/14: CLIベースの最新データ取得スクリプト（fetch-latest-data.php）を追加
 - 2026/01/14: MFクラウド勤怠連携をAPI KEY認証方式に変更（外部システム連携用識別子を使用）
 - 2026/01/14: MFクラウド勤怠連携機能を実装（出退勤データ取得、遅刻・早退・欠勤判定）

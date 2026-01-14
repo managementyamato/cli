@@ -166,94 +166,53 @@ $isHttps = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on') ||
 - **経緯**: 初回実装時にリダイレクトURIミスマッチエラーが発生
 - **教訓**: 外部API連携時はファイル名も含めて仕様を確認する
 
-## セットアップ
+## セットアップ（Windows）
 
-詳細は [SETUP-WINDOWS.md](SETUP-WINDOWS.md) を参照してください。
-
-### 🚀 最短セットアップ（3ステップ）
-
-#### 方法1: バッチファイルで起動（Windows - 最も簡単！）
+### 🚀 最短セットアップ（2ステップ）
 
 **PHP不要！プロジェクトに同梱されています**
 
 ```bash
-# 1. Git をインストール（初回のみ）
-
-# 2. リポジトリをクローン
+# 1. リポジトリをクローン
 git clone https://github.com/managementyamato/cli.git
 cd cli
 git checkout claude/fetch-latest-data-YTTlW
 
-# 3. バッチファイルをダブルクリック
+# 2. バッチファイルをダブルクリック
 # エクスプローラーで start-server.bat をダブルクリック
-# （またはコマンドプロンプトで start-server.bat を実行）
 ```
 
 **ブラウザ自動起動版**: `start-server-with-browser.bat` をダブルクリック
 
-**プロジェクト内蔵のPHPについて:**
-- プロジェクトには PHP 8.4.15 が `php/` フォルダに同梱されています
-- バッチファイル（`start-server.bat`）は自動的にプロジェクト内のPHPを使用します
+### プロジェクト内蔵のPHP
+
+- PHP 8.4.15 が `php/` フォルダに同梱されています
+- バッチファイルが自動的にプロジェクト内のPHPを使用します
 - 別途PHPをインストールする必要はありません
 
-#### 方法2: コマンドで起動
+### コマンドで起動する場合
 
-```bash
-# 1. PHP と Git をインストール
-
-# 2. リポジトリをクローン
-git clone https://github.com/managementyamato/cli.git
-cd cli
-git checkout claude/fetch-latest-data-YTTlW
-
-# 3. 初期セットアップ（初回のみ）
+```powershell
+# 初期セットアップ（初回のみ）
 php init-local.php
 
-# 4. 開発サーバー起動
-# プロジェクト内蔵のPHPを使う場合（推奨）
+# 開発サーバー起動
 .\php\php.exe -S localhost:8000
-
-# またはシステムのPHPを使う場合
-php -S localhost:8000
 
 # ブラウザで http://localhost:8000 を開く
 ```
 
-**推奨:** プロジェクト内の `php\php.exe` を使用することで、環境差異を最小限にできます。
+### 初回セットアップについて
 
-**初回セットアップについて:**
 `init-local.php` は以下のファイルを自動生成します：
 - `data.json` - データストア（プロジェクト、請求書など）
 - `users.json` - ユーザー情報
 - `mf-config.json` - MoneyForward連携設定
 - `.htaccess` - セキュリティ設定
 
-### ライブリロード付き開発環境（オプション）
+### トラブルシューティング
 
-```bash
-# Node.js依存パッケージをインストール
-npm install
-
-# 開発サーバー起動（ファイル変更時に自動リロード）
-npm run dev
-
-# ブラウザで http://localhost:3000 を開く
-```
-
-### 📌 開発ポートの違いと注意点
-
-| 起動方法 | ポート | リロード方法 | MoneyForward OAuth2 |
-|---------|-------|------------|-------------------|
-| `php -S localhost:8000` | 8000 | **手動**（F5キー） | ✅ 推奨（設定不要） |
-| `npm run dev` | 3000 | **自動**（ファイル保存時） | ⚠️ リダイレクトURI設定が必要 |
-
-**MoneyForward OAuth2認証を使用する場合：**
-- **ポート8000を推奨**：MoneyForward側のリダイレクトURI設定が `http://localhost:8000/mf-callback.php` で済む
-- ポート3000を使う場合：MoneyForward側に `http://localhost:3000/mf-callback.php` も追加設定が必要
-
-**開発時のワークフロー：**
-- ポート8000：ファイル編集 → ブラウザでF5キー → 変更確認
-- ポート3000：ファイル編集 → 自動でブラウザリロード → 変更確認
+詳細は [SETUP-WINDOWS.md](SETUP-WINDOWS.md) を参照してください。
 
 ## デプロイ
 

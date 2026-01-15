@@ -133,6 +133,7 @@ require_once 'mf-accounting-api.php';
                     <a href="mf-accounting-settings.php" class="btn btn-primary">
                         <?= MFAccountingApiClient::isConfigured() ? 'MF会計設定を編集' : 'MF会計連携を設定' ?>
                     </a>
+                    <a href="mf-accounting-debug.php" class="btn btn-secondary">デバッグ情報</a>
                 </div>
             </div>
 

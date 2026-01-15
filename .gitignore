@@ -6,6 +6,7 @@ mf-accounting-config.json
 # データファイル（個人情報・機密情報を含むため）
 data.json
 users.json
+photo-attendance-data.json
 
 # デバッグファイル（機密情報を含む可能性があるため）
 mf-api-debug.json
@@ -37,3 +38,6 @@ Thumbs.db
 # ポータブルPHP（リポジトリ内配置用、バイナリは各自ダウンロード）
 php/*
 !php/README.md
+
+# アップロードされたファイル（個人写真を含むため）
+uploads/

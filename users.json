@@ -3,5 +3,10 @@
         "password": "$2y$12$l40WilHkiZbhf66guETunuBbG92i5j495cj8gVHY0wS8LFliVD3Gi",
         "name": "管理者",
         "role": "admin"
+    },
+    "managementsupport@yamato-agency.com": {
+        "password": "$2y$10$yjfIWvg4Lvt0uVgFAXgpneCqgYipoJAS\/qCSRfza76bRmgkyEfLPe",
+        "name": "管理部",
+        "role": "admin"
     }
 }

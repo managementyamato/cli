@@ -25,6 +25,9 @@ function generateEmployeeCode($employees) {
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add_employee'])) {
     $name = trim($_POST['name'] ?? '');
     $area = trim($_POST['area'] ?? '');
+    $email = trim($_POST['email'] ?? '');
+    $password = $_POST['password'] ?? '';
+    $role = $_POST['role'] ?? '';
 
     if ($name && $area) {
         $employeeCode = generateEmployeeCode($data['employees']);
@@ -33,9 +36,29 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add_employee'])) {
             'code' => $employeeCode,
             'name' => $name,
             'area' => $area,
-            'email' => trim($_POST['email'] ?? ''),
+            'email' => $email,
             'memo' => trim($_POST['memo'] ?? '')
         );
+
+        // ユーザーアカウント情報を追加
+        if (!empty($email) && !empty($password) && !empty($role)) {
+            $newEmployee['username'] = $email;
+            $newEmployee['password'] = password_hash($password, PASSWORD_DEFAULT);
+            $newEmployee['role'] = $role;
+        }
+
+        // ID生成（photo-uploadで使用）
+        if (empty($data['employees'])) {
+            $newEmployee['id'] = 1;
+        } else {
+            $maxId = 0;
+            foreach ($data['employees'] as $emp) {
+                if (isset($emp['id']) && $emp['id'] > $maxId) {
+                    $maxId = $emp['id'];
+                }
+            }
+            $newEmployee['id'] = $maxId + 1;
+        }
 
         $data['employees'][] = $newEmployee;
         saveData($data);
@@ -52,17 +75,46 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['edit_employee'])) {
     $code = $_POST['employee_code'];
     $name = trim($_POST['name'] ?? '');
     $area = trim($_POST['area'] ?? '');
+    $email = trim($_POST['email'] ?? '');
+    $password = $_POST['password'] ?? '';
+    $role = $_POST['role'] ?? '';
 
     if ($name && $area) {
         foreach ($data['employees'] as $key => $employee) {
             if ($employee['code'] === $code) {
-                $data['employees'][$key] = array(
+                $updatedEmployee = array(
+                    'id' => $employee['id'] ?? $key + 1,
                     'code' => $code,
                     'name' => $name,
                     'area' => $area,
-                    'email' => trim($_POST['email'] ?? ''),
+                    'email' => $email,
                     'memo' => trim($_POST['memo'] ?? '')
                 );
+
+                // MF連携情報を保持
+                if (isset($employee['mf_attendance_id'])) {
+                    $updatedEmployee['mf_attendance_id'] = $employee['mf_attendance_id'];
+                    $updatedEmployee['mf_attendance_name'] = $employee['mf_attendance_name'];
+                    $updatedEmployee['mf_attendance_email'] = $employee['mf_attendance_email'];
+                }
+
+                // ユーザーアカウント情報を更新
+                if (!empty($email) && !empty($role)) {
+                    $updatedEmployee['username'] = $email;
+                    $updatedEmployee['role'] = $role;
+
+                    // パスワードが入力されている場合のみ更新
+                    if (!empty($password)) {
+                        $updatedEmployee['password'] = password_hash($password, PASSWORD_DEFAULT);
+                    } else {
+                        // 既存のパスワードを保持
+                        if (isset($employee['password'])) {
+                            $updatedEmployee['password'] = $employee['password'];
+                        }
+                    }
+                }
+
+                $data['employees'][$key] = $updatedEmployee;
                 saveData($data);
                 $message = '従業員情報を更新しました';
                 $messageType = 'success';
@@ -344,6 +396,7 @@ require_once 'header.php';
                     <th>氏名</th>
                     <th>担当エリア</th>
                     <th>メールアドレス</th>
+                    <th>ユーザー権限</th>
                     <th>MF連携</th>
                     <th>備考</th>
                 </tr>
@@ -351,7 +404,7 @@ require_once 'header.php';
             <tbody>
                 <?php if (empty($data['employees'])): ?>
                     <tr>
-                        <td colspan="8" style="text-align: center; color: #718096;">登録されている従業員はありません</td>
+                        <td colspan="9" style="text-align: center; color: #718096;">登録されている従業員はありません</td>
                     </tr>
                 <?php else: ?>
                     <?php foreach ($data['employees'] as $index => $employee): ?>
@@ -367,6 +420,21 @@ require_once 'header.php';
                             <td><?= htmlspecialchars($employee['name']) ?></td>
                             <td><?= htmlspecialchars($employee['area']) ?></td>
                             <td><?= htmlspecialchars($employee['email']) ?></td>
+                            <td>
+                                <?php if (!empty($employee['role'])): ?>
+                                    <?php
+                                    $roleLabels = array('admin' => '管理者', 'editor' => '編集者', 'viewer' => '閲覧者');
+                                    $roleLabel = $roleLabels[$employee['role']] ?? $employee['role'];
+                                    $roleColors = array('admin' => '#dbeafe', 'editor' => '#d1fae5', 'viewer' => '#f3f4f6');
+                                    $roleTextColors = array('admin' => '#1e40af', 'editor' => '#065f46', 'viewer' => '#374151');
+                                    $bg = $roleColors[$employee['role']] ?? '#f3f4f6';
+                                    $color = $roleTextColors[$employee['role']] ?? '#374151';
+                                    ?>
+                                    <span style="background: <?= $bg ?>; color: <?= $color ?>; padding: 0.25rem 0.5rem; border-radius: 4px; font-size: 0.75rem;"><?= htmlspecialchars($roleLabel) ?></span>
+                                <?php else: ?>
+                                    <span style="color: #a0aec0;">-</span>
+                                <?php endif; ?>
+                            </td>
                             <td>
                                 <?php if (!empty($employee['mf_attendance_id'])): ?>
                                     <span style="background: #c6f6d5; color: #22543d; padding: 0.25rem 0.5rem; border-radius: 4px; font-size: 0.75rem;">連携済み</span>
@@ -406,12 +474,33 @@ require_once 'header.php';
 
             <div class="form-group">
                 <label>メールアドレス</label>
-                <input type="email" name="email">
+                <input type="email" name="email" id="add_email">
             </div>
 
             <div class="form-group">
                 <label>備考</label>
                 <textarea name="memo"></textarea>
+            </div>
+
+            <hr style="margin: 1.5rem 0; border: none; border-top: 1px solid #e2e8f0;">
+
+            <h3 style="font-size: 1rem; font-weight: bold; margin-bottom: 1rem; color: #2d3748;">ユーザーアカウント設定（任意）</h3>
+            <p style="font-size: 0.875rem; color: #718096; margin-bottom: 1rem;">ログインアカウントを作成する場合は以下を入力してください。</p>
+
+            <div class="form-group">
+                <label>パスワード</label>
+                <input type="password" name="password" id="add_password" minlength="6">
+                <small style="color: #718096;">6文字以上で入力してください</small>
+            </div>
+
+            <div class="form-group">
+                <label>権限</label>
+                <select class="form-select" name="role" id="add_role">
+                    <option value="">設定しない</option>
+                    <option value="viewer">閲覧者</option>
+                    <option value="editor">編集者</option>
+                    <option value="admin">管理者</option>
+                </select>
             </div>
 
             <div class="modal-footer">
@@ -454,6 +543,26 @@ require_once 'header.php';
                 <textarea name="memo" id="edit_memo"></textarea>
             </div>
 
+            <hr style="margin: 1.5rem 0; border: none; border-top: 1px solid #e2e8f0;">
+
+            <h3 style="font-size: 1rem; font-weight: bold; margin-bottom: 1rem; color: #2d3748;">ユーザーアカウント設定</h3>
+
+            <div class="form-group">
+                <label>パスワード</label>
+                <input type="password" name="password" id="edit_password" minlength="6">
+                <small style="color: #718096;">変更する場合のみ入力してください（6文字以上）</small>
+            </div>
+
+            <div class="form-group">
+                <label>権限</label>
+                <select class="form-select" name="role" id="edit_role">
+                    <option value="">設定しない</option>
+                    <option value="viewer">閲覧者</option>
+                    <option value="editor">編集者</option>
+                    <option value="admin">管理者</option>
+                </select>
+            </div>
+
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" onclick="closeEditModal()">キャンセル</button>
                 <button type="submit" name="edit_employee" class="btn btn-primary">更新</button>
@@ -478,6 +587,8 @@ function openEditModal(employee) {
     document.getElementById('edit_area').value = employee.area;
     document.getElementById('edit_email').value = employee.email || '';
     document.getElementById('edit_memo').value = employee.memo || '';
+    document.getElementById('edit_password').value = '';
+    document.getElementById('edit_role').value = employee.role || '';
 
     document.getElementById('editModal').classList.add('active');
 }

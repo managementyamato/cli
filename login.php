@@ -26,6 +26,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $_SESSION['user_email'] = $email;
         $_SESSION['user_name'] = $USERS[$email]['name'];
         $_SESSION['user_role'] = $USERS[$email]['role'];
+
+        // 従業員IDを設定（写真アップロード機能で使用）
+        if (isset($USERS[$email]['employee_id'])) {
+            $_SESSION['user_id'] = $USERS[$email]['employee_id'];
+        }
+
         header('Location: index.php');
         exit;
     }

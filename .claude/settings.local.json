@@ -27,7 +27,12 @@
       "Bash(exit 0)",
       "Bash(tasklist:*)",
       "Bash(findstr:*)",
-      "Bash(timeout:*)"
+      "Bash(timeout:*)",
+      "Bash(netstat:*)",
+      "Bash(php -r:*)",
+      "Bash(./php.exe:*)",
+      "Bash(start //B php.exe -S localhost:8000 -t ..)",
+      "Bash(php migrate-users-to-employees.php:*)"
     ]
   }
 }

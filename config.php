@@ -5,17 +5,40 @@
 define('DATA_FILE', __DIR__ . '/data.json');
 define('USERS_FILE', __DIR__ . '/users.json');
 
-// ログインユーザー情報を取得
-function getUsers() {
-    if (file_exists(USERS_FILE)) {
-        $json = file_get_contents(USERS_FILE);
-        $users = json_decode($json, true);
-        if ($users) {
-            return $users;
+// ログインユーザー情報を取得（従業員データから）
+function getUsersFromEmployees() {
+    $data = getData();
+    $users = array();
+
+    foreach ($data['employees'] as $employee) {
+        if (!empty($employee['username']) && !empty($employee['password']) && !empty($employee['role'])) {
+            $users[$employee['username']] = array(
+                'password' => $employee['password'],
+                'name' => $employee['name'],
+                'role' => $employee['role'],
+                'employee_id' => $employee['id'] ?? null
+            );
         }
     }
-    // デフォルトユーザー（初回用）
-    return array();
+
+    return $users;
+}
+
+// 従来のusers.json形式を取得（後方互換性）
+function getUsers() {
+    // まず従業員データから取得を試みる
+    $users = getUsersFromEmployees();
+
+    // 従業員データにユーザーがいない場合、users.jsonから取得
+    if (empty($users) && file_exists(USERS_FILE)) {
+        $json = file_get_contents(USERS_FILE);
+        $usersFromFile = json_decode($json, true);
+        if ($usersFromFile) {
+            return $usersFromFile;
+        }
+    }
+
+    return $users;
 }
 
 // ユーザー情報を保存

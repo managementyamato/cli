@@ -107,25 +107,28 @@ function uploadPhoto($employeeId, $uploadType, $file) {
     // ファイル名生成
     $extension = pathinfo($file['name'], PATHINFO_EXTENSION);
     $today = date('Y-m-d');
+    $yearMonth = date('Y-m'); // 月ごとのフォルダ
 
-    // 日付別フォルダを作成
-    $dateFolder = PHOTO_UPLOAD_DIR . $today . '/';
-    if (!file_exists($dateFolder)) {
-        mkdir($dateFolder, 0755, true);
+    // 月別フォルダを作成
+    $monthFolder = PHOTO_UPLOAD_DIR . $yearMonth . '/';
+    if (!file_exists($monthFolder)) {
+        mkdir($monthFolder, 0755, true);
     }
 
     $filename = sprintf(
-        '%d_%s_%s.%s',
+        '%d_%s_%s_%s.%s',
         $employeeId,
+        $today,
         $uploadType,
         uniqid(),
         $extension
     );
 
-    $uploadPath = $dateFolder . $filename;
+    $uploadPath = $monthFolder . $filename;
 
-    // ファイル移動
-    if (!move_uploaded_file($file['tmp_name'], $uploadPath)) {
+    // 画像をリサイズして保存（400x300程度に縮小）
+    $resized = resizeImage($file['tmp_name'], $uploadPath, $mimeType);
+    if (!$resized) {
         return ['success' => false, 'message' => 'ファイルの保存に失敗しました'];
     }
 
@@ -140,12 +143,13 @@ function uploadPhoto($employeeId, $uploadType, $file) {
     });
 
     // 新しいレコードを追加
+    $yearMonth = date('Y-m');
     $newRecord = [
         'id' => uniqid(),
         'employee_id' => $employeeId,
         'upload_date' => $today,
         'upload_type' => $uploadType,
-        'photo_path' => 'uploads/attendance-photos/' . $today . '/' . $filename,
+        'photo_path' => 'uploads/attendance-photos/' . $yearMonth . '/' . $filename,
         'uploaded_at' => date('Y-m-d H:i:s')
     ];
 
@@ -175,4 +179,90 @@ function getEmployeeUploadStatus($employeeId) {
         'start' => isset($status[$employeeId]['start']),
         'end' => isset($status[$employeeId]['end'])
     ];
+}
+
+/**
+ * 画像をリサイズして保存
+ *
+ * @param string $sourcePath 元ファイルのパス
+ * @param string $destPath 保存先パス
+ * @param string $mimeType MIMEタイプ
+ * @param int $maxWidth 最大幅（デフォルト: 800）
+ * @param int $maxHeight 最大高さ（デフォルト: 600）
+ * @return bool 成功したかどうか
+ */
+function resizeImage($sourcePath, $destPath, $mimeType, $maxWidth = 800, $maxHeight = 600) {
+    // 元画像を読み込み
+    switch ($mimeType) {
+        case 'image/jpeg':
+            $sourceImage = imagecreatefromjpeg($sourcePath);
+            break;
+        case 'image/png':
+            $sourceImage = imagecreatefrompng($sourcePath);
+            break;
+        case 'image/gif':
+            $sourceImage = imagecreatefromgif($sourcePath);
+            break;
+        default:
+            return false;
+    }
+
+    if (!$sourceImage) {
+        return false;
+    }
+
+    // 元画像のサイズを取得
+    $originalWidth = imagesx($sourceImage);
+    $originalHeight = imagesy($sourceImage);
+
+    // リサイズ比率を計算
+    $ratio = min($maxWidth / $originalWidth, $maxHeight / $originalHeight);
+
+    // 元画像がすでに小さい場合はリサイズしない
+    if ($ratio >= 1) {
+        $newWidth = $originalWidth;
+        $newHeight = $originalHeight;
+    } else {
+        $newWidth = round($originalWidth * $ratio);
+        $newHeight = round($originalHeight * $ratio);
+    }
+
+    // 新しい画像を作成
+    $newImage = imagecreatetruecolor($newWidth, $newHeight);
+
+    // 透過処理（PNG/GIF用）
+    if ($mimeType === 'image/png' || $mimeType === 'image/gif') {
+        imagealphablending($newImage, false);
+        imagesavealpha($newImage, true);
+        $transparent = imagecolorallocatealpha($newImage, 255, 255, 255, 127);
+        imagefilledrectangle($newImage, 0, 0, $newWidth, $newHeight, $transparent);
+    }
+
+    // リサイズ実行
+    imagecopyresampled(
+        $newImage, $sourceImage,
+        0, 0, 0, 0,
+        $newWidth, $newHeight,
+        $originalWidth, $originalHeight
+    );
+
+    // 保存
+    $saved = false;
+    switch ($mimeType) {
+        case 'image/jpeg':
+            $saved = imagejpeg($newImage, $destPath, 85); // 品質85%
+            break;
+        case 'image/png':
+            $saved = imagepng($newImage, $destPath, 6); // 圧縮レベル6
+            break;
+        case 'image/gif':
+            $saved = imagegif($newImage, $destPath);
+            break;
+    }
+
+    // メモリ解放
+    imagedestroy($sourceImage);
+    imagedestroy($newImage);
+
+    return $saved;
 }

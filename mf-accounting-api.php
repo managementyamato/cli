@@ -58,7 +58,10 @@ class MFAccountingApiClient {
             'scope' => 'openid profile email office accounting.read accounting.write invoice.read invoice.write'
         );
 
-        return $this->authEndpoint . '?' . http_build_query($params, '', '&', PHP_QUERY_RFC3986);
+        $query = http_build_query($params, '', '&', PHP_QUERY_RFC3986);
+        // スラッシュのエスケープを解除
+        $query = str_replace('%2F', '/', $query);
+        return $this->authEndpoint . '?' . $query;
     }
 
     /**

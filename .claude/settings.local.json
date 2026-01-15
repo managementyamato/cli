@@ -33,7 +33,13 @@
       "Bash(./php.exe:*)",
       "Bash(start //B php.exe -S localhost:8000 -t ..)",
       "Bash(php migrate-users-to-employees.php:*)",
-      "Bash(grep:*)"
+      "Bash(grep:*)",
+      "Bash(npm run dev:*)",
+      "Bash(npm install:*)",
+      "Bash(php --version:*)",
+      "Bash(php test-email.php:*)",
+      "Bash(composer require:*)",
+      "Bash(curl:*)"
     ]
   }
 }

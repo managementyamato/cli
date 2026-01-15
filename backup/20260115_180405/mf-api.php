@@ -1,15 +1,15 @@
 <?php
 /**
- * マネーフォワード クラウド会計 API クライアント
- * OAuth2認証方式（MF請求書と同じ認証基盤を使用）
+ * マネーフォワード クラウド請求書 API クライアント
+ * GASのMfInvoiceApiライブラリをPHPに移植
  */
 
-class MFAccountingApiClient {
+class MFApiClient {
     private $clientId;
     private $clientSecret;
     private $accessToken;
     private $refreshToken;
-    private $apiEndpoint = 'https://accounting.moneyforward.com/api/external/v1';
+    private $apiEndpoint = 'https://invoice.moneyforward.com/api/v3';
     private $authEndpoint = 'https://api.biz.moneyforward.com/authorize';
     private $tokenEndpoint = 'https://api.biz.moneyforward.com/token';
 
@@ -25,7 +25,7 @@ class MFAccountingApiClient {
      * 設定ファイルを読み込み
      */
     private function loadConfig() {
-        $configFile = __DIR__ . '/mf-accounting-config.json';
+        $configFile = __DIR__ . '/mf-config.json';
         if (file_exists($configFile)) {
             $json = file_get_contents($configFile);
             return json_decode($json, true) ?: array();
@@ -37,13 +37,14 @@ class MFAccountingApiClient {
      * 設定ファイルを保存
      */
     private function saveConfig($data) {
-        $configFile = __DIR__ . '/mf-accounting-config.json';
+        $configFile = __DIR__ . '/mf-config.json';
         $data['updated_at'] = date('Y-m-d H:i:s');
         return file_put_contents($configFile, json_encode($data, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT));
     }
 
     /**
      * OAuth認証URLを生成
+     * GASのshowMfApiAuthDialog相当
      */
     public function getAuthorizationUrl($redirectUri, $state = null) {
         if (!$state) {
@@ -55,17 +56,15 @@ class MFAccountingApiClient {
             'redirect_uri' => $redirectUri,
             'response_type' => 'code',
             'state' => $state,
-            'scope' => 'openid profile email office accounting.read accounting.write invoice.read invoice.write'
+            'scope' => 'mfc/invoice/data.read mfc/invoice/data.write'
         );
 
-        $query = http_build_query($params, '', '&', PHP_QUERY_RFC3986);
-        // スラッシュのエスケープを解除
-        $query = str_replace('%2F', '/', $query);
-        return $this->authEndpoint . '?' . $query;
+        return $this->authEndpoint . '?' . http_build_query($params);
     }
 
     /**
      * 認証コードからアクセストークンを取得
+     * GASのmfCallback相当
      */
     public function handleCallback($code, $redirectUri) {
         $params = array(
@@ -93,6 +92,7 @@ class MFAccountingApiClient {
             throw new Exception('トークン取得エラー: HTTPリクエストが失敗しました');
         }
 
+        // HTTPステータスコードを取得
         $status_line = $http_response_header[0];
         preg_match('{HTTP\/\S*\s(\d{3})}', $status_line, $match);
         $httpCode = $match[1];
@@ -224,62 +224,97 @@ class MFAccountingApiClient {
     }
 
     /**
-     * 事業所一覧を取得
+     * 請求書一覧を取得
      */
-    public function getOffices() {
-        return $this->request('GET', '/offices');
-    }
-
-    /**
-     * 取引先一覧を取得
-     */
-    public function getPartners($page = 1, $perPage = 100) {
-        $params = array(
-            'page' => $page,
-            'per_page' => $perPage
-        );
-
-        $endpoint = '/partners?' . http_build_query($params);
-        return $this->request('GET', $endpoint);
-    }
-
-    /**
-     * 勘定科目一覧を取得
-     */
-    public function getAccounts($officeId) {
-        $endpoint = '/offices/' . $officeId . '/accounts';
-        return $this->request('GET', $endpoint);
-    }
-
-    /**
-     * 仕訳一覧を取得
-     */
-    public function getJournals($officeId, $from = null, $to = null, $page = 1, $perPage = 100) {
-        $params = array(
-            'page' => $page,
-            'per_page' => $perPage
-        );
-
+    public function getInvoices($from = null, $to = null) {
+        $params = array();
         if ($from) $params['from'] = $from;
         if ($to) $params['to'] = $to;
 
-        $endpoint = '/offices/' . $officeId . '/journals?' . http_build_query($params);
+        $endpoint = '/billings?' . http_build_query($params);
         return $this->request('GET', $endpoint);
     }
 
     /**
-     * 仕訳を作成
+     * 請求書一覧を全ページ取得
      */
-    public function createJournal($officeId, $data) {
-        $endpoint = '/offices/' . $officeId . '/journals';
-        return $this->request('POST', $endpoint, $data);
+    public function getAllInvoices($from = null, $to = null) {
+        $allInvoices = array();
+        $page = 1;
+        $perPage = 100;
+        $debugLog = array();
+
+        do {
+            $params = array('page' => $page, 'per_page' => $perPage);
+
+            // fromとtoを指定する場合、range_keyも必須
+            if ($from && $to) {
+                $params['from'] = $from;
+                $params['to'] = $to;
+                $params['range_key'] = 'billing_date'; // 請求日で範囲検索
+            }
+
+            $endpoint = '/billings?' . http_build_query($params);
+            $response = $this->request('GET', $endpoint);
+
+            // デバッグ用にレスポンスを記録
+            $debugLog[] = array(
+                'page' => $page,
+                'endpoint' => $endpoint,
+                'full_url' => $this->apiEndpoint . $endpoint,
+                'response_keys' => array_keys($response),
+                'response' => $response
+            );
+
+            // レスポンス構造を確認（'data'キーまたは'billings'キー）
+            $invoiceData = null;
+            if (isset($response['data']) && is_array($response['data'])) {
+                $invoiceData = $response['data'];
+            } elseif (isset($response['billings']) && is_array($response['billings'])) {
+                $invoiceData = $response['billings'];
+            }
+
+            if ($invoiceData !== null) {
+                $allInvoices = array_merge($allInvoices, $invoiceData);
+                $hasMore = count($invoiceData) === $perPage;
+            } else {
+                $hasMore = false;
+            }
+
+            $page++;
+        } while ($hasMore);
+
+        // デバッグログをファイルに保存
+        $debugFile = __DIR__ . '/mf-api-debug.json';
+        file_put_contents($debugFile, json_encode($debugLog, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT));
+
+        return $allInvoices;
+    }
+
+    /**
+     * 見積書一覧を取得
+     */
+    public function getQuotes($from = null, $to = null) {
+        $params = array();
+        if ($from) $params['from'] = $from;
+        if ($to) $params['to'] = $to;
+
+        $endpoint = '/quotes?' . http_build_query($params);
+        return $this->request('GET', $endpoint);
+    }
+
+    /**
+     * 請求書を作成
+     */
+    public function createInvoice($data) {
+        return $this->request('POST', '/billings', $data);
     }
 
     /**
      * 認証済みかどうか
      */
     public static function isConfigured() {
-        $configFile = __DIR__ . '/mf-accounting-config.json';
+        $configFile = __DIR__ . '/mf-config.json';
         if (!file_exists($configFile)) {
             return false;
         }
@@ -291,7 +326,7 @@ class MFAccountingApiClient {
      * Client ID/Secretを保存
      */
     public static function saveCredentials($clientId, $clientSecret) {
-        $configFile = __DIR__ . '/mf-accounting-config.json';
+        $configFile = __DIR__ . '/mf-config.json';
         $config = array();
         if (file_exists($configFile)) {
             $config = json_decode(file_get_contents($configFile), true) ?: array();

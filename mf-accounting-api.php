@@ -55,7 +55,7 @@ class MFAccountingApiClient {
             'redirect_uri' => $redirectUri,
             'response_type' => 'code',
             'state' => $state,
-            'scope' => 'write'
+            'scope' => 'mfc/accounting/data.read mfc/accounting/data.write'
         );
 
         return $this->authEndpoint . '?' . http_build_query($params);

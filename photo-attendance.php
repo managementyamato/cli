@@ -46,19 +46,26 @@ require_once __DIR__ . '/header.php';
 
 .status-grid {
     display: grid;
-    gap: 1rem;
+    gap: 0.5rem;
     margin-top: 20px;
 }
 
 .employee-row {
     display: grid;
-    grid-template-columns: 200px 1fr 1fr 100px;
+    grid-template-columns: 200px 150px 150px 150px 150px 120px;
     gap: 1rem;
     align-items: center;
     background: white;
-    padding: 1rem;
+    padding: 0.75rem 1rem;
     border-radius: 8px;
     box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.employee-row:hover {
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    transform: translateY(-1px);
 }
 
 .employee-row.complete {
@@ -78,18 +85,36 @@ require_once __DIR__ . '/header.php';
     color: var(--gray-900);
 }
 
-.photo-box {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
+.vehicle-number {
+    font-size: 0.875rem;
+    color: var(--gray-600);
 }
 
-.photo-preview {
-    width: 150px;
-    height: 150px;
-    object-fit: cover;
-    border-radius: 4px;
-    border: 2px solid #ddd;
+.check-status {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.875rem;
+}
+
+.check-icon {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.75rem;
+}
+
+.check-icon.checked {
+    background: #4caf50;
+    color: white;
+}
+
+.check-icon.unchecked {
+    background: #e0e0e0;
+    color: #999;
 }
 
 .status-badge {
@@ -116,31 +141,118 @@ require_once __DIR__ . '/header.php';
     color: #c62828;
 }
 
-.upload-time {
-    font-size: 0.75rem;
-    color: #666;
+.header-row {
+    display: grid;
+    grid-template-columns: 200px 150px 150px 150px 150px 120px;
+    gap: 1rem;
+    font-weight: bold;
+    padding: 0.5rem 1rem;
+    color: var(--gray-600);
+    font-size: 0.875rem;
 }
 
-.no-photo {
-    width: 150px;
-    height: 150px;
+/* モーダル */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.5);
+    align-items: center;
+    justify-content: center;
+}
+
+.modal.active {
+    display: flex;
+}
+
+.modal-content {
+    background: white;
+    border-radius: 12px;
+    max-width: 800px;
+    width: 90%;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+}
+
+.modal-header {
+    padding: 1.5rem;
+    border-bottom: 1px solid #e0e0e0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.modal-body {
+    padding: 1.5rem;
+}
+
+.modal-close {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: #666;
+    padding: 0;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+}
+
+.modal-close:hover {
+    background: #f0f0f0;
+}
+
+.photo-detail-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+    margin-top: 1rem;
+}
+
+.photo-detail-box {
+    text-align: center;
+}
+
+.photo-detail-box h3 {
+    margin: 0 0 1rem 0;
+    font-size: 1rem;
+    color: var(--gray-700);
+}
+
+.photo-detail-preview {
+    width: 100%;
+    max-width: 350px;
+    height: auto;
+    border-radius: 8px;
+    border: 2px solid #ddd;
+    margin-bottom: 0.5rem;
+}
+
+.no-photo-detail {
+    width: 100%;
+    height: 200px;
     display: flex;
     align-items: center;
     justify-content: center;
     background: #f5f5f5;
     border: 2px dashed #ddd;
-    border-radius: 4px;
+    border-radius: 8px;
     color: #999;
     font-size: 0.875rem;
 }
 
-.header-row {
-    display: grid;
-    grid-template-columns: 200px 1fr 1fr 100px;
-    gap: 1rem;
-    font-weight: bold;
-    padding: 0.5rem 1rem;
-    color: var(--gray-600);
+.photo-time {
+    font-size: 0.875rem;
+    color: #666;
+    margin-top: 0.5rem;
 }
 
 .summary-cards {
@@ -212,9 +324,11 @@ require_once __DIR__ . '/header.php';
             <!-- ヘッダー -->
             <div class="header-row">
                 <div>従業員名</div>
-                <div>出勤前チェック</div>
-                <div>退勤前チェック</div>
-                <div>ステータス</div>
+                <div>ナンバー</div>
+                <div>出勤前</div>
+                <div>出勤前時刻</div>
+                <div>退勤前</div>
+                <div>退勤前時刻</div>
             </div>
 
             <!-- 従業員一覧 -->
@@ -223,55 +337,50 @@ require_once __DIR__ . '/header.php';
                     <?php
                     $status = $uploadStatus[$employee['id']] ?? ['start' => null, 'end' => null];
                     $rowClass = 'missing';
-                    $badgeClass = 'missing';
-                    $badgeText = '未アップロード';
 
                     if ($status['start'] && $status['end']) {
                         $rowClass = 'complete';
-                        $badgeClass = 'complete';
-                        $badgeText = '完了';
                     } elseif ($status['start'] || $status['end']) {
                         $rowClass = 'partial';
-                        $badgeClass = 'partial';
-                        $badgeText = '部分完了';
                     }
+
+                    // JSONエンコードしてデータ属性に設定
+                    $statusData = json_encode([
+                        'name' => $employee['name'],
+                        'vehicle_number' => $employee['vehicle_number'] ?? '',
+                        'start' => $status['start'] ? [
+                            'photo_path' => $status['start']['photo_path'],
+                            'uploaded_at' => $status['start']['uploaded_at']
+                        ] : null,
+                        'end' => $status['end'] ? [
+                            'photo_path' => $status['end']['photo_path'],
+                            'uploaded_at' => $status['end']['uploaded_at']
+                        ] : null
+                    ]);
                     ?>
-                    <div class="employee-row <?= $rowClass ?>">
+                    <div class="employee-row <?= $rowClass ?>"
+                         onclick="showDetail(<?= htmlspecialchars($statusData, ENT_QUOTES) ?>)">
                         <div class="employee-name"><?= htmlspecialchars($employee['name']); ?></div>
+                        <div class="vehicle-number"><?= htmlspecialchars($employee['vehicle_number'] ?? '-'); ?></div>
 
                         <!-- 出勤前チェック -->
-                        <div class="photo-box">
-                            <?php if ($status['start']): ?>
-                                <img src="<?= htmlspecialchars($status['start']['photo_path']); ?>"
-                                     alt="出勤前チェック"
-                                     class="photo-preview"
-                                     onclick="window.open(this.src, '_blank')">
-                                <div class="upload-time">
-                                    <?= date('H:i', strtotime($status['start']['uploaded_at'])); ?>
-                                </div>
-                            <?php else: ?>
-                                <div class="no-photo">未アップロード</div>
-                            <?php endif; ?>
+                        <div class="check-status">
+                            <div class="check-icon <?= $status['start'] ? 'checked' : 'unchecked' ?>">
+                                <?= $status['start'] ? '✓' : '✗' ?>
+                            </div>
+                        </div>
+                        <div style="font-size: 0.875rem;">
+                            <?= $status['start'] ? date('H:i', strtotime($status['start']['uploaded_at'])) : '-' ?>
                         </div>
 
                         <!-- 退勤前チェック -->
-                        <div class="photo-box">
-                            <?php if ($status['end']): ?>
-                                <img src="<?= htmlspecialchars($status['end']['photo_path']); ?>"
-                                     alt="退勤前チェック"
-                                     class="photo-preview"
-                                     onclick="window.open(this.src, '_blank')">
-                                <div class="upload-time">
-                                    <?= date('H:i', strtotime($status['end']['uploaded_at'])); ?>
-                                </div>
-                            <?php else: ?>
-                                <div class="no-photo">未アップロード</div>
-                            <?php endif; ?>
+                        <div class="check-status">
+                            <div class="check-icon <?= $status['end'] ? 'checked' : 'unchecked' ?>">
+                                <?= $status['end'] ? '✓' : '✗' ?>
+                            </div>
                         </div>
-
-                        <!-- ステータス -->
-                        <div>
-                            <span class="status-badge <?= $badgeClass ?>"><?= $badgeText ?></span>
+                        <div style="font-size: 0.875rem;">
+                            <?= $status['end'] ? date('H:i', strtotime($status['end']['uploaded_at'])) : '-' ?>
                         </div>
                     </div>
                 <?php endforeach; ?>
@@ -279,5 +388,88 @@ require_once __DIR__ . '/header.php';
         </div>
     </div>
 </div>
+
+<!-- 詳細モーダル -->
+<div id="detailModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2 id="modalTitle" style="margin: 0;">詳細情報</h2>
+            <button class="modal-close" onclick="closeModal()">&times;</button>
+        </div>
+        <div class="modal-body">
+            <div id="modalVehicleNumber" style="color: #666; margin-bottom: 1rem;"></div>
+            <div class="photo-detail-grid">
+                <div class="photo-detail-box">
+                    <h3>出勤前チェック</h3>
+                    <div id="startPhotoContainer"></div>
+                    <div id="startPhotoTime" class="photo-time"></div>
+                </div>
+                <div class="photo-detail-box">
+                    <h3>退勤前チェック</h3>
+                    <div id="endPhotoContainer"></div>
+                    <div id="endPhotoTime" class="photo-time"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+function showDetail(data) {
+    const modal = document.getElementById('detailModal');
+    const modalTitle = document.getElementById('modalTitle');
+    const modalVehicleNumber = document.getElementById('modalVehicleNumber');
+    const startPhotoContainer = document.getElementById('startPhotoContainer');
+    const startPhotoTime = document.getElementById('startPhotoTime');
+    const endPhotoContainer = document.getElementById('endPhotoContainer');
+    const endPhotoTime = document.getElementById('endPhotoTime');
+
+    // タイトル設定
+    modalTitle.textContent = data.name + ' - アルコールチェック詳細';
+    modalVehicleNumber.textContent = 'ナンバー: ' + (data.vehicle_number || '-');
+
+    // 出勤前チェック写真
+    if (data.start) {
+        startPhotoContainer.innerHTML = `<img src="${data.start.photo_path}" alt="出勤前チェック" class="photo-detail-preview" onclick="window.open(this.src, '_blank')" style="cursor: pointer;">`;
+        const startTime = new Date(data.start.uploaded_at);
+        startPhotoTime.textContent = `アップロード時刻: ${startTime.toLocaleString('ja-JP')}`;
+    } else {
+        startPhotoContainer.innerHTML = '<div class="no-photo-detail">未アップロード</div>';
+        startPhotoTime.textContent = '';
+    }
+
+    // 退勤前チェック写真
+    if (data.end) {
+        endPhotoContainer.innerHTML = `<img src="${data.end.photo_path}" alt="退勤前チェック" class="photo-detail-preview" onclick="window.open(this.src, '_blank')" style="cursor: pointer;">`;
+        const endTime = new Date(data.end.uploaded_at);
+        endPhotoTime.textContent = `アップロード時刻: ${endTime.toLocaleString('ja-JP')}`;
+    } else {
+        endPhotoContainer.innerHTML = '<div class="no-photo-detail">未アップロード</div>';
+        endPhotoTime.textContent = '';
+    }
+
+    // モーダル表示
+    modal.classList.add('active');
+}
+
+function closeModal() {
+    const modal = document.getElementById('detailModal');
+    modal.classList.remove('active');
+}
+
+// モーダル外クリックで閉じる
+document.getElementById('detailModal').addEventListener('click', function(e) {
+    if (e.target === this) {
+        closeModal();
+    }
+});
+
+// ESCキーで閉じる
+document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') {
+        closeModal();
+    }
+});
+</script>
 
 <?php require_once __DIR__ . '/footer.php'; ?>

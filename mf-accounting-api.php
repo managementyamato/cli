@@ -55,7 +55,7 @@ class MFAccountingApiClient {
             'redirect_uri' => $redirectUri,
             'response_type' => 'code',
             'state' => $state,
-            'scope' => 'mfc/accounting/read mfc/accounting/write'
+            'scope' => 'openid profile email office accounting.read accounting.write invoice.read invoice.write'
         );
 
         return $this->authEndpoint . '?' . http_build_query($params, '', '&', PHP_QUERY_RFC3986);

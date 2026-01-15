@@ -9,9 +9,9 @@ class MFAccountingApiClient {
     private $clientSecret;
     private $accessToken;
     private $refreshToken;
-    private $apiEndpoint = 'https://expense.moneyforward.com/api/external/v1';
-    private $authEndpoint = 'https://expense.moneyforward.com/oauth/authorize';
-    private $tokenEndpoint = 'https://expense.moneyforward.com/oauth/token';
+    private $apiEndpoint = 'https://accounting.moneyforward.com/api/external/v1';
+    private $authEndpoint = 'https://accounting.moneyforward.com/oauth/authorize';
+    private $tokenEndpoint = 'https://accounting.moneyforward.com/oauth/token';
 
     public function __construct() {
         $config = $this->loadConfig();

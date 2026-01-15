@@ -10,6 +10,7 @@ if (!isAdmin()) {
 require_once 'header.php';
 require_once 'mf-api.php';
 require_once 'mf-attendance-api.php';
+require_once 'mf-accounting-api.php';
 ?>
 
 <style>
@@ -112,6 +113,26 @@ require_once 'mf-attendance-api.php';
                     <?php if (MFAttendanceApiClient::isConfigured()): ?>
                         <a href="mf-attendance-test.php" class="btn btn-secondary">接続テスト</a>
                     <?php endif; ?>
+                </div>
+            </div>
+
+            <!-- MFクラウド会計連携設定 -->
+            <div class="setting-card">
+                <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 1rem;">
+                    <div>
+                        <h3>MFクラウド会計連携</h3>
+                        <p>MoneyForwardクラウド会計とのAPI連携を設定します（OAuth2方式）</p>
+                    </div>
+                    <?php if (MFAccountingApiClient::isConfigured()): ?>
+                        <span class="status-badge success">✓ 設定済み</span>
+                    <?php else: ?>
+                        <span class="status-badge warning">未設定</span>
+                    <?php endif; ?>
+                </div>
+                <div class="setting-actions">
+                    <a href="mf-accounting-settings.php" class="btn btn-primary">
+                        <?= MFAccountingApiClient::isConfigured() ? 'MF会計設定を編集' : 'MF会計連携を設定' ?>
+                    </a>
                 </div>
             </div>
 
